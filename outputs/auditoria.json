@@ -1,0 +1,110 @@
+{
+  "archivo": "accepted_2007_to_2018Q4.csv.gz",
+  "total_filas": 2260701,
+  "total_columnas": 151,
+  "filas_resumen": 33,
+  "total_elegibles": 1345310,
+  "fraccion_muestreo": 0.16353108205543704,
+  "filas_muestra": 220003,
+  "tasa_default_muestra": 0.1982836597682759,
+  "estados": {
+    "Fully Paid": 1076751,
+    "Current": 878317,
+    "Charged Off": 268559,
+    "Late (31-120 days)": 21467,
+    "In Grace Period": 8436,
+    "Late (16-30 days)": 4349,
+    "Does not meet the credit policy. Status:Fully Paid": 1988,
+    "Does not meet the credit policy. Status:Charged Off": 761,
+    "Default": 40,
+    "SIN ESTADO": 33
+  },
+  "alertas_calidad": {
+    "ingreso_cero": 361,
+    "dti_negativo": 2,
+    "fecha_credito_posterior": 0,
+    "fico_fuera_de_rango": 0,
+    "fico_invertido": 0,
+    "ingreso_negativo": 0,
+    "monto_no_positivo": 0,
+    "plazo_no_esperado": 0,
+    "saldo_revolvente_negativo": 0
+  },
+  "filas_con_alerta": 363,
+  "valores_policy_code": [
+    "1.0"
+  ],
+  "columnas_vacias": [
+    "member_id"
+  ],
+  "particion": {
+    "entrenamiento": {
+      "filas": 73701,
+      "tasa_default": 0.16868156470061466,
+      "anio_min": 2007,
+      "anio_max": 2014
+    },
+    "validacion": {
+      "filas": 109382,
+      "tasa_default": 0.21344462525826918,
+      "anio_min": 2015,
+      "anio_max": 2016
+    },
+    "prueba": {
+      "filas": 36920,
+      "tasa_default": 0.2124593716143012,
+      "anio_min": 2017,
+      "anio_max": 2018
+    }
+  },
+  "default_por_anio": {
+    "2007": {
+      "n": 48,
+      "tasa": 0.16666666666666666
+    },
+    "2008": {
+      "n": 250,
+      "tasa": 0.196
+    },
+    "2009": {
+      "n": 812,
+      "tasa": 0.12192118226600986
+    },
+    "2010": {
+      "n": 1834,
+      "tasa": 0.12159214830970556
+    },
+    "2011": {
+      "n": 3570,
+      "tasa": 0.1400560224089636
+    },
+    "2012": {
+      "n": 8721,
+      "tasa": 0.1606467148262814
+    },
+    "2013": {
+      "n": 22035,
+      "tasa": 0.15339233038348082
+    },
+    "2014": {
+      "n": 36431,
+      "tasa": 0.18588564683923034
+    },
+    "2015": {
+      "n": 61395,
+      "tasa": 0.20050492711132828
+    },
+    "2016": {
+      "n": 47987,
+      "tasa": 0.22999979161022777
+    },
+    "2017": {
+      "n": 27693,
+      "tasa": 0.23088867222763876
+    },
+    "2018": {
+      "n": 9227,
+      "tasa": 0.15714750189660778
+    }
+  }
+}
