@@ -1,0 +1,60 @@
+variable,grupo,motivo
+id,identificador,"Identificador, sin poder predictivo"
+member_id,vacia,100% vacia en el archivo completo
+funded_amnt,precio_lc,Precio/calificacion de Lending Club: se aisla
+funded_amnt_inv,precio_lc,Precio/calificacion de Lending Club: se aisla
+int_rate,precio_lc,Precio/calificacion de Lending Club: se aisla
+installment,precio_lc,Precio/calificacion de Lending Club: se aisla
+grade,precio_lc,Precio/calificacion de Lending Club: se aisla
+sub_grade,precio_lc,Precio/calificacion de Lending Club: se aisla
+emp_title,texto,"Texto libre, fuera del alcance del primer modelo"
+issue_d,auxiliar,Auxiliar: objetivo o particion temporal
+loan_status,auxiliar,Auxiliar: objetivo o particion temporal
+pymnt_plan,leakage,Informacion posterior al otorgamiento: LEAKAGE
+url,identificador,"Identificador, sin poder predictivo"
+desc,texto,"Texto libre, fuera del alcance del primer modelo"
+title,texto,"Texto libre, fuera del alcance del primer modelo"
+zip_code,cardinalidad,Alta cardinalidad; se usa addr_state
+initial_list_status,precio_lc,Precio/calificacion de Lending Club: se aisla
+out_prncp,leakage,Informacion posterior al otorgamiento: LEAKAGE
+out_prncp_inv,leakage,Informacion posterior al otorgamiento: LEAKAGE
+total_pymnt,leakage,Informacion posterior al otorgamiento: LEAKAGE
+total_pymnt_inv,leakage,Informacion posterior al otorgamiento: LEAKAGE
+total_rec_prncp,leakage,Informacion posterior al otorgamiento: LEAKAGE
+total_rec_int,leakage,Informacion posterior al otorgamiento: LEAKAGE
+total_rec_late_fee,leakage,Informacion posterior al otorgamiento: LEAKAGE
+recoveries,leakage,Informacion posterior al otorgamiento: LEAKAGE
+collection_recovery_fee,leakage,Informacion posterior al otorgamiento: LEAKAGE
+last_pymnt_d,leakage,Informacion posterior al otorgamiento: LEAKAGE
+last_pymnt_amnt,leakage,Informacion posterior al otorgamiento: LEAKAGE
+next_pymnt_d,leakage,Informacion posterior al otorgamiento: LEAKAGE
+last_credit_pull_d,leakage,Informacion posterior al otorgamiento: LEAKAGE
+last_fico_range_high,leakage,Informacion posterior al otorgamiento: LEAKAGE
+last_fico_range_low,leakage,Informacion posterior al otorgamiento: LEAKAGE
+policy_code,constante,Codigo de politica constante
+hardship_flag,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_type,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_reason,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_status,leakage,Informacion posterior al otorgamiento: LEAKAGE
+deferral_term,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_amount,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_start_date,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_end_date,leakage,Informacion posterior al otorgamiento: LEAKAGE
+payment_plan_start_date,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_length,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_dpd,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_loan_status,leakage,Informacion posterior al otorgamiento: LEAKAGE
+orig_projected_additional_accrued_interest,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_payoff_balance_amount,leakage,Informacion posterior al otorgamiento: LEAKAGE
+hardship_last_payment_amount,leakage,Informacion posterior al otorgamiento: LEAKAGE
+disbursement_method,precio_lc,Precio/calificacion de Lending Club: se aisla
+debt_settlement_flag,leakage,Informacion posterior al otorgamiento: LEAKAGE
+debt_settlement_flag_date,leakage,Informacion posterior al otorgamiento: LEAKAGE
+settlement_status,leakage,Informacion posterior al otorgamiento: LEAKAGE
+settlement_date,leakage,Informacion posterior al otorgamiento: LEAKAGE
+settlement_amount,leakage,Informacion posterior al otorgamiento: LEAKAGE
+settlement_percentage,leakage,Informacion posterior al otorgamiento: LEAKAGE
+settlement_term,leakage,Informacion posterior al otorgamiento: LEAKAGE
+default,auxiliar,Auxiliar: objetivo o particion temporal
+fecha_prestamo,auxiliar,Auxiliar: objetivo o particion temporal
+anio,auxiliar,Auxiliar: objetivo o particion temporal

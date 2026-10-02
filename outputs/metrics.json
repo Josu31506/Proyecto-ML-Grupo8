@@ -1,0 +1,269 @@
+{
+  "resultados": {
+    "logistica_sin_indicadores": {
+      "entrenamiento": {
+        "n": 73701,
+        "tasa_default_real": 0.16868156470061466,
+        "umbral": 0.17537662378667151,
+        "roc_auc": 0.7024975986226782,
+        "pr_auc": 0.3234021681361763,
+        "ks": 0.29661754598100876,
+        "brier": 0.1293634583198954,
+        "accuracy": 0.6641158193240254,
+        "precision": 0.27731396147312876,
+        "recall": 0.6171975546975547,
+        "f1": 0.38268372359791525,
+        "matriz_confusion": {
+          "vn": 41273,
+          "fp": 19996,
+          "fn": 4759,
+          "vp": 7673
+        }
+      },
+      "validacion": {
+        "n": 109382,
+        "tasa_default_real": 0.21344462525826918,
+        "umbral": 0.17537662378667151,
+        "roc_auc": 0.7120531422965741,
+        "pr_auc": 0.4016088813690356,
+        "ks": 0.3071017422420866,
+        "brier": 0.15302533296564916,
+        "accuracy": 0.6637289499186337,
+        "precision": 0.34398587918340806,
+        "recall": 0.6343855741637041,
+        "f1": 0.4460875850852358,
+        "matriz_confusion": {
+          "vn": 57789,
+          "fp": 28246,
+          "fn": 8536,
+          "vp": 14811
+        }
+      },
+      "prueba": {
+        "n": 36920,
+        "tasa_default_real": 0.2124593716143012,
+        "umbral": 0.17537662378667151,
+        "roc_auc": 0.6901908766201628,
+        "pr_auc": 0.35839922660409573,
+        "ks": 0.2824960859753219,
+        "brier": 0.15772609327376208,
+        "accuracy": 0.6666576381365114,
+        "precision": 0.3347649018881896,
+        "recall": 0.5763640999490056,
+        "f1": 0.4235327181601012,
+        "matriz_confusion": {
+          "vn": 20092,
+          "fp": 8984,
+          "fn": 3323,
+          "vp": 4521
+        }
+      }
+    },
+    "logistica_con_indicadores": {
+      "entrenamiento": {
+        "n": 73701,
+        "tasa_default_real": 0.16868156470061466,
+        "umbral": 0.17307958331350895,
+        "roc_auc": 0.7031436081404254,
+        "pr_auc": 0.32414656378290546,
+        "ks": 0.2958368961710783,
+        "brier": 0.12928891735572245,
+        "accuracy": 0.6593669013988955,
+        "precision": 0.2758181496550504,
+        "recall": 0.6270913770913771,
+        "f1": 0.3831240631987616,
+        "matriz_confusion": {
+          "vn": 40800,
+          "fp": 20469,
+          "fn": 4636,
+          "vp": 7796
+        }
+      },
+      "validacion": {
+        "n": 109382,
+        "tasa_default_real": 0.21344462525826918,
+        "umbral": 0.17307958331350895,
+        "roc_auc": 0.7127577969431942,
+        "pr_auc": 0.40253423795722554,
+        "ks": 0.3079077266740545,
+        "brier": 0.15278030935005665,
+        "accuracy": 0.6564334168327512,
+        "precision": 0.3402904014901591,
+        "recall": 0.6494624577033452,
+        "f1": 0.446587930374341,
+        "matriz_confusion": {
+          "vn": 56639,
+          "fp": 29396,
+          "fn": 8184,
+          "vp": 15163
+        }
+      },
+      "prueba": {
+        "n": 36920,
+        "tasa_default_real": 0.2124593716143012,
+        "umbral": 0.17307958331350895,
+        "roc_auc": 0.6921750075712886,
+        "pr_auc": 0.3610111507655314,
+        "ks": 0.2864130044745842,
+        "brier": 0.15729697583873292,
+        "accuracy": 0.6614842903575298,
+        "precision": 0.33302238805970147,
+        "recall": 0.5916624171341153,
+        "f1": 0.42617079889807163,
+        "matriz_confusion": {
+          "vn": 19781,
+          "fp": 9295,
+          "fn": 3203,
+          "vp": 4641
+        }
+      }
+    },
+    "logistica_con_precio_lc": {
+      "entrenamiento": {
+        "n": 73701,
+        "tasa_default_real": 0.16868156470061466,
+        "umbral": 0.17815218313265296,
+        "roc_auc": 0.7102933667223927,
+        "pr_auc": 0.33154228610359493,
+        "ks": 0.3056235971178683,
+        "brier": 0.1284835711635215,
+        "accuracy": 0.6639394309439492,
+        "precision": 0.28023230955604644,
+        "recall": 0.6326415701415702,
+        "f1": 0.3884142426786508,
+        "matriz_confusion": {
+          "vn": 41068,
+          "fp": 20201,
+          "fn": 4567,
+          "vp": 7865
+        }
+      },
+      "validacion": {
+        "n": 109382,
+        "tasa_default_real": 0.21344462525826918,
+        "umbral": 0.17815218313265296,
+        "roc_auc": 0.7243324999274579,
+        "pr_auc": 0.412459614950581,
+        "ks": 0.32842038513209265,
+        "brier": 0.15134035755277772,
+        "accuracy": 0.668501215922181,
+        "precision": 0.35146202866542436,
+        "recall": 0.6543453120315244,
+        "f1": 0.4572993683958452,
+        "matriz_confusion": {
+          "vn": 57845,
+          "fp": 28190,
+          "fn": 8070,
+          "vp": 15277
+        }
+      },
+      "prueba": {
+        "n": 36920,
+        "tasa_default_real": 0.2124593716143012,
+        "umbral": 0.17815218313265296,
+        "roc_auc": 0.7019671284363425,
+        "pr_auc": 0.3697616879097977,
+        "ks": 0.3023189539534473,
+        "brier": 0.15551367508165684,
+        "accuracy": 0.6601570964247021,
+        "precision": 0.33689394464867867,
+        "recall": 0.6191993880673126,
+        "f1": 0.43636853690310407,
+        "matriz_confusion": {
+          "vn": 19516,
+          "fp": 9560,
+          "fn": 2987,
+          "vp": 4857
+        }
+      }
+    },
+    "clase_mayoritaria": {
+      "entrenamiento": {
+        "n": 73701,
+        "tasa_default_real": 0.16868156470061466,
+        "umbral": 1.1,
+        "roc_auc": 0.5,
+        "pr_auc": 0.16868156470061466,
+        "ks": 0.0,
+        "brier": 0.140228094430767,
+        "accuracy": 0.8313184352993853,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matriz_confusion": {
+          "vn": 61269,
+          "fp": 0,
+          "fn": 12432,
+          "vp": 0
+        }
+      },
+      "validacion": {
+        "n": 109382,
+        "tasa_default_real": 0.21344462525826918,
+        "umbral": 1.1,
+        "roc_auc": 0.5,
+        "pr_auc": 0.21344462525826918,
+        "ks": 0.0,
+        "brier": 0.16988974879711446,
+        "accuracy": 0.7865553747417308,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matriz_confusion": {
+          "vn": 86035,
+          "fp": 0,
+          "fn": 23347,
+          "vp": 0
+        }
+      },
+      "prueba": {
+        "n": 36920,
+        "tasa_default_real": 0.2124593716143012,
+        "umbral": 1.1,
+        "roc_auc": 0.5,
+        "pr_auc": 0.2124593716143012,
+        "ks": 0.0,
+        "brier": 0.16923688340572948,
+        "accuracy": 0.7875406283856988,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matriz_confusion": {
+          "vn": 29076,
+          "fp": 0,
+          "fn": 7844,
+          "vp": 0
+        }
+      }
+    }
+  },
+  "semilla": 42,
+  "tamano_muestra_objetivo": 220000,
+  "cortes": {
+    "validacion": 2015,
+    "prueba": 2017
+  },
+  "variables": {
+    "logistica_sin_indicadores": {
+      "predictoras_evaluadas": 95,
+      "predictoras_finales": 65,
+      "columnas_modelo": 138,
+      "con_indicador_faltante": 0,
+      "excluidas_por_faltantes": 30
+    },
+    "logistica_con_indicadores": {
+      "predictoras_evaluadas": 95,
+      "predictoras_finales": 65,
+      "columnas_modelo": 169,
+      "con_indicador_faltante": 31,
+      "excluidas_por_faltantes": 30
+    },
+    "logistica_con_precio_lc": {
+      "predictoras_evaluadas": 103,
+      "predictoras_finales": 73,
+      "columnas_modelo": 214,
+      "con_indicador_faltante": 31,
+      "excluidas_por_faltantes": 30
+    }
+  }
+}
