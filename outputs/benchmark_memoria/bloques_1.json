@@ -1,0 +1,237 @@
+{
+  "metodo": "bloques",
+  "fases": [
+    {
+      "fase": "carga_filtrado",
+      "segundos": 71.12674719999995,
+      "rss_inicio": 172773376,
+      "rss_final": 652464128,
+      "pico_rss_bytes": 1047404544
+    },
+    {
+      "fase": "verificacion_carga",
+      "segundos": 1.138154399999621,
+      "rss_inicio": 652464128,
+      "rss_final": 656609280,
+      "pico_rss_bytes": 656609280
+    },
+    {
+      "fase": "preparacion",
+      "segundos": 12.469597499999509,
+      "rss_inicio": 656613376,
+      "rss_final": 1447051264,
+      "pico_rss_bytes": 3149422592
+    },
+    {
+      "fase": "verificacion_matrices",
+      "segundos": 0.9269614000004367,
+      "rss_inicio": 1447051264,
+      "rss_final": 1447112704,
+      "pico_rss_bytes": 1502654464
+    },
+    {
+      "fase": "entrenamiento_logistica",
+      "segundos": 6.837521999999808,
+      "rss_inicio": 1447112704,
+      "rss_final": 1448501248,
+      "pico_rss_bytes": 1462820864
+    },
+    {
+      "fase": "evaluacion_logistica",
+      "segundos": 0.5328890999990108,
+      "rss_inicio": 1448501248,
+      "rss_final": 1463029760,
+      "pico_rss_bytes": 1503301632
+    },
+    {
+      "fase": "entrenamiento_arbol",
+      "segundos": 14.539740700000038,
+      "rss_inicio": 1452331008,
+      "rss_final": 1453854720,
+      "pico_rss_bytes": 1717268480
+    },
+    {
+      "fase": "evaluacion_arbol",
+      "segundos": 0.5927152000003844,
+      "rss_inicio": 1453854720,
+      "rss_final": 1465106432,
+      "pico_rss_bytes": 1830273024
+    }
+  ],
+  "metricas": {
+    "logistica": {
+      "roc_auc_validacion": 0.7155893988599238,
+      "average_precision_validacion": 0.4092619953844902,
+      "huella_probabilidades": "c511fdf0edab4b944fa50aae1e7e67d53db3e9907c77fcb48f960a7feb72deef"
+    },
+    "arbol": {
+      "roc_auc_validacion": 0.6796807821086972,
+      "average_precision_validacion": 0.3675920704430355,
+      "huella_probabilidades": "a5600df355ee994e3875e08591571a98776d90ac9e9ee6fd156c6e7b0d6fea92"
+    }
+  },
+  "avisos": [
+    "Found unknown categories in columns [4, 5] during transform. These unknown categories will be encoded as all zeros"
+  ],
+  "filas_fuente": 2260701,
+  "filas_elegibles": 1345310,
+  "huella_datos": "90f32bebdc72f615ebd94fb4074e5bdf2b6cf3e29d1c963aceffd56f58218944",
+  "memoria_dataframe_bytes": 461450693,
+  "tipos_finales": {
+    "loan_amnt": "Int32",
+    "term": "float64",
+    "emp_length": "category",
+    "home_ownership": "category",
+    "annual_inc": "float64",
+    "verification_status": "category",
+    "issue_d": "datetime64[us]",
+    "loan_status": "category",
+    "purpose": "category",
+    "addr_state": "category",
+    "dti": "float64",
+    "delinq_2yrs": "Int8",
+    "earliest_cr_line": "datetime64[us]",
+    "fico_range_low": "Int16",
+    "fico_range_high": "Int16",
+    "inq_last_6mths": "Int8",
+    "mths_since_last_delinq": "Int16",
+    "mths_since_last_record": "Int16",
+    "open_acc": "Int8",
+    "pub_rec": "Int8",
+    "revol_bal": "Int32",
+    "revol_util": "float64",
+    "total_acc": "Int16",
+    "collections_12_mths_ex_med": "Int8",
+    "mths_since_last_major_derog": "Int16",
+    "application_type": "category",
+    "annual_inc_joint": "float64",
+    "dti_joint": "float64",
+    "verification_status_joint": "category",
+    "acc_now_delinq": "Int8",
+    "tot_coll_amt": "Int32",
+    "tot_cur_bal": "Int32",
+    "open_acc_6m": "Int8",
+    "open_act_il": "Int8",
+    "open_il_12m": "Int8",
+    "open_il_24m": "Int8",
+    "mths_since_rcnt_il": "Int16",
+    "total_bal_il": "Int32",
+    "il_util": "Int16",
+    "open_rv_12m": "Int8",
+    "open_rv_24m": "Int8",
+    "max_bal_bc": "Int32",
+    "all_util": "Int16",
+    "total_rev_hi_lim": "Int32",
+    "inq_fi": "Int8",
+    "total_cu_tl": "Int8",
+    "inq_last_12m": "Int8",
+    "acc_open_past_24mths": "Int8",
+    "avg_cur_bal": "Int32",
+    "bc_open_to_buy": "Int32",
+    "bc_util": "float64",
+    "chargeoff_within_12_mths": "Int8",
+    "delinq_amnt": "Int32",
+    "mo_sin_old_il_acct": "Int16",
+    "mo_sin_old_rev_tl_op": "Int16",
+    "mo_sin_rcnt_rev_tl_op": "Int16",
+    "mo_sin_rcnt_tl": "Int16",
+    "mort_acc": "Int8",
+    "mths_since_recent_bc": "Int16",
+    "mths_since_recent_bc_dlq": "Int16",
+    "mths_since_recent_inq": "Int8",
+    "mths_since_recent_revol_delinq": "Int16",
+    "num_accts_ever_120_pd": "Int8",
+    "num_actv_bc_tl": "Int8",
+    "num_actv_rev_tl": "Int8",
+    "num_bc_sats": "Int8",
+    "num_bc_tl": "Int8",
+    "num_il_tl": "Int16",
+    "num_op_rev_tl": "Int8",
+    "num_rev_accts": "Int16",
+    "num_rev_tl_bal_gt_0": "Int8",
+    "num_sats": "Int8",
+    "num_tl_120dpd_2m": "Int8",
+    "num_tl_30dpd": "Int8",
+    "num_tl_90g_dpd_24m": "Int8",
+    "num_tl_op_past_12m": "Int8",
+    "pct_tl_nvr_dlq": "float64",
+    "percent_bc_gt_75": "float64",
+    "pub_rec_bankruptcies": "Int8",
+    "tax_liens": "Int8",
+    "tot_hi_cred_lim": "Int32",
+    "total_bal_ex_mort": "Int32",
+    "total_bc_limit": "Int32",
+    "total_il_high_credit_limit": "Int32",
+    "revol_bal_joint": "Int32",
+    "sec_app_fico_range_low": "Int16",
+    "sec_app_fico_range_high": "Int16",
+    "sec_app_earliest_cr_line": "datetime64[us]",
+    "sec_app_inq_last_6mths": "Int8",
+    "sec_app_mort_acc": "Int8",
+    "sec_app_open_acc": "Int8",
+    "sec_app_revol_util": "float64",
+    "sec_app_open_act_il": "Int8",
+    "sec_app_num_rev_accts": "Int8",
+    "sec_app_chargeoff_within_12_mths": "Int8",
+    "sec_app_collections_12_mths_ex_med": "Int8",
+    "sec_app_mths_since_last_major_derog": "Int16",
+    "default": "int8",
+    "fecha_prestamo": "datetime64[us]",
+    "anio": "int32"
+  },
+  "particion": {
+    "entrenamiento": 451059,
+    "validacion": 668640,
+    "prueba_reservada": 225611
+  },
+  "forma_train": [
+    451059,
+    139
+  ],
+  "forma_valid": [
+    668640,
+    139
+  ],
+  "huella_X_train": "3e00beafc7f8fba70f93a2c39e25252170de965908e2e7982b81fbb13df3ad9d",
+  "huella_X_valid": "bfdee38f0d50a72853a9d163a7b060c14a1d382adc6020d16d0569cbcb738f53",
+  "huella_y_train": "dc42755a0fb2c61961ddc97230b31c4306a3877b98c7cd6b50d41db5a6db4dd8",
+  "huella_y_valid": "1eaf3117c3f910fc69855d7fb95bcb9222737b348bf6b8b78c36e17f6421f94e",
+  "matrices_bytes": 1246224987,
+  "hilos": [
+    {
+      "api": "openblas",
+      "hilos": 4
+    },
+    {
+      "api": "openmp",
+      "hilos": 4
+    },
+    {
+      "api": "openblas",
+      "hilos": 4
+    }
+  ],
+  "segundos_total_trabajo": 108.40027160000136,
+  "pico_rss_so_bytes": 3149426688,
+  "pico_commit_so_bytes": 3321335808,
+  "prueba_evaluada": false,
+  "repeticion": 1,
+  "muestras_ram": 2151,
+  "ram_disponible_min_bytes": 5326802944,
+  "ram_total_equipo_bytes": 25480257536,
+  "segundos_proceso_incluye_importaciones": 111.47738689999824,
+  "pico_rss_muestreado_bytes": 3149422592,
+  "picos_muestreados_por_fase": {
+    "inicio_importaciones": 172675072,
+    "carga_filtrado": 1047404544,
+    "verificacion_carga": 656572416,
+    "entre_fases": 1454415872,
+    "preparacion": 3149422592,
+    "verificacion_matrices": 1502654464,
+    "entrenamiento_logistica": 1462820864,
+    "evaluacion_logistica": 1503301632,
+    "entrenamiento_arbol": 1717268480,
+    "evaluacion_arbol": 1830273024,
+    "terminado": 1454419968
+  }
+}

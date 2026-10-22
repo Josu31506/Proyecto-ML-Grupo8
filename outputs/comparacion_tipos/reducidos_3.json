@@ -1,0 +1,8 @@
+{
+  "esquema": "reducidos",
+  "segundos_read_csv": 67.47622969999793,
+  "filas": 2260701,
+  "columnas": 97,
+  "memoria_dataframe_bytes": 767545393,
+  "repeticion": 3
+}

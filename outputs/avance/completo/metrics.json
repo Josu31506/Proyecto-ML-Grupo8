@@ -1,0 +1,172 @@
+{
+  "resultados": {
+    "logistica_sin_indicadores": {
+      "entrenamiento": {
+        "n": 451059,
+        "tasa_default_real": 0.16959865560824638,
+        "umbral": 0.1799764482828195,
+        "roc_auc": 0.7026069812447789,
+        "pr_auc": 0.3239981581514689,
+        "ks": 0.29475066513979054,
+        "brier": 0.12989559136993303,
+        "accuracy": 0.6734617865955451,
+        "precision": 0.2831737513706896,
+        "recall": 0.604256264787775,
+        "f1": 0.3856293119989322,
+        "matriz_confusion": {
+          "vn": 257546,
+          "fp": 117014,
+          "fn": 30274,
+          "vp": 46225
+        }
+      },
+      "validacion": {
+        "n": 668640,
+        "tasa_default_real": 0.21542982770997846,
+        "umbral": 0.1799764482828195,
+        "roc_auc": 0.715589398820223,
+        "pr_auc": 0.40926199569682165,
+        "ks": 0.31231583472012836,
+        "brier": 0.15346274384516692,
+        "accuracy": 0.672129995214166,
+        "precision": 0.3529648752249081,
+        "recall": 0.6264639522371481,
+        "f1": 0.4515280019014023,
+        "matriz_confusion": {
+          "vn": 359174,
+          "fp": 165421,
+          "fn": 53806,
+          "vp": 90239
+        }
+      }
+    },
+    "arbol_decision": {
+      "entrenamiento": {
+        "n": 451059,
+        "tasa_default_real": 0.16959865560824638,
+        "umbral": 0.16568936273322027,
+        "roc_auc": 0.6771630296387634,
+        "pr_auc": 0.2944735774564032,
+        "ks": 0.25323498346802414,
+        "brier": 0.1324033812486621,
+        "accuracy": 0.6060980935975117,
+        "precision": 0.2490126617448599,
+        "recall": 0.6560739356070014,
+        "f1": 0.36100571477894344,
+        "matriz_confusion": {
+          "vn": 223197,
+          "fp": 151363,
+          "fn": 26310,
+          "vp": 50189
+        }
+      },
+      "validacion": {
+        "n": 668640,
+        "tasa_default_real": 0.21542982770997846,
+        "umbral": 0.16568936273322027,
+        "roc_auc": 0.6796807821086972,
+        "pr_auc": 0.3675920704430355,
+        "ks": 0.2547975637587329,
+        "brier": 0.15867106204618006,
+        "accuracy": 0.6004920435510888,
+        "precision": 0.30590231563542775,
+        "recall": 0.6733312506508383,
+        "f1": 0.42068326874239603,
+        "matriz_confusion": {
+          "vn": 304523,
+          "fp": 220072,
+          "fn": 47055,
+          "vp": 96990
+        }
+      }
+    },
+    "clase_mayoritaria": {
+      "entrenamiento": {
+        "n": 451059,
+        "tasa_default_real": 0.16959865560824638,
+        "umbral": 1.1,
+        "roc_auc": 0.5,
+        "pr_auc": 0.16959865560824638,
+        "ks": 0.0,
+        "brier": 0.1408349516241218,
+        "accuracy": 0.8304013443917536,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matriz_confusion": {
+          "vn": 374560,
+          "fp": 0,
+          "fn": 76499,
+          "vp": 0
+        }
+      },
+      "validacion": {
+        "n": 668640,
+        "tasa_default_real": 0.21542982770997846,
+        "umbral": 1.1,
+        "roc_auc": 0.5,
+        "pr_auc": 0.21542982770997846,
+        "ks": 0.0,
+        "brier": 0.17112031337904604,
+        "accuracy": 0.7845701722900216,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matriz_confusion": {
+          "vn": 524595,
+          "fp": 0,
+          "fn": 144045,
+          "vp": 0
+        }
+      }
+    }
+  },
+  "auditoria": {
+    "filas_fuente": 2260701,
+    "elegibles_fuente": 1345310,
+    "filas_utilizadas": 1345310,
+    "fraccion": 1.0,
+    "estados": {
+      "Charged Off": 268559,
+      "Current": 878317,
+      "Default": 40,
+      "Does not meet the credit policy. Status:Charged Off": 761,
+      "Does not meet the credit policy. Status:Fully Paid": 1988,
+      "Fully Paid": 1076751,
+      "In Grace Period": 8436,
+      "Late (16-30 days)": 4349,
+      "Late (31-120 days)": 21467,
+      "SIN ESTADO": 33
+    },
+    "cortes": {
+      "validacion": 2015,
+      "prueba": 2017
+    },
+    "fecha_actualizacion_estados": "No confirmada; no inferirla del nombre del archivo",
+    "particion": {
+      "entrenamiento": 451059,
+      "validacion": 668640,
+      "prueba_reservada": 225611
+    },
+    "columnas_modelo": 139
+  },
+  "segundos_entrenamiento": {
+    "logistica_sin_indicadores": 6.740819500000725,
+    "arbol_decision": 13.863659800001187
+  },
+  "configuracion": {
+    "escenario": "sin indicadores y sin LC",
+    "semilla": 42,
+    "arbol": {
+      "max_depth": 6,
+      "min_samples_leaf": 0.005
+    },
+    "prueba_evaluada": false
+  },
+  "versiones": {
+    "python": "3.12.10",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "sklearn": "1.8.0"
+  }
+}
