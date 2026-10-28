@@ -1,0 +1,82 @@
+|--- term <= 48.00
+|   |--- fico_range_low <= 692.50
+|   |   |--- annual_inc <= 46236.50
+|   |   |   |--- acc_open_past_24mths <= 3.50
+|   |   |   |   |--- annual_inc <= 25518.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- annual_inc >  25518.00
+|   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |--- acc_open_past_24mths >  3.50
+|   |   |   |   |--- num_rev_tl_bal_gt_0 <= 8.50
+|   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |--- num_rev_tl_bal_gt_0 >  8.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- annual_inc >  46236.50
+|   |   |   |--- acc_open_past_24mths <= 4.50
+|   |   |   |   |--- loan_amnt <= 24412.50
+|   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |--- loan_amnt >  24412.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- acc_open_past_24mths >  4.50
+|   |   |   |   |--- avg_cur_bal <= 10458.50
+|   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |--- avg_cur_bal >  10458.50
+|   |   |   |   |   |--- truncated branch of depth 3
+|   |--- fico_range_low >  692.50
+|   |   |--- annual_inc <= 48343.26
+|   |   |   |--- mths_since_recent_inq <= 2.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- mths_since_recent_inq >  2.50
+|   |   |   |   |--- fico_range_high <= 711.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- fico_range_high >  711.50
+|   |   |   |   |   |--- truncated branch of depth 3
+|   |   |--- annual_inc >  48343.26
+|   |   |   |--- fico_range_low <= 737.50
+|   |   |   |   |--- dti <= 24.80
+|   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |--- dti >  24.80
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- fico_range_low >  737.50
+|   |   |   |   |--- inq_last_6mths <= 0.50
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |--- inq_last_6mths >  0.50
+|   |   |   |   |   |--- class: 0
+|--- term >  48.00
+|   |--- fico_range_high <= 696.50
+|   |   |--- avg_cur_bal <= 14426.00
+|   |   |   |--- acc_open_past_24mths <= 3.50
+|   |   |   |   |--- annual_inc <= 60964.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- annual_inc >  60964.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- acc_open_past_24mths >  3.50
+|   |   |   |   |--- annual_inc <= 59050.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- annual_inc >  59050.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- avg_cur_bal >  14426.00
+|   |   |   |--- dti <= 15.27
+|   |   |   |   |--- class: 0
+|   |   |   |--- dti >  15.27
+|   |   |   |   |--- total_bc_limit <= 20150.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- total_bc_limit >  20150.00
+|   |   |   |   |   |--- class: 0
+|   |--- fico_range_high >  696.50
+|   |   |--- annual_inc <= 81293.00
+|   |   |   |--- num_tl_op_past_12m <= 2.50
+|   |   |   |   |--- annual_inc <= 46350.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- annual_inc >  46350.00
+|   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |--- num_tl_op_past_12m >  2.50
+|   |   |   |   |--- class: 0
+|   |   |--- annual_inc >  81293.00
+|   |   |   |--- loan_amnt <= 29825.00
+|   |   |   |   |--- acc_open_past_24mths <= 3.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- acc_open_past_24mths >  3.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- loan_amnt >  29825.00
+|   |   |   |   |--- class: 0
