@@ -13,6 +13,12 @@ def construir_modelo(preprocesador, tipo="logistica"):
             max_iter=2000, solver="lbfgs", C=1.0, random_state=SEMILLA)
     elif tipo == "clase_mayoritaria":
         estimador = DummyClassifier(strategy="most_frequent", random_state=SEMILLA)
+    elif tipo == "arbol":
+        from sklearn.tree import DecisionTreeClassifier
+        estimador = DecisionTreeClassifier(random_state=SEMILLA)
+    elif tipo == "boosting":
+        from sklearn.ensemble import HistGradientBoostingClassifier
+        estimador = HistGradientBoostingClassifier(random_state=SEMILLA, early_stopping=False)
     else:
         raise ValueError(f"Tipo de modelo no soportado: {tipo}")
     return Pipeline([("preprocesar", preprocesador), ("modelo", estimador)])

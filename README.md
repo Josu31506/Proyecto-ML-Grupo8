@@ -6,18 +6,25 @@ otorgamiento.
 
 - **Propuesta completa:** [`proposal.md`](proposal.md)
 - **Exploración inicial:** [`notebooks/01_exploracion_inicial.ipynb`](notebooks/01_exploracion_inicial.ipynb)
+- **Árbol de decisión:** [`notebooks/03_arbol_decision.ipynb`](notebooks/03_arbol_decision.ipynb)
+- **Gradient Boosting:** [`notebooks/04_gradient_boosting.ipynb`](notebooks/04_gradient_boosting.ipynb)
 - **Métricas del baseline:** [`outputs/metrics.json`](outputs/metrics.json)
+- **Métricas del árbol:** [`outputs/metrics_arbol.json`](outputs/metrics_arbol.json)
+- **Métricas de boosting:** [`outputs/metrics_boosting.json`](outputs/metrics_boosting.json)
 
 ## Resultado actual
 
 | Modelo | ROC-AUC validación | ROC-AUC prueba | AP validación |
 |---|---:|---:|---:|
-| logistica_sin_indicadores | 0.7121 | 0.6902 | 0.4016 |
+| logistica_sin_indicadores (baseline) | 0.7121 | 0.6902 | 0.4016 |
 | logistica_con_indicadores | 0.7128 | 0.6922 | 0.4025 |
 | logistica_con_precio_lc | 0.7243 | 0.7020 | 0.4125 |
-| clase_mayoritaria | 0.5000 | 0.5000 | 0.2134 |
+| arbol_elegido (DecisionTree) | 0.6745 | 0.6346 | 0.3548 |
+| gradient_boosting_base (HistGradientBoosting) | 0.7007 | 0.6993 | 0.3768 |
+| gradient_boosting_con_precio_lc | 0.7157 | 0.7115 | 0.3955 |
+| clase_mayoritaria (referencia) | 0.5000 | 0.5000 | 0.2134 |
 
-El baseline principal es `logistica_sin_indicadores`. LC se compara con el modelo con indicadores.
+El baseline principal es `logistica_sin_indicadores`. Los escenarios con precio LC se evalúan de forma independiente.
 
 ---
 
@@ -49,54 +56,63 @@ pip install -r requirements.txt
 
 El CSV **no está en el repositorio** (pesa 392 MB comprimido). Descargarlo de
 [Kaggle — wordsforthewise/lending-club](https://www.kaggle.com/datasets/wordsforthewise/lending-club)
-y colocar `accepted_2007_to_2018Q4.csv.gz` en `data/raw/`.
+y colocar `accepted_2007_to_2018Q4.csv.gz` en `data/raw/` o en `~/Downloads/`.
 
 No hace falta descomprimirlo: el pipeline lee el `.gz` directamente.
 
 Ver [`data/README.md`](data/README.md) para los detalles.
 
-### 3. Ejecutar el pipeline
+### 3. Ejecutar los pipelines
 
+**Baseline (Regresión logística):**
 ```bash
 python -m src.run_baseline
 ```
 
-El tiempo depende del equipo y del archivo de entrada. Si el archivo está en otra ruta:
-
+**Árbol de decisión:**
 ```bash
-python -m src.run_baseline --datos /ruta/a/accepted_2007_to_2018Q4.csv.gz
+python -m src.run_arbol
+```
+
+**Gradient Boosting:**
+```bash
+python -m src.run_boosting
 ```
 
 Para una corrida rápida con una muestra menor:
 
 ```bash
-python -m src.run_baseline --muestra 50000
+python -m src.run_boosting --muestra 50000
 ```
 
 ### 4. Salidas generadas
 
 ```
 outputs/
-  metrics.json                 métricas de los 4 escenarios × 3 conjuntos
+  metrics.json                 métricas de regresión logística
+  metrics_arbol.json           métricas del árbol de decisión
+  metrics_boosting.json        métricas de gradient boosting
   auditoria.json               cifras del dataset citadas en proposal.md
-  coeficientes_baseline.csv    las 20 variables más influyentes
-  decisiones_faltantes.csv     qué se hizo con cada variable y por qué
-  exclusiones_variables.csv    qué columna se excluyó y con qué motivo
+  coeficientes_baseline.csv    las 20 variables más influyentes del baseline
+  busqueda_arbol.csv           grilla de hiperparámetros del árbol
+  busqueda_boosting.csv        grilla de hiperparámetros de boosting
+  importancia_arbol.csv        importancia por permutación del árbol
+  importancia_boosting.csv     importancia por permutación de boosting
 reports/figures/
-  01..09_*.png                 las 9 visualizaciones del análisis
+  01..09_*.png                 visualizaciones del análisis exploratorio y baseline
+  10..13_*.png                 visualizaciones del árbol de decisión
+  14..16_*.png                 visualizaciones de gradient boosting
 ```
 
-### 5. Notebook
+### 5. Notebooks
 
 ```bash
-jupyter lab notebooks/01_exploracion_inicial.ipynb
+jupyter lab
 ```
 
-Ejecutar las celdas en orden. Las secciones 15–17 y el script utilizan
-`src/experimentos.py`: sin indicadores, con indicadores, con indicadores + LC
-y referencia mayoritaria. Comparten muestra y preparación. Los resultados
-se reproducen con el mismo archivo y versiones. El EDA conserva nombres en
-español; las matrices finales usan los nombres originales para compartir código.
+- `notebooks/01_exploracion_inicial.ipynb`: Carga, EDA, control de fuga y baseline.
+- `notebooks/03_arbol_decision.ipynb`: Árbol de decisión, poda y reglas.
+- `notebooks/04_gradient_boosting.ipynb`: Gradient Boosting, grilla de hiperparámetros e importancia por permutación.
 
 ---
 
@@ -111,13 +127,20 @@ Proyecto-ML-Grupo8/
 │   ├── README.md                    cómo obtener el dataset
 │   └── raw/                         el CSV va aquí (ignorado por git)
 ├── notebooks/
-│   └── 01_exploracion_inicial.ipynb exploración + baseline
+│   ├── 01_exploracion_inicial.ipynb exploración + baseline
+│   ├── 03_arbol_decision.ipynb      árbol de decisión
+│   └── 04_gradient_boosting.ipynb   gradient boosting
 ├── src/
 │   ├── config.py                    semilla, rutas, cortes y umbrales
 │   ├── data.py                      escaneo del archivo y muestreo
 │   ├── features.py                  control de leakage y preprocesamiento
-│   ├── train.py                     definición de los modelos
+│   ├── train.py                     constructores de modelos
 │   ├── evaluate.py                  métricas y selección de umbral
+│   ├── experimentos.py              escenarios compartidos
+│   ├── arbol.py                     lógica y búsqueda de árbol
+│   ├── run_arbol.py                 pipeline del árbol de decisión
+│   ├── boosting.py                  lógica y búsqueda de gradient boosting
+│   ├── run_boosting.py              pipeline de gradient boosting
 │   └── run_baseline.py              pipeline de extremo a extremo
 ├── outputs/                         métricas y tablas (regenerables)
 └── reports/figures/                 figuras (regenerables)
