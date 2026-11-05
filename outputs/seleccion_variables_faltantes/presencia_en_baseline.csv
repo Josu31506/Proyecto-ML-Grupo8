@@ -1,0 +1,24 @@
+﻿grupo,variable_original,nombre_espanol,incluida_en_baseline,motivo_si_esta_excluida
+A,dti_joint,ratio_deuda_ingreso_conjunto,False,Figura en exclusiones por faltantes hasta 2012
+A,annual_inc_joint,ingreso_anual_conjunto,False,Figura en exclusiones por faltantes hasta 2012
+A,verification_status_joint,verificacion_ingresos_conjunta,False,Figura en exclusiones por faltantes hasta 2012
+B,mths_since_last_record,meses_desde_ultimo_registro_publico,False,Figura en exclusiones por faltantes hasta 2012
+B,mths_since_recent_bc_dlq,meses_desde_ultima_mora_tarjeta,True,
+B,il_util,utilizacion_creditos_plazo_pct,False,Figura en exclusiones por faltantes hasta 2012
+B,mths_since_last_major_derog,meses_desde_ultima_mora_grave,True,
+C,mths_since_rcnt_il,meses_desde_credito_plazo_reciente,False,Figura en exclusiones por faltantes hasta 2012
+C,all_util,utilizacion_global_pct,False,Figura en exclusiones por faltantes hasta 2012
+C,total_cu_tl,cuentas_credito_uniones,False,Figura en exclusiones por faltantes hasta 2012
+C,open_acc_6m,creditos_abiertos_6m,False,Figura en exclusiones por faltantes hasta 2012
+C,inq_last_12m,consultas_credito_12m,False,Figura en exclusiones por faltantes hasta 2012
+C,open_rv_12m,creditos_revolventes_abiertos_12m,False,Figura en exclusiones por faltantes hasta 2012
+C,total_bal_il,saldo_total_creditos_plazo,False,Figura en exclusiones por faltantes hasta 2012
+C,open_il_12m,creditos_plazo_abiertos_12m,False,Figura en exclusiones por faltantes hasta 2012
+C,open_il_24m,creditos_plazo_abiertos_24m,False,Figura en exclusiones por faltantes hasta 2012
+C,inq_fi,consultas_financieras,False,Figura en exclusiones por faltantes hasta 2012
+C,max_bal_bc,saldo_maximo_tarjetas,False,Figura en exclusiones por faltantes hasta 2012
+C,open_act_il,creditos_plazo_activos,False,Figura en exclusiones por faltantes hasta 2012
+C,open_rv_24m,creditos_revolventes_abiertos_24m,False,Figura en exclusiones por faltantes hasta 2012
+D,mths_since_recent_revol_delinq,meses_desde_ultima_mora_revolvente,True,
+D,mths_since_last_delinq,meses_desde_ultima_mora,True,
+D,mths_since_recent_inq,meses_desde_ultima_consulta_credito,True,
