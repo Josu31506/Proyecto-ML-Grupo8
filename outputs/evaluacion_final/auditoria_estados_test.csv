@@ -1,0 +1,15 @@
+﻿anio,loan_status,prestamos
+2017,Current,261851
+2017,Fully Paid,130152
+2017,Charged Off,39148
+2017,Late (31-120 days),8004
+2017,In Grace Period,2911
+2017,Late (16-30 days),1492
+2017,Default,21
+2018,Current,427181
+2018,Fully Paid,47444
+2018,Charged Off,8867
+2018,Late (31-120 days),7221
+2018,In Grace Period,2919
+2018,Late (16-30 days),1603
+2018,Default,7

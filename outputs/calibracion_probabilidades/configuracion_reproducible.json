@@ -1,0 +1,74 @@
+{
+  "configuracion_base": {
+    "parametros": {
+      "regresion_logistica": {
+        "C": 0.03148911647956861,
+        "class_weight": null,
+        "tol": 8.66211944751964e-05
+      },
+      "svm_lineal": {
+        "C": 0.010053940194693016,
+        "class_weight": "balanced",
+        "tol": 0.0001
+      },
+      "gradient_boosting": {
+        "learning_rate": 0.05279087869966013,
+        "max_iter": 200,
+        "max_leaf_nodes": 25,
+        "min_samples_leaf": 31,
+        "l2_regularization": 9.149845592811953
+      }
+    },
+    "umbral_faltantes_entrenamiento_pct": 50,
+    "cortes": [
+      {
+        "base_hasta": 2011,
+        "calibracion": 2012,
+        "evaluacion": 2013
+      },
+      {
+        "base_hasta": 2012,
+        "calibracion": 2013,
+        "evaluacion": 2014
+      },
+      {
+        "base_hasta": 2013,
+        "calibracion": 2014,
+        "evaluacion": 2015
+      },
+      {
+        "base_hasta": 2014,
+        "calibracion": 2015,
+        "evaluacion": 2016
+      }
+    ],
+    "semilla": 42,
+    "maximo_anio_cargado": 2016,
+    "transformaciones_fit_solo_en_base": true,
+    "indicadores_faltantes": false,
+    "calibradores": {
+      "sigmoide": {
+        "implementacion": "Platt con LogisticRegression sobre logit(probabilidad) o margen SVM",
+        "C": 1000000.0,
+        "solver": "lbfgs",
+        "max_iter": 2000,
+        "random_state": 42
+      },
+      "isotonica": {
+        "out_of_bounds": "clip",
+        "y_min": 0,
+        "y_max": 1
+      }
+    },
+    "python": "3.14.0",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6"
+  },
+  "metodos_seleccionados": {
+    "regresion_logistica": "Sigmoide",
+    "svm_lineal": "Sigmoide",
+    "gradient_boosting": "Sigmoide"
+  },
+  "regla_seleccion": "Brier <= mínimo + 0.001 y ROC-AUC >= máximo - 0.005; elegir menor Log Loss.",
+  "test_consultado": false
+}
