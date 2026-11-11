@@ -33,3 +33,7 @@ outputs/**/predicciones*.csv
 
 # Intermedios de auditoría local
 /tmp/
+outputs/**/*.log
+outputs/**/probabilidades*.npz
+outputs/*parcial*.csv
+outputs/**/muestra_*descriptiva*.csv
