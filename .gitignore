@@ -16,3 +16,25 @@ Thumbs.db
 desktop.ini
 .idea/
 .vscode/
+
+# Tablas agregadas del avance (no datos personales)
+!outputs/avance/**/*.csv
+
+# Resultados tabulares agregados; nunca se versionan archivos por préstamo.
+!outputs/**/metricas*.csv
+!outputs/**/resumen*.csv
+!outputs/**/comparacion*.csv
+!outputs/**/auditoria*.csv
+!outputs/**/intervalos*.csv
+!outputs/**/coeficientes*.csv
+!outputs/**/importancia*.csv
+outputs/**/predicciones*.csv
+*.csv.gz
+
+# Intermedios de auditoría local
+/tmp/
+outputs/**/*.log
+outputs/**/probabilidades*.npz
+outputs/*parcial*.csv
+outputs/**/muestra_*descriptiva*.csv
+outputs/seleccion_variables_faltantes/experimento_calibracion/
