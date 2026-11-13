@@ -1,0 +1,19 @@
+[
+  {
+    "ROC_AUC_promedio":0.7130685227,
+    "ROC_AUC_desv_estandar":0.017579776,
+    "PR_AUC_promedio":0.3717018222,
+    "PR_AUC_desv_estandar":0.0608578712,
+    "predictoras_originales":59,
+    "columnas_modelo_despues_de_transformar":null,
+    "hiperparametros":{
+      "learning_rate":0.081184415,
+      "max_iter":182,
+      "max_leaf_nodes":31,
+      "min_samples_leaf":46,
+      "l2_regularization":0.3287747414,
+      "early_stopping":false,
+      "random_state":42
+    }
+  }
+]
