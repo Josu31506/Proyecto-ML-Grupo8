@@ -15,9 +15,16 @@ TAMANO_MUESTRA = 220_000
 ANIO_CORTE_VALIDACION = 2015   # entrenamiento: anio < 2015
 ANIO_CORTE_PRUEBA = 2017       # validacion: 2015-2016 ; prueba: anio >= 2017
 
-# Umbrales de faltantes (en % sobre entrenamiento).
-UMBRAL_FALTANTES = 95   # por encima de esto la predictora se excluye
-UMBRAL_REVISION = 12    # entre este y el anterior: imputar + indicador
+# Umbral histórico usado por los notebooks de muestra.
+UMBRAL_FALTANTES = 95
+# Umbral del flujo con todos los préstamos: conservar predictoras con menos
+# de 10% de faltantes en el primer entrenamiento temporal (hasta 2012).
+UMBRAL_FALTANTES_FINAL = 10
+# Umbral para generar indicadores numéricos en el modelado. Se crean para toda
+# predictora numérica con faltantes en el entrenamiento; se evalúa con/sin ellos.
+UMBRAL_INDICADOR = 0
+# Umbral histórico del tratamiento de faltantes en el notebook de muestra.
+UMBRAL_REVISION = 12
 
 # Etiquetas que definen el objetivo.
 ESTADOS_CONSERVADOS = ["Fully Paid", "Charged Off"]

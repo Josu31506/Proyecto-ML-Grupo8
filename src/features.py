@@ -141,6 +141,28 @@ def filtrar_por_faltantes(X_train, predictoras, umbral_excluir, umbral_revision)
     return conservadas, con_indicador, resumen
 
 
+def seleccionar_por_cobertura(X_referencia, predictoras, umbral_excluir=10):
+    """Retiene variables con menos del umbral de faltantes en la referencia.
+
+    La referencia debe contener solo los periodos autorizados para decidir la
+    lista de variables (en el proyecto, préstamos elegibles anteriores a 2017).
+    El corte es estricto: un porcentaje igual o mayor al límite se excluye.
+    """
+    if not 0 < umbral_excluir <= 100:
+        raise ValueError("El umbral de faltantes debe estar entre 0 y 100.")
+    inexistentes = [c for c in predictoras if c not in X_referencia.columns]
+    if inexistentes:
+        raise KeyError(f"Faltan predictoras en la tabla de referencia: {inexistentes}")
+    porcentaje = X_referencia[predictoras].isna().mean() * 100
+    conservadas = porcentaje[porcentaje < umbral_excluir].index.tolist()
+    excluidas = porcentaje[porcentaje >= umbral_excluir].index.tolist()
+    resumen = pd.DataFrame({
+        "porcentaje_faltante": porcentaje,
+        "decision": np.where(porcentaje < umbral_excluir, "conservar", "excluir"),
+    }).sort_values("porcentaje_faltante", ascending=False)
+    return conservadas, excluidas, resumen
+
+
 def construir_preprocesador(X_train, con_indicador):
     """Pipeline de sklearn: imputacion -> codificacion -> escalado.
 
