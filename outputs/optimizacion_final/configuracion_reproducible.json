@@ -1,0 +1,53 @@
+{
+  "umbral_faltantes_train_pct": 50,
+  "anios_validacion": [
+    2013,
+    2014,
+    2015,
+    2016
+  ],
+  "semilla": 42,
+  "sorteos_aleatorios": {
+    "regresion_logistica": 8,
+    "svm_lineal": 8,
+    "gradient_boosting": 10
+  },
+  "parametros_referencia": {
+    "regresion_logistica": {
+      "C": 0.13292918943162169,
+      "class_weight": null,
+      "tol": 0.0001
+    },
+    "svm_lineal": {
+      "C": 0.010053940194693016,
+      "class_weight": "balanced",
+      "tol": 0.0001
+    },
+    "gradient_boosting": {
+      "learning_rate": 0.08118441500491742,
+      "max_iter": 182,
+      "max_leaf_nodes": 31,
+      "min_samples_leaf": 46,
+      "l2_regularization": 0.32877474139911184
+    }
+  },
+  "mejores_parametros": {
+    "gradient_boosting": {
+      "l2_regularization": 9.149845592811953,
+      "learning_rate": 0.05279087869966013,
+      "max_iter": 200,
+      "max_leaf_nodes": 25,
+      "min_samples_leaf": 31
+    },
+    "regresion_logistica": {
+      "C": 0.03148911647956861,
+      "class_weight": null,
+      "tol": 8.66211944751964e-05
+    },
+    "svm_lineal": {
+      "C": 0.010053940194693016,
+      "class_weight": "balanced",
+      "tol": 0.0001
+    }
+  }
+}
