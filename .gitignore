@@ -37,3 +37,4 @@ outputs/**/*.log
 outputs/**/probabilidades*.npz
 outputs/*parcial*.csv
 outputs/**/muestra_*descriptiva*.csv
+outputs/seleccion_variables_faltantes/experimento_calibracion/
