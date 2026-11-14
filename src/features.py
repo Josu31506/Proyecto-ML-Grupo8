@@ -12,19 +12,19 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# Columnas que existen para construir el objetivo o partir por fecha,
-# pero que nunca entran como predictoras.
+
+
 AUXILIARES = ["loan_status", "default", "issue_d", "fecha_prestamo", "anio"]
 
 IDENTIFICADORES = ["id", "member_id", "url"]
 
-# Texto libre: fuera del alcance del primer modelo (no por ser inutil).
+
 TEXTO_LIBRE = ["desc", "title", "emp_title"]
 
-# Alta cardinalidad / codigo constante.
+
 DESCARTADAS_EXTRA = ["zip_code", "policy_code"]
 
-# Informacion generada DESPUES de otorgar el prestamo: leakage directo.
+
 POSTERIORES = [
     "pymnt_plan", "out_prncp", "out_prncp_inv", "total_pymnt", "total_pymnt_inv",
     "total_rec_prncp", "total_rec_int", "total_rec_late_fee", "recoveries",
@@ -35,12 +35,12 @@ POSTERIORES = [
 ]
 PREFIJOS_POSTERIORES = ("hardship_", "debt_settlement_", "settlement_")
 
-# Calificación, condiciones y financiación de LC: escenario adicional.
-# Confirmar su disponibilidad para el momento exacto de predicción.
+
+
 PRECIO_LC = ["int_rate", "grade", "sub_grade", "installment", "funded_amnt",
              "funded_amnt_inv", "initial_list_status", "disbursement_method"]
 
-# Fechas que se transforman en antiguedad (meses) antes de modelar.
+
 FECHAS_A_ANTIGUEDAD = ["earliest_cr_line", "sec_app_earliest_cr_line"]
 
 
@@ -173,8 +173,8 @@ def construir_preprocesador(X_train, con_indicador):
     numericas = X_train.select_dtypes(include="number").columns.tolist()
     categoricas = [c for c in X_train.columns if c not in numericas]
 
-    # Las numericas con muchos faltantes llevan ademas un indicador 0/1 que
-    # permite al modelo distinguir un valor observado de uno rellenado.
+
+
     num_con_ind = [c for c in numericas if c in con_indicador]
     num_sin_ind = [c for c in numericas if c not in con_indicador]
 

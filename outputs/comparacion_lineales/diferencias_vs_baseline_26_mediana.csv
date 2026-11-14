@@ -1,0 +1,11 @@
+modelo,conjunto_variables,tratamiento,delta_ROC_AUC_vs_26_mediana,cortes_ROC_mayor_base,delta_PR_AUC_vs_26_mediana,cortes_PR_mayor_base
+regresion_logistica,26_fijas,Mediana + indicadores,-1.7560560005125403e-05,1,-8.155940578544185e-05,1
+regresion_logistica,59_exploratorias,Mediana,0.01266790021424799,4,0.013992765474596797,4
+regresion_logistica,59_exploratorias,Mediana + indicadores,0.01277096253568602,4,0.013776605195107594,4
+regresion_logistica,seleccion_temporal,Mediana,0.0034565177726208762,1,0.003750862535010377,1
+regresion_logistica,seleccion_temporal,Mediana + indicadores,0.0034340444816208238,2,0.003677291500560148,2
+svm_lineal,26_fijas,Mediana + indicadores,-2.4260680194787554e-06,2,-6.582473304982128e-05,2
+svm_lineal,59_exploratorias,Mediana,0.012694886304396552,4,0.013748062899628238,4
+svm_lineal,59_exploratorias,Mediana + indicadores,0.012721442041910808,4,0.013374480487621382,4
+svm_lineal,seleccion_temporal,Mediana,0.003583200237608025,1,0.0037878491749743087,1
+svm_lineal,seleccion_temporal,Mediana + indicadores,0.0035805044949820952,3,0.0037426087661507346,3

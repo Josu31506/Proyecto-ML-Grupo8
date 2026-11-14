@@ -93,7 +93,7 @@ def _preparar_bloque(bloque, mapa_objetivo=MAPA_OBJETIVO):
     bloque["fecha_prestamo"] = bloque["issue_d"]
     bloque["anio"] = bloque["issue_d"].dt.year.astype("Int16")
     bloque["default"] = bloque["loan_status"].map(mapa_objetivo).astype("Int8")
-    # Cambia fechas de historial por antiguedad relativa al otorgamiento.
+
     for c in ["earliest_cr_line", "sec_app_earliest_cr_line"]:
         if c in bloque:
             start = bloque[c]
@@ -140,7 +140,7 @@ def cargar_desarrollo(ruta=None, ultimo_anio=2016, chunksize=100_000, verbose=Tr
 
 
 def preparar_X(datos, candidatas):
-    # En la lectura ya sustituimos estas fechas por antigüedades relativas.
+
     mapa_fechas = {
         "earliest_cr_line": "meses_desde_earliest_cr_line",
         "sec_app_earliest_cr_line": "meses_desde_sec_app_earliest_cr_line",
@@ -232,16 +232,19 @@ def puntuaciones_modelo(modelo, nombre, X):
     return np.asarray(modelo.decision_function(X), dtype="float64"), "margen"
 
 
-def ajustar_calibradores(scores_cal, y_cal, tipo_score):
-    """Platt/sigmoide e isotónica; ajusta calibradores solo con scores de calibración."""
+def ajustar_sigmoide(scores_cal, y_cal, tipo_score):
     scores_cal = np.asarray(scores_cal, dtype="float64")
-    if tipo_score == "probabilidad":
-        z = logit(np.clip(scores_cal, 1e-6, 1 - 1e-6))
-    else:
-        z = scores_cal
+    z = logit(np.clip(scores_cal, 1e-6, 1 - 1e-6)) if tipo_score == "probabilidad" else scores_cal
     sigmoid = LogisticRegression(C=1e6, solver="lbfgs", max_iter=2000,
                                   random_state=SEMILLA)
     sigmoid.fit(z.reshape(-1, 1), y_cal)
+    return sigmoid
+
+
+def ajustar_calibradores(scores_cal, y_cal, tipo_score):
+    """Platt/sigmoide e isotónica; ajusta calibradores solo con scores de calibración."""
+    scores_cal = np.asarray(scores_cal, dtype="float64")
+    sigmoid = ajustar_sigmoide(scores_cal, y_cal, tipo_score)
     isotonic = IsotonicRegression(out_of_bounds="clip", y_min=0, y_max=1)
     isotonic.fit(scores_cal, y_cal)
     return sigmoid, isotonic
@@ -422,3 +425,128 @@ def entrenar_final_y_evaluar(datos, candidatas, test, metodo_por_modelo):
         gc.collect()
     return pd.DataFrame(filas), pred
 
+
+
+from dataclasses import dataclass
+import importlib.metadata
+import platform
+
+
+def versiones_dependencias():
+    return {"python": platform.python_version(), **{p: importlib.metadata.version(p)
+            for p in ["numpy", "pandas", "scipy", "scikit-learn", "joblib"]}}
+
+
+def separar_periodos_finales(datos):
+    anios = datos["anio"]
+    return {"entrenamiento": anios.between(2007, 2015),
+            "calibracion": anios.eq(2016), "test": anios.between(2017, 2018)}
+
+
+def entrada_original(columnas):
+    inverso = {"meses_desde_earliest_cr_line": "earliest_cr_line",
+               "meses_desde_sec_app_earliest_cr_line": "sec_app_earliest_cr_line"}
+    entrada = [inverso.get(c, c) for c in columnas]
+    if any(c in inverso for c in columnas):
+        entrada.append("issue_d")
+    return list(dict.fromkeys(entrada))
+
+
+@dataclass
+class PipelineFinal:
+    nombre: str
+    variables: list
+    columnas_entrada: list
+    preprocesador: object
+    estimador: object
+    calibrador: object
+    tipo_score: str
+    metadatos: dict
+
+    def preparar_entrada(self, datos):
+        if datos.columns.duplicated().any():
+            raise ValueError("La entrada contiene nombres de columnas duplicados.")
+        ausentes = [c for c in self.columnas_entrada if c not in datos]
+        if ausentes:
+            raise ValueError(f"Faltan columnas de entrada: {ausentes}")
+        tabla = datos[self.columnas_entrada].copy()
+        for c in tabla:
+            if c in ["issue_d", "earliest_cr_line", "sec_app_earliest_cr_line", "term"]:
+                tabla[c] = tabla[c].astype("string")
+            elif c in self.metadatos["numericas_entrada"]:
+                tabla[c] = pd.to_numeric(tabla[c], errors="raise").astype("float64")
+            else:
+                tabla[c] = tabla[c].astype("string")
+        if "issue_d" not in tabla:
+            tabla["issue_d"] = pd.Series(pd.NA, index=tabla.index, dtype="string")
+        tabla["loan_status"] = pd.Series(pd.NA, index=tabla.index, dtype="string")
+        return preparar_X(_preparar_bloque(tabla), self.columnas_entrada_sin_auxiliares())
+
+    def columnas_entrada_sin_auxiliares(self):
+        return [c for c in self.columnas_entrada if c != "issue_d"]
+
+    def _probabilidades(self, X):
+        ausentes = [c for c in self.variables if c not in X]
+        if ausentes:
+            raise ValueError(f"Faltan variables preparadas: {ausentes}")
+        transformadas = self.preprocesador.transform(X[self.variables])
+        if self.nombre == "gradient_boosting":
+            transformadas = np.asarray(transformadas, dtype=np.float32)
+        scores, tipo = puntuaciones_modelo(self.estimador, self.nombre, transformadas)
+        if tipo != self.tipo_score:
+            raise ValueError("Tipo de puntuación incompatible con el calibrador guardado.")
+        z = logit(np.clip(scores, 1e-6, 1 - 1e-6)) if tipo == "probabilidad" else scores
+        p = self.calibrador.predict_proba(z.reshape(-1, 1))[:, 1]
+        return np.clip(p, 1e-12, 1 - 1e-12)
+
+    def predict_proba(self, datos):
+        p = self._probabilidades(self.preparar_entrada(datos))
+        return np.column_stack([1 - p, p])
+
+    def predecir_preparado(self, datos):
+        return self._probabilidades(datos)
+
+
+def entrenar_pipelines_finales(datos, candidatas, modelos=None):
+    modelos = list(PARAMETROS) if modelos is None else list(modelos)
+    periodos = separar_periodos_finales(datos)
+    base = datos.loc[periodos["entrenamiento"]]
+    cal = datos.loc[periodos["calibracion"]]
+    if base.empty or cal.empty:
+        raise ValueError("Se requieren préstamos de base 2007–2015 y calibración 2016.")
+    X_base, X_cal = preparar_X(base, candidatas), preparar_X(cal, candidatas)
+    y_base = base["default"].to_numpy(dtype="int8")
+    y_cal = cal["default"].to_numpy(dtype="int8")
+    if set(np.unique(y_base)) != {0, 1} or set(np.unique(y_cal)) != {0, 1}:
+        raise ValueError("Entrenamiento y calibración deben contener las dos clases.")
+    faltantes = X_base.isna().mean() * 100
+    seleccionadas = [c for c in X_base if faltantes[c] <= UMBRAL_FALTANTES and X_base[c].notna().any()]
+    if not seleccionadas:
+        raise ValueError("No quedan variables con datos suficientes en entrenamiento.")
+    for nombre in modelos:
+        denso = nombre == "gradient_boosting"
+        pre = _crear_preprocesador(X_base[seleccionadas], denso)
+        A = pre.fit_transform(X_base[seleccionadas], y_base)
+        B = pre.transform(X_cal[seleccionadas])
+        if denso:
+            A, B = [np.asarray(x, dtype=np.float32) for x in (A, B)]
+        modelo = crear_modelo(nombre)
+        modelo.fit(A, y_base)
+        scores_cal, tipo = puntuaciones_modelo(modelo, nombre, B)
+        sigmoid = ajustar_sigmoide(scores_cal, y_cal, tipo)
+        entrada = entrada_original(seleccionadas)
+        numericas = [c for c in entrada if c in X_base and pd.api.types.is_numeric_dtype(X_base[c])]
+        metadatos = {"formato": 1, "modelo": nombre, "semilla": SEMILLA,
+                     "parametros": modelo.get_params(), "metodo": "Sigmoide",
+                     "calibrador": sigmoid.get_params(), "versiones": versiones_dependencias(),
+                     "base": [2007, 2015], "calibracion": 2016, "test": [2017, 2018],
+                     "umbral_faltantes_pct": UMBRAL_FALTANTES,
+                     "faltantes_base_pct": {c: float(faltantes[c]) for c in X_base},
+                     "variables": list(seleccionadas), "columnas_entrada": entrada,
+                     "numericas_entrada": numericas,
+                     "columnas_transformadas": pre.get_feature_names_out().tolist(),
+                     "filas_base": len(base), "filas_calibracion": len(cal),
+                     "limitacion": "Solo estados finales observados; sin fecha individual de resolución."}
+        yield PipelineFinal(nombre, list(seleccionadas), entrada, pre, modelo, sigmoid, tipo, metadatos)
+        del A, B, modelo, pre, sigmoid, scores_cal
+        gc.collect()
