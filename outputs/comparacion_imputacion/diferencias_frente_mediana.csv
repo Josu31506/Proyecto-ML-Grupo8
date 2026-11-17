@@ -1,0 +1,5 @@
+conjunto,metodo_comparado,delta_ROC_AUC_promedio,cortes_ROC_AUC_mejor,delta_PR_AUC_promedio,cortes_PR_AUC_mejor
+26 fijas,Mediana + indicadores,-9.95113849719953e-05,2,-2.8884210810764532e-05,2
+26 fijas,NaN nativos,3.4471089530807575e-05,3,-0.00016453907382960042,1
+Selección temporal,Mediana + indicadores,1.7868348817562385e-05,3,0.00013845660305676633,3
+Selección temporal,NaN nativos,0.00013148977956323193,3,-5.037619188413833e-05,2

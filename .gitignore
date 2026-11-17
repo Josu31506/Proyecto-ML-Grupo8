@@ -1,40 +1,56 @@
-data/raw/
-*.csv
-*.csv.gz
-!data/Lending Club Data Dictionary Approved - ES.csv
-!outputs/*.csv
-# Entornos
+# Datos originales y entradas por préstamo
+/data/raw/
+/data/processed/
+/accepted_*.csv
+/accepted_*.csv.gz
+/rejected_*.csv
+/rejected_*.csv.gz
+/data/accepted_*.csv*
+/data/rejected_*.csv*
+/nuevos_prestamos*.csv
+
+# Artefactos entrenados locales
+/models/*
+!/models/.gitkeep
+*.joblib
+*.pkl
+*.pickle
+
+# Predicciones individuales e intermedios: conservar métricas agregadas CSV/JSON
+/outputs/**/predicciones*.csv
+/outputs/**/predicciones*.csv.gz
+/outputs/**/probabilidades*.npz
+/outputs/*parcial*.csv
+/outputs/**/muestra_*descriptiva*.csv
+/outputs/predicciones/
+/outputs/reproducciones/
+/outputs/pipeline_final/
+
+# Entornos y cachés
 .venv/
 venv/
+env/
 __pycache__/
 *.py[cod]
-# Notebooks
+.pytest_cache/
 .ipynb_checkpoints/
-# Sistema
+
+# Temporales y configuración privada
+/tmp/
+*.log
+*.tmp
+*.temp
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Sistema y editor
 .DS_Store
 Thumbs.db
 desktop.ini
 .idea/
 .vscode/
-
-# Tablas agregadas del avance (no datos personales)
-!outputs/avance/**/*.csv
-
-# Resultados tabulares agregados; nunca se versionan archivos por préstamo.
-!outputs/**/metricas*.csv
-!outputs/**/resumen*.csv
-!outputs/**/comparacion*.csv
-!outputs/**/auditoria*.csv
-!outputs/**/intervalos*.csv
-!outputs/**/coeficientes*.csv
-!outputs/**/importancia*.csv
-outputs/**/predicciones*.csv
-*.csv.gz
-
-# Intermedios de auditoría local
-/tmp/
-outputs/**/*.log
-outputs/**/probabilidades*.npz
-outputs/*parcial*.csv
-outputs/**/muestra_*descriptiva*.csv
-outputs/seleccion_variables_faltantes/experimento_calibracion/

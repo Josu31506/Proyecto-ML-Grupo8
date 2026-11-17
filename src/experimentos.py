@@ -14,10 +14,10 @@ ESCENARIOS = [
 ]
 
 
-def preparar_experimentos(particiones, columnas_vacias):
+def preparar_experimentos(particiones, columnas_vacias, escenarios=None):
     """Aprende la preparación solo con entrenamiento; mantiene filas e índices."""
     preparados = {}
-    for nombre, precio, indicadores in ESCENARIOS:
+    for nombre, precio, indicadores in (ESCENARIOS if escenarios is None else escenarios):
         candidatas = ft.seleccionar_predictoras(
             particiones['entrenamiento'], columnas_vacias, incluir_precio_lc=precio)
         originales = {

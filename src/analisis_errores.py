@@ -1,8 +1,3 @@
-"""Analisis de errores por segmentos para las predicciones finales guardadas.
-
-El analisis usa un umbral fijo de 0.5, sin ajustarlo con el conjunto de prueba.
-Solo carga del CSV las columnas de segmentacion y el estado del prestamo.
-"""
 from pathlib import Path
 import argparse
 
@@ -18,12 +13,7 @@ UMBRAL_FIJO = 0.5
 
 
 def cargar_segmentos_test(predicciones, ruta=None, chunksize=100_000):
-    """Carga term, ingreso y tipo de solicitud, validando el orden de filas.
 
-    El flujo final concatena los préstamos resueltos en el orden del CSV. Se
-    reconstruye ese mismo orden y se compara año y etiqueta antes de asociar
-    metadatos a las probabilidades; así no se cruzan filas silenciosamente.
-    """
     ruta = localizar_datos(ruta) if ruta is not None else localizar_datos()
     columnas = ["issue_d", "loan_status", "term", "annual_inc", "application_type"]
     tipos = {c: "string" for c in columnas if c != "annual_inc"}

@@ -1,0 +1,4 @@
+﻿modelo,configuracion,tipo_configuracion,hiperparametros,ROC_AUC_promedio,ROC_AUC_desviacion,PR_AUC_promedio,PR_AUC_desviacion,variables_promedio,segundos_totales,advertencias_convergencia
+gradient_boosting,8,aleatoria,"{""l2_regularization"": 9.149845592811953, ""learning_rate"": 0.05279087869966013, ""max_iter"": 200, ""max_leaf_nodes"": 25, ""min_samples_leaf"": 31}",0.710493213914575,0.024566467954720565,0.3695299381620855,0.07437052905139198,51.5,88.02159190000157,0
+regresion_logistica,2,aleatoria,"{""C"": 0.03148911647956861, ""class_weight"": null, ""tol"": 8.66211944751964e-05}",0.7023513691487477,0.02370610846865199,0.3594817911247265,0.07089267628819139,51.5,173.80181230000107,0
+svm_lineal,1,anterior,"{""C"": 0.010053940194693016, ""class_weight"": ""balanced"", ""tol"": 0.0001}",0.7022123854753927,0.02413998512949393,0.35856972680374366,0.07107506653976685,51.5,174.06006229999986,0

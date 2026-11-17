@@ -1,0 +1,7 @@
+modelo,conjunto_variables,delta_ROC_AUC_indicadores,cortes_ROC_mejora,delta_PR_AUC_indicadores,cortes_PR_mejora
+regresion_logistica,26_fijas,-1.7560560005125403e-05,1,-8.155940578544185e-05,1
+regresion_logistica,59_exploratorias,0.00010306232143802996,2,-0.00021616027948920258,2
+regresion_logistica,seleccion_temporal,-2.2473291000052464e-05,1,-7.357103445022883e-05,1
+svm_lineal,26_fijas,-2.4260680194787554e-06,2,-6.582473304982128e-05,2
+svm_lineal,59_exploratorias,2.655573751425555e-05,3,-0.0003735824120068565,2
+svm_lineal,seleccion_temporal,-2.6957426259299755e-06,2,-4.524040882357416e-05,2

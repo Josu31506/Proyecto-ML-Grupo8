@@ -45,7 +45,7 @@ El historial del repositorio conserva: clase mayoritaria, regresión logística,
 
 ## 9. Búsqueda de hiperparámetros
 
-`09g_optimizacion_final.ipynb` probó configuraciones aleatorias en los cuatro cortes, manteniendo el test fuera de la búsqueda final. La mejor configuración disponible dentro de los espacios explorados obtuvo estos promedios no calibrados:
+`08_optimizacion_final.ipynb` probó configuraciones aleatorias en los cuatro cortes, manteniendo el test fuera de la búsqueda final. La mejor configuración disponible dentro de los espacios explorados obtuvo estos promedios no calibrados:
 
 | Modelo | ROC-AUC promedio | Desv. ROC-AUC | AP promedio | Desv. AP | Variables originales promedio |
 |---|---:|---:|---:|---:|---:|
@@ -97,9 +97,9 @@ Confirmar la fecha de corte del conjunto y evaluar maduración por plazo; si se 
 
 1. Obtener el CSV descrito en `data/README.md` y colocarlo en `data/raw/` o en la ruta que acepte el script.
 2. Instalar `requirements.txt` en un entorno compatible. En esta revisión se comprobaron imports en Python 3.14.0; no se verificó instalación limpia.
-3. Ejecutar notebooks 01, 04, 07–11 según las rutas y archivos guardados; 09g documenta la búsqueda de parámetros.
-4. El análisis de errores requiere el CSV y `outputs/evaluacion_final/predicciones_test.csv.gz`; ejecuta `python -m src.analisis_errores` o corre las celdas de `12_analisis_errores.ipynb`.
-5. No se debe confundir el script de baseline `python -m src.run_baseline` con la reproducción del flujo calibrado final; actualmente no existe un comando único `src.run_final.py` que reconstruya todas las etapas finales.
+3. Ejecutar los diez notebooks oficiales en el orden del README; el notebook 08 documenta la optimización definitiva, el 09 la calibración y el 10 la evaluación y los errores.
+4. El análisis de errores requiere el CSV y `outputs/evaluacion_final/predicciones_test.csv.gz`; ejecuta `python -m src.analisis_errores` o corre las celdas de `10_evaluacion_final.ipynb`.
+5. El flujo final se ejecuta con `python -m src.run_final --modo entrenar`, y tiene modos independientes de evaluación y predicción. Reutiliza la configuración definitiva sin repetir búsquedas. Los artefactos locales ya están entrenados; la reproducción real de las métricas históricas mediante una nueva evaluación sigue sin confirmarse. El script de baseline `python -m src.run_baseline` corresponde a la etapa inicial.
 
 ## Artefactos comprobados
 
@@ -108,4 +108,3 @@ Confirmar la fecha de corte del conjunto y evaluar maduración por plazo; si se 
 - `outputs/evaluacion_final/metricas_finales_test.csv`
 - `outputs/evaluacion_final/intervalos_bootstrap_95.csv`
 - `outputs/analisis_errores/metricas_globales.csv`
-- `reports/auditoria_integracion.md`

@@ -1,0 +1,20 @@
+{
+  "semilla": 42,
+  "bloque": 50000,
+  "filas_muestra": 220003,
+  "filas_fuente": 2260701,
+  "fuente": "accepted_2007_to_2018Q4.csv.gz",
+  "huella_identidades_fuente": "ba805e0cc4f7160fd1fcc2568856071eaf41bf624ab6d7fb50fb19c5d231e7a2",
+  "huellas_ids_por_particion": {
+    "entrenamiento": "c2f7c64a58e31d9643c01312f5bc90c437f4ba7a2516d7fb104c1782a2745a02",
+    "validacion": "df88a608dbc23fba35b6cdaf2d79a02ffba4aa824a0adc1c45fbaf69444c09fb",
+    "prueba": "d4460f1e96826d17e55ce6ddc368f884b0141e92036889a2b4f201b891d670b6"
+  },
+  "particiones": {
+    "entrenamiento": 73701,
+    "validacion": 109382,
+    "prueba": 36920
+  },
+  "verificacion": "reconstrucción independiente por IDs, estados y fechas; filas y prevalencias de referencias",
+  "limite": "Las métricas históricas no guardan IDs ni hash de la fuente. La coincidencia histórica se sustenta en la receta y sus comprobaciones; la nueva comparación recalcula modelos sobre los mismos objetos."
+}

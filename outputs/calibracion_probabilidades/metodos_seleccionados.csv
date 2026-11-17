@@ -1,0 +1,4 @@
+﻿modelo,metodo_seleccionado,motivo,ROC_AUC,PR_AUC,Brier_Score,Log_Loss
+regresion_logistica,Sigmoide,"Brier a no más de 0.001 del mínimo y ROC-AUC a no más de 0.005 del máximo; entre ellos, menor Log Loss.",0.6916423426438965,0.345387723574747,0.1441008825926604,0.4548075526292182
+svm_lineal,Sigmoide,"Brier a no más de 0.001 del mínimo y ROC-AUC a no más de 0.005 del máximo; entre ellos, menor Log Loss.",0.6914060944249506,0.3444552735426959,0.1441406937652462,0.4547317345324618
+gradient_boosting,Sigmoide,"Brier a no más de 0.001 del mínimo y ROC-AUC a no más de 0.005 del máximo; entre ellos, menor Log Loss.",0.6973643280395245,0.3519834535402011,0.143128675540505,0.4509715844918651

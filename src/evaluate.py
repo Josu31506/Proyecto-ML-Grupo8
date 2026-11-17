@@ -24,7 +24,7 @@ def estadistico_ks(y_true, y_score):
 def elegir_umbral(y_true, y_score, criterio="f1"):
     """Elige el umbral de corte usando SOLO validacion."""
     precision, recall, umbrales = precision_recall_curve(y_true, y_score)
-    # precision_recall_curve devuelve un punto mas que umbrales.
+
     precision, recall = precision[:-1], recall[:-1]
     if criterio == "f1":
         with np.errstate(divide="ignore", invalid="ignore"):

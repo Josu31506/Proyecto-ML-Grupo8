@@ -62,8 +62,8 @@ def ejecutar(config, metodo, carpeta):
         del partes, bloque
     segundos = time.perf_counter() - inicio
 
-    # Estas comprobaciones ocurren después del cronómetro: no forman parte
-    # del tiempo de carga que estamos comparando.
+
+
     assert filas_fuente == config["filas_fuente_esperadas"]
     resultado = {
         "metodo": metodo,

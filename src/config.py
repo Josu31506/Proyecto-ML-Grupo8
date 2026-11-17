@@ -7,26 +7,26 @@ from pathlib import Path
 
 SEMILLA = 42
 
-# Tamano de bloque para leer el CSV por partes y tamano objetivo de la muestra.
+
 TAMANO_BLOQUE = 50_000
 TAMANO_MUESTRA = 220_000
 
-# Cortes temporales por anio de otorgamiento (issue_d).
-ANIO_CORTE_VALIDACION = 2015   # entrenamiento: anio < 2015
-ANIO_CORTE_PRUEBA = 2017       # validacion: 2015-2016 ; prueba: anio >= 2017
 
-# Umbral histórico usado por los notebooks de muestra.
+ANIO_CORTE_VALIDACION = 2015
+ANIO_CORTE_PRUEBA = 2017
+
+
 UMBRAL_FALTANTES = 95
-# Umbral del flujo con todos los préstamos: conservar predictoras con menos
-# de 10% de faltantes en el primer entrenamiento temporal (hasta 2012).
+
+
 UMBRAL_FALTANTES_FINAL = 10
-# Umbral para generar indicadores numéricos en el modelado. Se crean para toda
-# predictora numérica con faltantes en el entrenamiento; se evalúa con/sin ellos.
+
+
 UMBRAL_INDICADOR = 0
-# Umbral histórico del tratamiento de faltantes en el notebook de muestra.
+
 UMBRAL_REVISION = 12
 
-# Etiquetas que definen el objetivo.
+
 ESTADOS_CONSERVADOS = ["Fully Paid", "Charged Off"]
 MAPA_OBJETIVO = {"Fully Paid": 0, "Charged Off": 1}
 
@@ -36,7 +36,7 @@ DIR_REPORTES = RAIZ / "reports"
 DIR_FIGURAS = DIR_REPORTES / "figures"
 DIR_SALIDAS = RAIZ / "outputs"
 
-# Nombres aceptados del archivo fuente, en orden de preferencia.
+
 NOMBRES_ARCHIVO = [
     "accepted_2007_to_2018Q4.csv.gz",
     "accepted_2007_to_2018Q4.csv",
