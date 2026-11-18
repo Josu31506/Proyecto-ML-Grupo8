@@ -14,7 +14,7 @@ El archivo original contiene 2,260,701 registros y 151 columnas. La población b
 
 La configuración final admite variables con hasta 50% de faltantes en su entrenamiento, imputa numéricas con su mediana y categóricas con «Sin información», sin indicadores numéricos adicionales. El ajuste definitivo utiliza 826,604 préstamos de 2007–2015 y reserva 293,095 de 2016 para calibración sigmoide. En los 225,611 préstamos elegibles de 2017–2018, **HistGradientBoosting obtuvo el mejor desempeño de los tres modelos finales**: ROC-AUC 0.70321, Average Precision 0.37791, Brier 0.15364 y Log Loss 0.47428. Estos resultados corresponden a la evaluación histórica del notebook 10.
 
-El resultado es útil como comparación académica de estimadores de riesgo, pero no valida una política de concesión de crédito. Solo se observan préstamos aceptados con desenlace final seleccionado; el seguimiento de los préstamos recientes es desigual y el test ya había sido consultado en etapas históricas. Además, con umbral descriptivo 0.5, el modelo principal detecta solo 13.06% de los incumplimientos. El pipeline reciente ya guardó tres modelos locales, aunque todavía falta comprobar que una nueva evaluación con esos artefactos reproduzca las métricas históricas. No se afirma preparación para decisiones crediticias reales.
+El resultado es útil como comparación académica de estimadores de riesgo, pero no valida una política de concesión de crédito. Solo se observan préstamos aceptados con desenlace final seleccionado; el seguimiento de los préstamos recientes es desigual y el test ya había sido consultado en etapas históricas. Además, con umbral descriptivo 0.5, el modelo principal detecta solo 13.06% de los incumplimientos. La evaluación local posterior de los tres modelos serializados reprodujo las métricas históricas a los seis decimales mostrados; se contrastaron sus CSV guardados, sin repetir la evaluación en esta revisión. No se afirma preparación para decisiones crediticias reales.
 
 ## 2. Descripción del problema
 
@@ -525,7 +525,11 @@ Fuente: [intervalos_bootstrap_95.csv](../outputs/evaluacion_final/intervalos_boo
 
 ### 10.5. Resultado histórico frente al pipeline reciente
 
-Las métricas anteriores provienen del notebook 10 y sus outputs históricos. El pipeline de [src/run_final.py](../src/run_final.py) ya entrenó y guardó localmente tres archivos `.joblib` y un `manifest.json`, con 826,604 observaciones para el modelo base y 293,095 para calibración. **Todavía no se ha confirmado una nueva reproducción de test con esos artefactos.** La existencia de objetos serializados, sus metadatos y las pruebas sintéticas no demuestra igualdad de predicciones o de métricas con la ejecución histórica. Esa verificación permanece pendiente y no se simula en el informe.
+Las métricas anteriores provienen del notebook 10 y sus outputs históricos. El pipeline de [src/run_final.py](../src/run_final.py) entrenó y guardó localmente tres archivos `.joblib` y un `manifest.json`, con 826,604 observaciones para el modelo base y 293,095 para calibración. **La evaluación real posterior de esos modelos sobre los 225,611 préstamos elegibles de 2017–2018 confirmó la reproducción de las métricas históricas a los seis decimales presentados.** Se ejecutó localmente el comando `python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test`, con calibración sigmoide y prevalencia 0.212822.
+
+La salida persistente está en `outputs/pipeline_final/test_20261117_195412_266845/metricas.csv` y `alcance.json`, archivos locales excluidos de Git. La revisión comparó las cuatro métricas, prevalencia y n de cada modelo con [metricas_finales_test.csv](../outputs/evaluacion_final/metricas_finales_test.csv): los 18 campos numéricos coinciden en ambos CSV. La tabla original conserva su redondeo a cinco decimales; a seis, los ROC-AUC son 0.692591, 0.691777 y 0.703213, y las AP 0.360386, 0.359876 y 0.377905, para logística, SVM y HistGradientBoosting, respectivamente.
+
+Esto acredita reproducibilidad de las métricas agregadas mediante los artefactos guardados; no demuestra identidad de todas las predicciones individuales ni constituye un test nuevo e independiente del desarrollo histórico. Las 19 pruebas sintéticas también finalizaron correctamente según la consola aportada por el usuario (`Ran 19 tests in 6.795s`, `OK`), evidencia local distinta de la evaluación real y no atribuida a GitHub Actions. Durante este cierre documental no se repitieron entrenamiento, pruebas ni evaluación de modelos.
 
 ## 11. Interpretación
 
@@ -652,13 +656,13 @@ El test fue observado en experimentos históricos. Aunque la búsqueda posterior
 
 La calibración mejora resultados agregados en periodos concretos; no garantiza coincidencia por individuo, segmento o año futuro. Los intervalos bootstrap no cubren todas las fuentes de incertidumbre. En la sensibilidad, los identificadores vacíos impiden interpretar el agrupamiento por prestatario como verificado. Tampoco se investigan aquí duplicados personales sin un identificador fiable.
 
-Finalmente, se conservan diferencias de procedencia entre outputs preliminares, muestras y etapas completas. El informe identifica esas diferencias sin alterar los resultados originales. El pipeline serializado es un avance de reproducción, pero falta comparar sus predicciones reales de test con la referencia histórica. Las pruebas sintéticas verifican contratos de software, no rendimiento crediticio ni igualdad numérica completa con los experimentos originales.
+Finalmente, se conservan diferencias de procedencia entre outputs preliminares, muestras y etapas completas. El informe identifica esas diferencias sin alterar los resultados originales. La evaluación real de los modelos serializados confirmó las métricas históricas, pero esa coincidencia no elimina los sesgos de selección, la falta de fechas individuales de maduración ni la consulta previa del test. Las pruebas sintéticas verifican contratos de software y son evidencia distinta de la reproducción de métricas reales; ninguna de ellas establece por sí sola validez crediticia operativa o prospectiva.
 
 ## 14. Trabajo futuro
 
 Las siguientes actividades **no forman parte de resultados ejecutados en este informe**:
 
-1. **Verificar paridad del pipeline reciente.** Comparar, en una ejecución expresamente autorizada y sin reoptimizar, las predicciones de los artefactos serializados con las históricas; registrar datos, versiones, orden de filas y tolerancias antes de comparar métricas.
+1. **Consolidar la trazabilidad de la validación realizada.** Conservar los registros completos de consola de las pruebas y la evaluación, junto con versiones, huellas de datos y artefactos. La coincidencia de métricas ya se comprobó; una eventual auditoría de identidad de predicciones fila a fila requeriría su propio protocolo y no se presenta como ejecutada.
 2. **Auditar maduración y fechas de etiqueta.** Definir una fecha de corte verificable y un horizonte predictivo uniforme, o una estrategia de seguimiento que contemple préstamos sin desenlace. Rehacer una validación temporal con etiquetas disponibles en cada fecha resolvería una limitación distinta de separar por originación.
 3. **Obtener una evaluación independiente.** Utilizar periodos o fuentes no consultados, con alcance de población documentado. La comprobación prospectiva debe conservar decisiones metodológicas fijadas antes de observar resultados.
 4. **Revisar la elección entre 50% y 75%.** Contrastar el pequeño beneficio medio y su concentración temporal con cobertura, estabilidad de variables y costos de imputación. No basta con afirmar que el umbral conservador ya fue el ganador.
@@ -736,6 +740,8 @@ Este modo comprueba que la configuración de código coincida con las configurac
 
 La salida contiene `regresion_logistica.joblib`, `svm_lineal.joblib`, `gradient_boosting.joblib` y `manifest.json`. Cada objeto guarda selección, imputación, codificación, escalado, estimador y calibrador, de modo que inferencia no vuelva a calcular medianas. El manifiesto incluye parámetros, periodos, versiones y huellas SHA-256. Los `.joblib` no se incluyen en GitHub y deben regenerarse localmente o suministrarse por un canal controlado. La carga comprueba versiones de scikit-learn, NumPy, pandas, SciPy y joblib; no basta con renombrar un archivo de modelo incompatible.
 
+El entrenamiento indicado ya finalizó satisfactoriamente y sus tres artefactos se utilizaron en la evaluación local documentada en 10.5. El campo `test_evaluado_en_esta_ejecucion: false` del manifiesto describe el modo de entrenamiento, que no evalúa test automáticamente; el modo de evaluación posterior genera su propia carpeta de resultados sin reescribir ese manifiesto.
+
 ### 15.4. Evaluar explícitamente
 
 ```powershell
@@ -744,7 +750,7 @@ python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepte
 
 El programa exige modelos y datos explícitos y requiere `--confirmar-test` para test. Filtra el periodo y los estados elegibles, conserva el preprocesamiento aprendido y crea una carpeta nueva en `outputs/pipeline_final/` salvo salida especificada. Allí guarda métricas, predicciones comprimidas, auditoría de estados, clasificación a 0.5, errores por segmento, figuras y una declaración de alcance. No modifica la configuración seleccionada ni ejecuta otra búsqueda.
 
-El modo `--conjunto validacion` utiliza 2016, pero ese año ya ajustó la calibración definitiva; su evaluación es descriptiva, no validación independiente de ese calibrador. El comando de test se documenta para una ejecución posterior deliberada: **no fue ejecutado durante esta corrección del informe** y no se afirma paridad con los resultados históricos.
+El modo `--conjunto validacion` utiliza 2016, pero ese año ya ajustó la calibración definitiva; su evaluación es descriptiva, no validación independiente de ese calibrador. El comando de test mostrado ya se ejecutó localmente y sus métricas guardadas coinciden con la referencia histórica, como se documenta en 10.5. Se conserva para reproducir el procedimiento de forma deliberada; no se volvió a ejecutar durante esta actualización documental ni debe usarse para seleccionar modelos.
 
 ### 15.5. Predecir préstamos nuevos
 
@@ -758,7 +764,9 @@ El argumento `--salida` permite señalar un archivo nuevo en este modo. No se so
 
 ### 15.6. Pruebas y alcance de reproducción
 
-El comando de pruebas se presenta en 15.1, antes del entrenamiento. Las pruebas de [tests/](../tests/) comprueban preparación e integración y el comportamiento del pipeline con datos sintéticos. Son distintas de reproducir todas las búsquedas, regenerar cada figura y evaluar los datos reales. Esta revisión documental comprobó fuentes, enlaces, figuras y conservación de archivos; no ejecutó modelos ni usa la existencia de pruebas para atribuir una validación crediticia inexistente.
+El comando de pruebas se presenta en 15.1, antes del entrenamiento. Las pruebas de [tests/](../tests/) comprueban preparación e integración y el comportamiento del pipeline con datos sintéticos. El usuario aportó el resultado local `Ran 19 tests in 6.795s`, seguido de `OK`: las 19 pruebas finalizaron satisfactoriamente. No se atribuye esa ejecución a GitHub Actions ni se afirma que sus datos sintéticos midan desempeño real de Lending Club.
+
+La evaluación real del pipeline sí dispone de CSV y registro de alcance locales, contrastados con los outputs históricos en 10.5. Se verificó la coincidencia de las métricas de los tres modelos sobre 225,611 observaciones, con calibración sigmoide; las imágenes y resultados históricos permanecen intactos. Esta revisión documental no repitió entrenamientos, pruebas ni evaluación. La reproducción numérica es distinta de reconstruir todas las búsquedas y figuras y no convierte el test histórico en una validación prospectiva independiente.
 
 ---
 
