@@ -1,0 +1,7 @@
+modelo,variables,ROC_AUC,tipo
+regresion_logistica,26 fijas,0.6927,referencia anterior
+regresion_logistica,59 exploratorias,0.7054,"exploratoria, selección hasta 2016"
+svm_lineal,26 fijas,0.6926,referencia anterior
+svm_lineal,59 exploratorias,0.7052,"exploratoria, selección hasta 2016"
+gradient_boosting,26 fijas,0.7,referencia anterior
+gradient_boosting,59 exploratorias,0.7131,"exploratoria, selección hasta 2016"

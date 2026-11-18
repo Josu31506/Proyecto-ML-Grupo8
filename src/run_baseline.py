@@ -39,7 +39,7 @@ def _guardar(fig, nombre):
 
 
 
-# Visualizaciones
+
 def fig_distribucion_objetivo(muestra):
     conteo = muestra["default"].value_counts().reindex([0, 1], fill_value=0)
     fig, eje = plt.subplots(figsize=(6, 4))
@@ -226,7 +226,7 @@ def fig_coeficientes(tabla):
 
 
 
-# Pipeline principal
+
 def main(ruta_datos=None, tamano_muestra=TAMANO_MUESTRA):
     inicio = time.time()
     ruta = localizar_datos(ruta_datos)

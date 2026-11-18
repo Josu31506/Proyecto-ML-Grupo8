@@ -1,0 +1,2 @@
+variables_adicionales_distintas,delta_ROC_AUC_promedio_GB,delta_PR_AUC_promedio_GB,anios_ROC_AUC_mejora,anios_PR_AUC_mejora,variables_con_aumento_temporal_posible,recomendacion
+37,0.003078045132578977,0.003440420099089389,1,3,31,50% provisional; 75% alternativa si la cobertura futura coincide con los años recientes

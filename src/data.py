@@ -11,10 +11,10 @@ from .config import (ESTADOS_CONSERVADOS, MAPA_OBJETIVO, SEMILLA,
 
 COLUMNAS_FECHA = ["issue_d", "earliest_cr_line", "sec_app_earliest_cr_line"]
 
-# Se fuerzan a texto: son codigos o identificadores, no cantidades.
+
 FORZAR_TEXTO = ["id", "member_id", "policy_code", "zip_code", "term"] + COLUMNAS_FECHA
 
-# Reglas de coherencia aplicadas a los prestamos elegibles.
+
 COLUMNAS_REVISION = ["loan_status", "loan_amnt", "annual_inc", "dti", "revol_bal",
                      "fico_range_low", "fico_range_high", "term",
                      "earliest_cr_line", "issue_d"]

@@ -1,0 +1,25 @@
+modelo,umbral_pct,variables_promedio,ROC_AUC_umbral,referencia,tipo_referencia,ROC_AUC_referencia,diferencia_ROC_AUC
+gradient_boosting,10,33.75,0.7032945749526628,26 fijas,referencia anterior,0.7,0.003294574952662832
+gradient_boosting,10,33.75,0.7032945749526628,59 exploratorias,"exploratoria, selección hasta 2016",0.7131,-0.009805425047337168
+gradient_boosting,30,51.25,0.7104932873479174,26 fijas,referencia anterior,0.7,0.010493287347917435
+gradient_boosting,30,51.25,0.7104932873479174,59 exploratorias,"exploratoria, selección hasta 2016",0.7131,-0.0026067126520825656
+gradient_boosting,50,51.5,0.710428240849277,26 fijas,referencia anterior,0.7,0.01042824084927707
+gradient_boosting,50,51.5,0.710428240849277,59 exploratorias,"exploratoria, selección hasta 2016",0.7131,-0.00267175915072293
+gradient_boosting,75,61.75,0.7135062859818561,26 fijas,referencia anterior,0.7,0.013506285981856103
+gradient_boosting,75,61.75,0.7135062859818561,59 exploratorias,"exploratoria, selección hasta 2016",0.7131,0.00040628598185610265
+regresion_logistica,10,33.75,0.6961812298827281,26 fijas,referencia anterior,0.6927,0.003481229882728143
+regresion_logistica,10,33.75,0.6961812298827281,59 exploratorias,"exploratoria, selección hasta 2016",0.7054,-0.009218770117271902
+regresion_logistica,30,51.25,0.702224712744306,26 fijas,referencia anterior,0.6927,0.009524712744305996
+regresion_logistica,30,51.25,0.702224712744306,59 exploratorias,"exploratoria, selección hasta 2016",0.7054,-0.003175287255694048
+regresion_logistica,50,51.5,0.7021871456456011,26 fijas,referencia anterior,0.6927,0.009487145645601158
+regresion_logistica,50,51.5,0.7021871456456011,59 exploratorias,"exploratoria, selección hasta 2016",0.7054,-0.0032128543543988863
+regresion_logistica,75,61.75,0.7054826148005773,26 fijas,referencia anterior,0.6927,0.012782614800577297
+regresion_logistica,75,61.75,0.7054826148005773,59 exploratorias,"exploratoria, selección hasta 2016",0.7054,8.261480057725201e-05
+svm_lineal,10,33.75,0.6961352194039819,26 fijas,referencia anterior,0.6926,0.0035352194039819373
+svm_lineal,10,33.75,0.6961352194039819,59 exploratorias,"exploratoria, selección hasta 2016",0.7052,-0.009064780596018118
+svm_lineal,30,51.25,0.7022128413850832,26 fijas,referencia anterior,0.6926,0.009612841385083226
+svm_lineal,30,51.25,0.7022128413850832,59 exploratorias,"exploratoria, selección hasta 2016",0.7052,-0.0029871586149168294
+svm_lineal,50,51.5,0.7022123854753927,26 fijas,referencia anterior,0.6926,0.00961238547539267
+svm_lineal,50,51.5,0.7022123854753927,59 exploratorias,"exploratoria, selección hasta 2016",0.7052,-0.002987614524607385
+svm_lineal,75,61.75,0.7053743033276162,26 fijas,referencia anterior,0.6926,0.012774303327616199
+svm_lineal,75,61.75,0.7053743033276162,59 exploratorias,"exploratoria, selección hasta 2016",0.7052,0.0001743033276161432

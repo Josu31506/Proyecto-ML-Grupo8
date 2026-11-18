@@ -12,19 +12,19 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# Columnas que existen para construir el objetivo o partir por fecha,
-# pero que nunca entran como predictoras.
+
+
 AUXILIARES = ["loan_status", "default", "issue_d", "fecha_prestamo", "anio"]
 
 IDENTIFICADORES = ["id", "member_id", "url"]
 
-# Texto libre: fuera del alcance del primer modelo (no por ser inutil).
+
 TEXTO_LIBRE = ["desc", "title", "emp_title"]
 
-# Alta cardinalidad / codigo constante.
+
 DESCARTADAS_EXTRA = ["zip_code", "policy_code"]
 
-# Informacion generada DESPUES de otorgar el prestamo: leakage directo.
+
 POSTERIORES = [
     "pymnt_plan", "out_prncp", "out_prncp_inv", "total_pymnt", "total_pymnt_inv",
     "total_rec_prncp", "total_rec_int", "total_rec_late_fee", "recoveries",
@@ -35,12 +35,12 @@ POSTERIORES = [
 ]
 PREFIJOS_POSTERIORES = ("hardship_", "debt_settlement_", "settlement_")
 
-# Calificación, condiciones y financiación de LC: escenario adicional.
-# Confirmar su disponibilidad para el momento exacto de predicción.
+
+
 PRECIO_LC = ["int_rate", "grade", "sub_grade", "installment", "funded_amnt",
              "funded_amnt_inv", "initial_list_status", "disbursement_method"]
 
-# Fechas que se transforman en antiguedad (meses) antes de modelar.
+
 FECHAS_A_ANTIGUEDAD = ["earliest_cr_line", "sec_app_earliest_cr_line"]
 
 
@@ -141,6 +141,28 @@ def filtrar_por_faltantes(X_train, predictoras, umbral_excluir, umbral_revision)
     return conservadas, con_indicador, resumen
 
 
+def seleccionar_por_cobertura(X_referencia, predictoras, umbral_excluir=10):
+    """Retiene variables con menos del umbral de faltantes en la referencia.
+
+    La referencia debe contener solo los periodos autorizados para decidir la
+    lista de variables (en el proyecto, préstamos elegibles anteriores a 2017).
+    El corte es estricto: un porcentaje igual o mayor al límite se excluye.
+    """
+    if not 0 < umbral_excluir <= 100:
+        raise ValueError("El umbral de faltantes debe estar entre 0 y 100.")
+    inexistentes = [c for c in predictoras if c not in X_referencia.columns]
+    if inexistentes:
+        raise KeyError(f"Faltan predictoras en la tabla de referencia: {inexistentes}")
+    porcentaje = X_referencia[predictoras].isna().mean() * 100
+    conservadas = porcentaje[porcentaje < umbral_excluir].index.tolist()
+    excluidas = porcentaje[porcentaje >= umbral_excluir].index.tolist()
+    resumen = pd.DataFrame({
+        "porcentaje_faltante": porcentaje,
+        "decision": np.where(porcentaje < umbral_excluir, "conservar", "excluir"),
+    }).sort_values("porcentaje_faltante", ascending=False)
+    return conservadas, excluidas, resumen
+
+
 def construir_preprocesador(X_train, con_indicador):
     """Pipeline de sklearn: imputacion -> codificacion -> escalado.
 
@@ -151,8 +173,8 @@ def construir_preprocesador(X_train, con_indicador):
     numericas = X_train.select_dtypes(include="number").columns.tolist()
     categoricas = [c for c in X_train.columns if c not in numericas]
 
-    # Las numericas con muchos faltantes llevan ademas un indicador 0/1 que
-    # permite al modelo distinguir un valor observado de uno rellenado.
+
+
     num_con_ind = [c for c in numericas if c in con_indicador]
     num_sin_ind = [c for c in numericas if c not in con_indicador]
 

@@ -1,0 +1,55 @@
+variable,grupo,motivo
+id,Identificadores,No identifican capacidad de pago
+member_id,Identificadores,No identifican capacidad de pago
+url,Identificadores,No identifican capacidad de pago
+desc,Texto libre,Fuera del alcance de este análisis
+title,Texto libre,Fuera del alcance de este análisis
+emp_title,Texto libre,Fuera del alcance de este análisis
+zip_code,Alta cardinalidad / código,Excluido según reglas actuales del proyecto
+policy_code,Alta cardinalidad / código,Excluido según reglas actuales del proyecto
+int_rate,Precio / calificación LC,No se incluye en este escenario predictivo
+grade,Precio / calificación LC,No se incluye en este escenario predictivo
+sub_grade,Precio / calificación LC,No se incluye en este escenario predictivo
+installment,Precio / calificación LC,No se incluye en este escenario predictivo
+funded_amnt,Precio / calificación LC,No se incluye en este escenario predictivo
+funded_amnt_inv,Precio / calificación LC,No se incluye en este escenario predictivo
+initial_list_status,Precio / calificación LC,No se incluye en este escenario predictivo
+disbursement_method,Precio / calificación LC,No se incluye en este escenario predictivo
+pymnt_plan,Información posterior,Generada después del otorgamiento; leakage
+out_prncp,Información posterior,Generada después del otorgamiento; leakage
+out_prncp_inv,Información posterior,Generada después del otorgamiento; leakage
+total_pymnt,Información posterior,Generada después del otorgamiento; leakage
+total_pymnt_inv,Información posterior,Generada después del otorgamiento; leakage
+total_rec_prncp,Información posterior,Generada después del otorgamiento; leakage
+total_rec_int,Información posterior,Generada después del otorgamiento; leakage
+total_rec_late_fee,Información posterior,Generada después del otorgamiento; leakage
+recoveries,Información posterior,Generada después del otorgamiento; leakage
+collection_recovery_fee,Información posterior,Generada después del otorgamiento; leakage
+last_pymnt_d,Información posterior,Generada después del otorgamiento; leakage
+last_pymnt_amnt,Información posterior,Generada después del otorgamiento; leakage
+next_pymnt_d,Información posterior,Generada después del otorgamiento; leakage
+last_credit_pull_d,Información posterior,Generada después del otorgamiento; leakage
+last_fico_range_high,Información posterior,Generada después del otorgamiento; leakage
+last_fico_range_low,Información posterior,Generada después del otorgamiento; leakage
+deferral_term,Información posterior,Generada después del otorgamiento; leakage
+payment_plan_start_date,Información posterior,Generada después del otorgamiento; leakage
+orig_projected_additional_accrued_interest,Información posterior,Generada después del otorgamiento; leakage
+hardship_flag,Información posterior,Generada después del otorgamiento; leakage
+hardship_type,Información posterior,Generada después del otorgamiento; leakage
+hardship_reason,Información posterior,Generada después del otorgamiento; leakage
+hardship_status,Información posterior,Generada después del otorgamiento; leakage
+hardship_amount,Información posterior,Generada después del otorgamiento; leakage
+hardship_start_date,Información posterior,Generada después del otorgamiento; leakage
+hardship_end_date,Información posterior,Generada después del otorgamiento; leakage
+hardship_length,Información posterior,Generada después del otorgamiento; leakage
+hardship_dpd,Información posterior,Generada después del otorgamiento; leakage
+hardship_loan_status,Información posterior,Generada después del otorgamiento; leakage
+hardship_payoff_balance_amount,Información posterior,Generada después del otorgamiento; leakage
+hardship_last_payment_amount,Información posterior,Generada después del otorgamiento; leakage
+debt_settlement_flag,Información posterior,Generada después del otorgamiento; leakage
+debt_settlement_flag_date,Información posterior,Generada después del otorgamiento; leakage
+settlement_status,Información posterior,Generada después del otorgamiento; leakage
+settlement_date,Información posterior,Generada después del otorgamiento; leakage
+settlement_amount,Información posterior,Generada después del otorgamiento; leakage
+settlement_percentage,Información posterior,Generada después del otorgamiento; leakage
+settlement_term,Información posterior,Generada después del otorgamiento; leakage
