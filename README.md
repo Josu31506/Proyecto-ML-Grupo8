@@ -234,15 +234,15 @@ El test histórico requiere autorización explícita en el comando:
 python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test
 ```
 
-El modo carga artefactos sin reajustarlos y escribe una ejecución nueva bajo `outputs/pipeline_final/`, o en el destino dado por `--salida`. Produce métricas, predicciones, clasificación con umbral 0.5, errores por segmentos, curvas y un registro de alcance. El umbral es descriptivo; no es un umbral de negocio optimizado. El test no debe reutilizarse para elegir modelos, variables, calibración ni parámetros.
+El modo carga artefactos sin reajustarlos y escribe una ejecución nueva bajo `outputs/pipeline_final/`, o en el destino dado por `--salida`. Produce métricas, predicciones, clasificación con umbral 0.5, errores por segmentos, curvas, `costos_por_umbral.csv` y un registro de alcance. Ese archivo compara costos configurables mediante `src.analisis_errores`; sus valores predeterminados son 1 por falso positivo y 5 por falso negativo. El umbral es descriptivo; no es un umbral de negocio optimizado. El test no debe reutilizarse para elegir modelos, variables, calibración ni parámetros.
 
 ### Predecir préstamos nuevos
 
 ```powershell
-python -m src.run_final --modo predecir --modelos models/final_01 --datos nuevos_prestamos.csv
+python -m src.run_final --modo predecir --modelos models/final_01 --datos nuevos_prestamos.csv --modelo-prediccion svm_lineal
 ```
 
-El CSV debe incluir las `columnas_entrada` del manifiesto del modelo principal con sus nombres originales. Las columnas deben existir, aunque sus valores pueden faltar. No se exigen `loan_status`, `default`, pagos ni variables posteriores. Cuando se usa antigüedad crediticia, las fechas siguen el formato Lending Club, por ejemplo `Jan-2016`. Las columnas adicionales se ignoran.
+El argumento `--modelo-prediccion` permite elegir `gradient_boosting` (por defecto), `svm_lineal` o `regresion_logistica`. El CSV debe incluir las `columnas_entrada` del modelo elegido con sus nombres originales. Las columnas deben existir, aunque sus valores pueden faltar. No se exigen `loan_status`, `default`, pagos ni variables posteriores. Cuando se usa antigüedad crediticia, las fechas siguen el formato Lending Club, por ejemplo `Jan-2016`. Las columnas adicionales se ignoran.
 
 Se carga HistGradientBoosting con sus transformaciones congeladas, se procesa el CSV por bloques y se guarda `fila_entrada` y `probabilidad_charged_off` en un CSV nuevo bajo `outputs/predicciones/`. `--salida outputs/predicciones_nuevas_01.csv` permite elegir el archivo. La inferencia no vuelve a entrenar ni necesita el dataset original.
 
@@ -256,6 +256,7 @@ Se carga HistGradientBoosting con sus transformaciones congeladas, se procesa el
 | `--salida` | Carpeta nueva para entrenamiento/evaluación; archivo CSV nuevo para predicción |
 | `--conjunto` | `validacion` (2016) o `test` (2017–2018) |
 | `--confirmar-test` | Habilita explícitamente la evaluación del test histórico |
+| `--modelo-prediccion` | Modelo serializado para `predecir`; por defecto `gradient_boosting` |
 
 Consultar `python -m src.run_final --help`. Los destinos existentes no se sobrescriben. Una ejecución interrumpida debe repetirse en un destino nuevo.
 

@@ -273,6 +273,36 @@ def calcular_metricas(y, p):
     }
 
 
+def calcular_importancias_permutacion(pipeline, datos, y, n_repeats=5,
+                                      random_state=SEMILLA):
+    """Calcula importancia por variable original usando ROC-AUC como score."""
+    y = np.asarray(y, dtype="int8")
+    if len(datos) != len(y):
+        raise ValueError("datos e y deben tener la misma cantidad de filas.")
+    if n_repeats < 1:
+        raise ValueError("n_repeats debe ser al menos 1.")
+    base = datos.reset_index(drop=True)
+    referencia = roc_auc_score(y, pipeline.predict_proba(base)[:, 1])
+    rng = np.random.default_rng(random_state)
+    importancias = []
+    for columna in base.columns:
+        valores = []
+        for _ in range(n_repeats):
+            permutada = base.copy()
+            permutada[columna] = permutada[columna].iloc[
+                rng.permutation(len(permutada))
+            ].to_numpy()
+            score = roc_auc_score(y, pipeline.predict_proba(permutada)[:, 1])
+            valores.append(referencia - score)
+        importancias.append((columna, valores))
+    return pd.DataFrame({
+        "variable": [columna for columna, _ in importancias],
+        "importancia_media": [float(np.mean(valores)) for _, valores in importancias],
+        "importancia_std": [float(np.std(valores, ddof=1)) if len(valores) > 1 else 0.0
+                            for _, valores in importancias],
+    }).sort_values("importancia_media", ascending=False, ignore_index=True)
+
+
 def correr_corte(X, y, anios, anio_validacion, verbose=True):
     """Entrena una vez por algoritmo, calibra en el año previo y evalúa después."""
     anio_base = anio_validacion - 2

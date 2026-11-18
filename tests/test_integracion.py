@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 
 from src import features
-from src.analisis_errores import cargar_segmentos_test, tabla_metricas_globales
+from src.analisis_errores import (cargar_segmentos_test, tabla_costos_por_umbral,
+                                  tabla_metricas_globales)
 from src.etapas_finales import _preparar_bloque
 from src.modelado import crear_cortes_temporales
 
@@ -82,6 +83,11 @@ class IntegracionTests(unittest.TestCase):
         m = tabla_metricas_globales(merged, modelos=["gradient_boosting"])
         self.assertEqual(int(m.iloc[0]["verdaderos_negativos"]), 1)
         self.assertEqual(int(m.iloc[0]["verdaderos_positivos"]), 1)
+        costos = tabla_costos_por_umbral(
+            merged, modelos=["gradient_boosting"], umbrales=[0.5],
+            costo_falso_positivo=1, costo_falso_negativo=5
+        )
+        self.assertEqual(int(costos.iloc[0]["costo_total"]), 0)
 
     def test_notebooks_tienen_json_valido_y_no_guardan_errores(self):
         raiz = Path(__file__).resolve().parents[1]

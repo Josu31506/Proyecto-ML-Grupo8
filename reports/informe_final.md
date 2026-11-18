@@ -565,7 +565,7 @@ Un mejor ROC-AUC no asegura detectar muchos incumplimientos con un umbral arbitr
 
 ### 12.1. Matriz de confusión con umbral descriptivo 0.5
 
-El análisis incorporado al notebook 10 emplea las probabilidades históricas guardadas y el criterio `p ≥ 0.5` para marcar incumplimiento. Su implementación reutilizable está en [src/analisis_errores.py](../src/analisis_errores.py). No se entrenan nuevos modelos ni se busca un umbral sobre test.
+El análisis incorporado al notebook 10 emplea las probabilidades históricas guardadas y el criterio `p ≥ 0.5` para marcar incumplimiento. Su implementación reutilizable está en [src/analisis_errores.py](../src/analisis_errores.py). El ejecutor del pipeline también genera `costos_por_umbral.csv`, con una comparación parametrizable de costos (por defecto, 1 por falso positivo y 5 por falso negativo). Este archivo es descriptivo cuando se genera sobre test: no se usa para seleccionar el umbral final ni para afirmar una política de negocio.
 
 | Modelo | TN: pagados bien clasificados | FP: alertas incorrectas | FN: incumplimientos omitidos | TP: incumplimientos detectados |
 | --- | --- | --- | --- | --- |
@@ -666,7 +666,7 @@ Las siguientes actividades **no forman parte de resultados ejecutados en este in
 2. **Auditar maduración y fechas de etiqueta.** Definir una fecha de corte verificable y un horizonte predictivo uniforme, o una estrategia de seguimiento que contemple préstamos sin desenlace. Rehacer una validación temporal con etiquetas disponibles en cada fecha resolvería una limitación distinta de separar por originación.
 3. **Obtener una evaluación independiente.** Utilizar periodos o fuentes no consultados, con alcance de población documentado. La comprobación prospectiva debe conservar decisiones metodológicas fijadas antes de observar resultados.
 4. **Revisar la elección entre 50% y 75%.** Contrastar el pequeño beneficio medio y su concentración temporal con cobertura, estabilidad de variables y costos de imputación. No basta con afirmar que el umbral conservador ya fue el ganador.
-5. **Interpretar el modelo final.** Calcular importancias por permutación y explicaciones de predicciones del estimador final, considerando redundancia y estabilidad por periodo. Las importancias iniciales no sustituyen ese trabajo.
+5. **Interpretar el modelo final.** El código ya ofrece `calcular_importancias_permutacion` en [src/etapas_finales.py](../src/etapas_finales.py), que calcula la caída de ROC-AUC al permutar cada variable original sin reentrenar. Falta ejecutar esta función sobre una muestra de desarrollo fijada y documentar estabilidad, redundancia y explicaciones de predicciones; las importancias iniciales no sustituyen ese análisis.
 6. **Evaluar equidad y políticas de alertas.** Definir atributos y poblaciones pertinentes, métricas de error y calibración por segmento, costos de falsos positivos/negativos y restricciones operativas. Escoger umbrales con desarrollo y congelarlos antes de una evaluación independiente.
 7. **Vigilar cambios de distribución y calibración.** Diseñar controles de faltantes, categorías nuevas, mezcla de plazos, probabilidades y resultados observados; definir cuándo revisar o recalibrar. No se presenta como desplegado un sistema de seguimiento.
 8. **Explorar características adicionales de manera controlada.** Razones cuota/ingreso, nuevos agregados del historial e interacciones requieren una evaluación temporal propia, disponibilidad al origen y una comparación de costo y estabilidad. No se incluyen como mejoras ya demostradas.

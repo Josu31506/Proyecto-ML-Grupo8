@@ -168,6 +168,9 @@ def evaluar(modelos, datos, conjunto, confirmar_test=False, salida=None):
     errores.tabla_metricas_globales(segmentos, modelos=list(pipelines)).to_csv(salida / "clasificacion_0_5.csv", index=False)
     errores.tabla_errores_por_segmento(segmentos, columnas_segmento=columnas,
                                      modelos=list(pipelines)).to_csv(salida / "errores_segmentos.csv", index=False)
+    errores.tabla_costos_por_umbral(
+        predicciones, modelos=list(pipelines)
+    ).to_csv(salida / "costos_por_umbral.csv", index=False)
     _figuras_evaluacion(predicciones, pipelines, salida)
     (salida / "alcance.json").write_text(json.dumps({"conjunto": conjunto, "interpretacion": alcance,
         "umbral_clasificacion": 0.5, "umbral_descriptivo_no_optimizado": True,
@@ -178,8 +181,12 @@ def evaluar(modelos, datos, conjunto, confirmar_test=False, salida=None):
     return salida
 
 
-def predecir(modelos, datos, salida=None):
-    pipeline = cargar_modelos(modelos, solo_principal=True)["gradient_boosting"]
+def predecir(modelos, datos, salida=None, nombre_modelo="gradient_boosting"):
+    pipelines = cargar_modelos(modelos)
+    if nombre_modelo not in pipelines:
+        disponibles = ", ".join(sorted(pipelines))
+        raise ValueError(f"Modelo desconocido: {nombre_modelo}. Disponibles: {disponibles}")
+    pipeline = pipelines[nombre_modelo]
     columnas = pd.read_csv(datos, nrows=0).columns.tolist()
     faltan = [c for c in pipeline.columnas_entrada if c not in columnas]
     if faltan:
@@ -195,7 +202,9 @@ def predecir(modelos, datos, salida=None):
         for bloque in pd.read_csv(datos, usecols=pipeline.columnas_entrada, dtype=tipos, chunksize=10000, skipinitialspace=True):
             p = pipeline.predict_proba(bloque)[:, 1]
             pd.DataFrame({"fila_entrada": np.arange(offset, offset + len(bloque)),
-                          "probabilidad_charged_off": p}).to_csv(f, index=False, header=offset == 0)
+                          "probabilidad_charged_off": p}).to_csv(
+                              f, index=False, header=offset == 0
+                          )
             offset += len(bloque)
     print("Predicciones:", salida)
     return salida
@@ -209,6 +218,9 @@ def crear_parser():
     parser.add_argument("--salida", type=Path, default=None, help="Carpeta nueva; en predecir, archivo CSV nuevo")
     parser.add_argument("--conjunto", choices=["validacion", "test"], default="validacion")
     parser.add_argument("--confirmar-test", action="store_true")
+    parser.add_argument("--modelo-prediccion", choices=list(ef.PARAMETROS),
+                        default="gradient_boosting",
+                        help="Modelo final a usar en modo predecir.")
     return parser
 
 
@@ -221,7 +233,7 @@ def main(argv=None):
         parser.error("evaluar y predecir requieren --modelos y --datos explícitos")
     if args.modo == "evaluar":
         return evaluar(args.modelos, args.datos, args.conjunto, args.confirmar_test, args.salida)
-    return predecir(args.modelos, args.datos, args.salida)
+    return predecir(args.modelos, args.datos, args.salida, args.modelo_prediccion)
 
 
 if __name__ == "__main__":

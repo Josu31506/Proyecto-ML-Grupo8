@@ -112,6 +112,22 @@ class PipelineFinalTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 rf.carpeta_nueva(td)
 
+    def test_svm_usa_margen_calibrado(self):
+        modelo = self.modelos["svm_lineal"]
+        X = ef.preparar_X(self.test, self.candidatas)
+        self.assertEqual(modelo.tipo_score, "margen")
+        p = modelo.predecir_preparado(X)
+        self.assertTrue(np.isfinite(p).all())
+        self.assertTrue(((p >= 0) & (p <= 1)).all())
+
+    def test_importancias_por_variable_original(self):
+        modelo = self.modelos["svm_lineal"]
+        tabla = ef.calcular_importancias_permutacion(
+            modelo, self.raw_test, self.test.default.to_numpy(), n_repeats=2
+        )
+        self.assertEqual(set(tabla["variable"]), set(self.raw_test.columns))
+        self.assertEqual(len(tabla), len(self.raw_test.columns))
+
     def test_semilla_reproducible(self):
         repetido = next(ef.entrenar_pipelines_finales(self.dev, self.candidatas, modelos=["regresion_logistica"]))
         np.testing.assert_array_equal(repetido.predict_proba(self.raw_test), self.modelos["regresion_logistica"].predict_proba(self.raw_test))
@@ -157,7 +173,7 @@ class PipelineFinalTests(unittest.TestCase):
             archivo = Path(td) / "nuevos.csv"
             self.raw_test.to_csv(archivo, index=False)
             salida = Path(td) / "predicciones.csv"
-            rf.predecir(destino, archivo, salida)
+            rf.predecir(destino, archivo, salida, nombre_modelo="svm_lineal")
             self.assertEqual(len(pd.read_csv(salida)), 20)
             with self.assertRaises(FileExistsError):
                 rf.predecir(destino, archivo, salida)
@@ -172,6 +188,7 @@ class PipelineFinalTests(unittest.TestCase):
                 alcance = json.loads((validacion / "alcance.json").read_text(encoding="utf-8"))
                 self.assertIn("no independiente", alcance["interpretacion"])
                 self.assertTrue((validacion / "evaluacion.png").exists())
+                self.assertTrue((validacion / "costos_por_umbral.csv").exists())
                 test = rf.evaluar("sinteticos", ruta, "test", confirmar_test=True, salida=Path(td) / "test")
                 metricas = pd.read_csv(test / "metricas.csv")
                 self.assertEqual(metricas.n.tolist(), [20, 20, 20])

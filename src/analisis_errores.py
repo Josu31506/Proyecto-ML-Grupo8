@@ -98,8 +98,39 @@ def tabla_metricas_globales(datos, modelos=MODELOS, umbral=UMBRAL_FIJO):
     return pd.DataFrame(filas)
 
 
+def tabla_costos_por_umbral(datos, modelos=MODELOS, costo_falso_positivo=1.0,
+                            costo_falso_negativo=5.0,
+                            umbrales=None):
+    """Compara costos explícitos sin elegir un umbral usando el test."""
+    umbrales = np.linspace(0.05, 0.95, 19) if umbrales is None else umbrales
+    filas = []
+    for modelo in modelos:
+        if modelo not in datos:
+            continue
+        y = np.asarray(datos["default"], dtype="int8")
+        p = np.asarray(datos[modelo], dtype="float64")
+        for umbral in umbrales:
+            pred = (p >= umbral).astype("int8")
+            vn, fp, fn, vp = confusion_matrix(y, pred, labels=[0, 1]).ravel()
+            costo = costo_falso_positivo * fp + costo_falso_negativo * fn
+            filas.append({
+                "modelo": modelo,
+                "umbral": float(umbral),
+                "costo_falso_positivo": float(costo_falso_positivo),
+                "costo_falso_negativo": float(costo_falso_negativo),
+                "falsos_positivos": int(fp),
+                "falsos_negativos": int(fn),
+                "verdaderos_negativos": int(vn),
+                "verdaderos_positivos": int(vp),
+                "costo_total": float(costo),
+                "costo_medio": float(costo / len(y)) if len(y) else np.nan,
+            })
+    return pd.DataFrame(filas)
+
+
 def ejecutar_analisis(ruta=None, archivo_predicciones=None, salida="outputs/analisis_errores",
-                      chunksize=100_000):
+                      chunksize=100_000, costo_falso_positivo=1.0,
+                      costo_falso_negativo=5.0):
     """Lee predicciones existentes, verifica filas y exporta tablas agregadas."""
     ruta = localizar_datos(ruta) if ruta is not None else localizar_datos()
     if archivo_predicciones is None:
@@ -108,11 +139,17 @@ def ejecutar_analisis(ruta=None, archivo_predicciones=None, salida="outputs/anal
     datos = cargar_segmentos_test(pred, ruta=ruta, chunksize=chunksize)
     metricas = tabla_metricas_globales(datos)
     segmentos = tabla_errores_por_segmento(datos)
+    costos = tabla_costos_por_umbral(
+        datos,
+        costo_falso_positivo=costo_falso_positivo,
+        costo_falso_negativo=costo_falso_negativo,
+    )
     destino = Path(salida)
     destino.mkdir(parents=True, exist_ok=True)
     metricas.to_csv(destino / "metricas_globales.csv", index=False)
     segmentos.to_csv(destino / "metricas_por_segmento.csv", index=False)
-    return datos, metricas, segmentos
+    costos.to_csv(destino / "costos_por_umbral.csv", index=False)
+    return datos, metricas, segmentos, costos
 
 
 def main():
@@ -122,13 +159,18 @@ def main():
                         help="CSV de probabilidades guardadas del test")
     parser.add_argument("--salida", default="outputs/analisis_errores")
     parser.add_argument("--chunksize", type=int, default=100_000)
+    parser.add_argument("--costo-falso-positivo", type=float, default=1.0)
+    parser.add_argument("--costo-falso-negativo", type=float, default=5.0)
     args = parser.parse_args()
-    datos, globales, segmentos = ejecutar_analisis(
+    datos, globales, segmentos, costos = ejecutar_analisis(
         ruta=args.datos, archivo_predicciones=args.predicciones,
-        salida=args.salida, chunksize=args.chunksize
+        salida=args.salida, chunksize=args.chunksize,
+        costo_falso_positivo=args.costo_falso_positivo,
+        costo_falso_negativo=args.costo_falso_negativo,
     )
     print(f"Filas verificadas: {len(datos):,}")
     print(globales.to_string(index=False))
+    print(f"Mejor costo descriptivo: {costos.loc[costos.costo_total.idxmin()].to_dict()}")
     print(f"Resultados agregados: {Path(args.salida).resolve()}")
 
 
