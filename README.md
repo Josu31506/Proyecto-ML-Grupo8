@@ -13,7 +13,7 @@ Cada fila representa un préstamo. La variable objetivo es `Fully Paid = 0` y `C
 - Hay **diez notebooks oficiales** y código reutilizable para reproducir sus experimentos.
 - `src/run_final.py` permite **entrenar, calibrar, guardar, evaluar y predecir** sin ejecutar todos los notebooks.
 - Los tres artefactos locales de `models/final_01/` y su manifiesto están presentes. Registran entrenamiento con **826,604 préstamos hasta 2015** y calibración con **293,095 de 2016**. Los modelos no se versionan; deben regenerarse.
-- **La nueva ejecución del pipeline todavía no tiene una evaluación real de test confirmada.** Las métricas finales de abajo son las históricas del notebook 10. La existencia de los artefactos y las pruebas sintéticas no demuestra por sí sola que la nueva ejecución reproduzca esas métricas.
+- **La evaluación real de los tres modelos serializados reprodujo las métricas históricas del notebook 10**, a los seis decimales mostrados, sobre 225,611 préstamos de 2017–2018. Los CSV locales de evaluación se contrastaron con la referencia histórica. Las 19 pruebas automatizadas también finalizaron correctamente según la consola local aportada por el usuario; no son resultados de GitHub Actions.
 - También existe una comparación inicial ejecutada sobre **220,003 préstamos** en `outputs/gradient_boosting_220000/`. Es un experimento distinto del flujo final calibrado sobre desarrollo completo.
 
 ## Dataset y población del análisis
@@ -145,7 +145,37 @@ HistGradientBoosting es el principal por su mejor discriminación y menor error 
 
 El test histórico incluye **225,611 préstamos**, con **21.28 % Charged Off**. Del total de 938,821 préstamos emitidos en 2017–2018 en el archivo, muchos seguían activos. Las métricas se refieren solo a la subpoblación con resultado final.
 
-La nueva ejecución local de entrenamiento generó modelos, pero **no se ha confirmado su reproducción de estas métricas mediante una nueva evaluación real**. No se ejecuta una evaluación adicional como parte de la publicación.
+La evaluación local posterior del pipeline guardado **confirmó la reproducción de estas métricas**. La sección siguiente distingue la evidencia real de test de las pruebas sintéticas; esta actualización documental no repite ninguna ejecución.
+
+### Validación final del pipeline reproducible
+
+El entrenamiento con `python -m src.run_final --modo entrenar --salida models/final_01` finalizó correctamente y generó `regresion_logistica.joblib`, `svm_lineal.joblib`, `gradient_boosting.joblib` y `manifest.json`. Estos artefactos permanecen exclusivamente locales y pueden regenerarse con el código y los datos originales; no están disponibles en GitHub.
+
+Las pruebas ejecutadas con `python -m unittest discover -s tests -v` finalizaron con la salida local proporcionada por el usuario:
+
+```text
+Ran 19 tests in 6.795s
+
+OK
+```
+
+Son pruebas con datos sintéticos de particiones, prevención de leakage, preprocesamiento, predicción, calibración, serialización y evaluación explícita. La salida de consola acredita la ejecución local reportada; no se presenta como un registro de GitHub Actions ni sustituye la evaluación real de Lending Club.
+
+Posteriormente se ejecutó la evaluación explícita de los modelos guardados:
+
+```powershell
+python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test
+```
+
+| Modelo calibrado con sigmoide | ROC-AUC | PR-AUC (AP) | Brier Score | Log Loss | n |
+|---|---:|---:|---:|---:|---:|
+| Regresión logística | 0.692591 | 0.360386 | 0.155911 | 0.485014 | 225611 |
+| SVM lineal | 0.691777 | 0.359876 | 0.155972 | 0.486804 | 225611 |
+| HistGradientBoosting | 0.703213 | 0.377905 | 0.153642 | 0.474278 | 225611 |
+
+El test corresponde a 2017–2018 y su prevalencia de incumplimiento es 0.212822. La evidencia persistente local se encuentra en `outputs/pipeline_final/test_20261117_195412_266845/metricas.csv` y `alcance.json`, excluidos de Git junto con sus predicciones individuales. Se compararon las cuatro métricas, la prevalencia y n de los tres modelos con [la referencia histórica](outputs/evaluacion_final/metricas_finales_test.csv): los 18 campos numéricos coinciden en los CSV y, por tanto, a los seis decimales presentados. No se recalcularon predicciones ni se repitió el test durante esta revisión documental.
+
+Esto confirma la reproducción numérica de las métricas mediante los artefactos serializados, no una validación externa ni la identidad fila a fila de todas las predicciones. El test ya había sido consultado durante el desarrollo histórico; siguen vigentes la selección de préstamos con desenlace observado, las limitaciones de maduración de etiquetas y la ausencia de evaluación prospectiva estrictamente independiente.
 
 ### Comparación inicial con muestra
 
@@ -275,7 +305,7 @@ Los **diez notebooks oficiales**, el pipeline reutilizable y la documentación v
 
 `feat/exploracion-inicial` se creó como referencia al commit existente `b4901e3`: no contiene un commit nuevo ni una reconstrucción de archivos. Las otras tres ramas `feat/` se publicaron en sus commits originales. Publicar estas referencias no modifica los experimentos ni supone reejecutar sus resultados.
 
-Las métricas deben interpretarse con el tamaño de muestra y los cortes de cada etapa. Los outputs preliminares de `gradient-boosting` se conservan como estaban, incluidas sus limitaciones de comparabilidad; la ejecución homogénea posterior de 220,003 está documentada en la entrega final. La publicación de ramas no confirma una nueva reproducción del test del pipeline.
+Las métricas deben interpretarse con el tamaño de muestra y los cortes de cada etapa. Los outputs preliminares de `gradient-boosting` se conservan como estaban, incluidas sus limitaciones de comparabilidad; la ejecución homogénea posterior de 220,003 está documentada en la entrega final. La reproducción del test del pipeline se confirma por la evaluación local documentada arriba, no por el hecho de publicar las ramas.
 
 ## Limitaciones conocidas
 
@@ -284,4 +314,4 @@ Las métricas deben interpretarse con el tamaño de muestra y los cortes de cada
 - El test 2017–2018 se consultó en investigaciones anteriores. La búsqueda y calibración finales usan desarrollo, pero no se puede describir todo el proyecto como si el test nunca hubiera sido observado.
 - Las 59 variables fijas son exploratorias; el flujo final vuelve a seleccionar con los datos históricos de cada base. El 50 % es una regla conservadora elegida, no un límite universal ni el umbral con mayor promedio en todas las comparaciones.
 - Las mejoras pequeñas y la elección entre varias configuraciones no demuestran significación estadística ni un óptimo universal. Las probabilidades y diferencias por segmento no prueban causalidad.
-- Los artefactos locales están entrenados; la reproducción real de las métricas históricas mediante el nuevo pipeline sigue pendiente de una evaluación explícita. Las pruebas sintéticas no sustituyen esa comprobación.
+- Los artefactos locales están entrenados y sus métricas de test fueron reproducidas mediante evaluación explícita. Las pruebas sintéticas y esa coincidencia numérica no sustituyen una validación prospectiva independiente ni eliminan los sesgos de la población estudiada.

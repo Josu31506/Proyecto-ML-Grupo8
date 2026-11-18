@@ -97,11 +97,11 @@ Las imágenes históricas de la raíz y de gradient_boosting_220000 y analisis_e
 
 ## Correcciones principales y asuntos pendientes
 
-El informe reemplaza las referencias antiguas al notebook 12 por el notebook 10, reconoce los tres modelos serializados, integra los resultados ya ejecutados de boosting sobre 220,003 préstamos y separa esa muestra del experimento preliminar de 5,002. Actualiza los comandos al pipeline existente y distingue los resultados históricos de una nueva reproducción todavía no confirmada.
+El informe reemplaza las referencias antiguas al notebook 12 por el notebook 10, reconoce los tres modelos serializados, integra los resultados ya ejecutados de boosting sobre 220,003 préstamos y separa esa muestra del experimento preliminar de 5,002. Actualiza los comandos al pipeline existente y distingue las métricas históricas de su reproducción posterior confirmada mediante la evaluación local de los artefactos guardados.
 
 También corrige la interpretación del límite de faltantes: 50% es una elección conservadora, mientras 75% obtuvo mayor ROC-AUC promedio en la comparación guardada. Señala que la aparente agrupación bootstrap por prestatario no está verificada cuando member_id está vacío y que los ajustes de calibración utilizan otros años base que la búsqueda. No se modificaron cifras históricas para ocultar esas diferencias.
 
-Pendientes científicos: paridad real de predicciones del pipeline reciente, fecha efectiva de disponibilidad de etiquetas, evaluación prospectiva independiente, interpretación del modelo final y auditoría de equidad. Se explican en las secciones 13–14. La elaboración inicial no publicó cambios. Esta corrección final autoriza un commit y push limitados al informe y sus recursos documentales en docs/entrega-final; no incluye PR ni merge a main. El archivo local revision_informe.zip queda fuera de la publicación.
+Las métricas del pipeline reciente ya se contrastaron con los CSV históricos: los 18 campos numéricos comparados coinciden. Las 19 pruebas satisfactorias se documentan como resultado de consola local aportado por el usuario, separado de la evaluación real y de cualquier comprobación de GitHub. No se verificó identidad de predicciones fila a fila. Los pendientes científicos son fecha efectiva de disponibilidad de etiquetas, evaluación prospectiva independiente, interpretación del modelo final y auditoría de equidad, desarrollados en las secciones 13–14. El cierre documental prepara el PR definitivo hacia main sin fusionarlo ni modificar las ramas históricas. El archivo local revision_informe.zip permanece fuera de la publicación.
 
 ## Corrección final para publicación
 
