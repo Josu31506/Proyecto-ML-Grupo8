@@ -4,7 +4,7 @@
 
 **Integrantes:** Gavino Navarrete Adrian Piero; Hernández Yataco, Josué Renzo; Rojas Cruz, José Alvaro; Sanchez Dominguez, Matias Sebastian.
 
-Este documento integra los diez notebooks oficiales, las métricas históricas conservadas y el pipeline vigente. Distingue las pruebas iniciales sobre una muestra, la selección temporal sobre desarrollo y la evaluación histórica de test. La revisión documental no ejecutó entrenamientos, búsquedas ni nuevas evaluaciones. Los valores de las tablas se redondean para su lectura; los archivos enlazados conservan la precisión original.
+Este documento integra los diez notebooks oficiales, el suplemento [`11_svm_muestra.ipynb`](../notebooks/11_svm_muestra.ipynb), las métricas históricas conservadas y el pipeline vigente. Distingue las pruebas iniciales sobre una muestra, la selección temporal sobre desarrollo y la evaluación histórica de test. La revisión documental no ejecutó entrenamientos, búsquedas ni nuevas evaluaciones. Los valores de las tablas se redondean para su lectura; los archivos enlazados conservan la precisión original.
 
 ## 1. Resumen ejecutivo
 

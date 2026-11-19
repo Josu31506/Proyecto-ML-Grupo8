@@ -10,7 +10,7 @@ Cada fila representa un préstamo. La variable objetivo es `Fully Paid = 0` y `C
 
 ## Estado de la entrega
 
-- Hay **diez notebooks oficiales** y código reutilizable para reproducir sus experimentos.
+- Hay **diez notebooks oficiales**, más un notebook suplementario para comparar SVM sobre la muestra inicial, y código reutilizable para reproducir sus experimentos.
 - `src/run_final.py` permite **entrenar, calibrar, guardar, evaluar y predecir** sin ejecutar todos los notebooks.
 - Los tres artefactos locales de `models/final_01/` y su manifiesto están presentes. Registran entrenamiento con **826,604 préstamos hasta 2015** y calibración con **293,095 de 2016**. Los modelos no se versionan; deben regenerarse.
 - **La evaluación real de los tres modelos serializados reprodujo las métricas históricas del notebook 10**, a los seis decimales mostrados, sobre 225,611 préstamos de 2017–2018. Los CSV locales de evaluación se contrastaron con la referencia histórica. Las 19 pruebas automatizadas también finalizaron correctamente según la consola local aportada por el usuario; no son resultados de GitHub Actions.
@@ -71,6 +71,7 @@ El orden sigue las decisiones del proyecto. Para usar el modelo final basta con 
 | 08 | [08_optimizacion_final.ipynb](notebooks/08_optimizacion_final.ipynb) | Configuraciones aleatorias y selección de variables dentro de cada entrenamiento | Fija parámetros de logística, SVM e HistGradientBoosting; no pretende un óptimo universal | Evaluar probabilidades |
 | 09 | [09_calibracion.ipynb](notebooks/09_calibracion.ipynb) | Original, sigmoide e isotónica con base/calibración/evaluación cronológicas | Se elige sigmoide para los tres modelos usando desarrollo | Evaluar las configuraciones fijadas |
 | 10 | [10_evaluacion_final.ipynb](notebooks/10_evaluacion_final.ipynb) | Test histórico, intervalos, curvas y errores por segmentos | Comparación final calibrada e interpretación de sus límites | Inferencia mediante artefactos guardados |
+| 11 | [11_svm_muestra.ipynb](notebooks/11_svm_muestra.ipynb) | Comparación homogénea de SVM, logística, árbol y boosting sobre la muestra verificada de 220,003 préstamos | Evidencia específica del SVM en la muestra inicial; usa `decision_function` y umbral elegido en validación | No mezclar sus métricas con el pipeline final completo |
 
 La muestra inicial usa entrenamiento **2007–2014**, validación **2015–2016** y prueba **2017–2018**. El flujo posterior utiliza todos los préstamos elegibles y reglas ajustadas por periodo. Sus tamaños y puntuaciones no deben mezclarse como si pertenecieran al mismo experimento.
 
