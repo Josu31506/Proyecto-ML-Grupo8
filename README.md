@@ -24,16 +24,15 @@ Proyecto-ML-Grupo8/
 ├── README.md                       # Guía del proyecto y reproducción
 ├── proposal.md                     # Propuesta de la primera entrega
 ├── requirements.txt                # Versiones de dependencias
-├── accepted_2007_to_2018Q4.csv       # Archivo fuente local, ignorado por Git
 ├── data/
-│   ├── README.md                   # Cómo obtener el dataset
+│   ├── raw/                        # Dataset local (excluido de Git)
+│   │   └── accepted_2007_to_2018Q4.csv.gz
+│   ├── README.md                   # Obtención del dataset y diccionario
 │   └── Lending Club Data Dictionary Approved - ES.csv
-├── notebooks/                      # Diez etapas y un complemento SVM
+├── notebooks/                      # Once notebooks oficiales
 │   └── README.md                   # Orientación de lectura
 ├── src/                            # Preparación, experimentos y pipeline reutilizable
-├── tests/
-│   ├── test_integracion.py         # Consistencia de datos y preparación
-│   └── test_pipeline_final.py      # Pipeline con datos sintéticos
+├── tests/                          # Ocho módulos de pruebas automatizadas
 ├── outputs/                        # Métricas, configuraciones y tablas por experimento
 │   └── README.md                   # Guía de los resultados conservados
 ├── reports/
@@ -47,7 +46,7 @@ Proyecto-ML-Grupo8/
 
 El árbol distingue archivos públicos de datos y artefactos locales ignorados. `notebooks/` documenta la investigación; `src/` implementa los procedimientos; `outputs/` conserva resultados; `reports/` los comunica; `models/` guarda objetos entrenados; `tests/` verifica su comportamiento.
 
-## Once notebooks:
+## Once notebooks oficiales
 
 El orden sigue las decisiones del proyecto. Para usar el modelo final basta con el pipeline de más abajo; no es necesario ejecutar todos los experimentos.
 
@@ -152,10 +151,10 @@ Las pruebas ejecutadas con `python -m unittest discover -s tests -v` finalizaron
 
 Son pruebas con datos sintéticos de particiones, prevención de leakage, preprocesamiento, predicción, calibración, serialización y evaluación explícita. La salida de consola acredita la ejecución local reportada; no se presenta como un registro de GitHub Actions ni sustituye la evaluación real de Lending Club.
 
-Posteriormente se ejecutó la evaluación explícita de los modelos guardados:
+Para repetir la evaluación histórica de los modelos guardados con la ubicación de datos recomendada:
 
 ```powershell
-python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test
+python -m src.run_final --modo evaluar --modelos models/final_01 --datos data/raw/accepted_2007_to_2018Q4.csv.gz --conjunto test --confirmar-test
 ```
 
 | Modelo calibrado con sigmoide | ROC-AUC | PR-AUC (AP) | Brier Score | Log Loss | n |
@@ -177,7 +176,7 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 ```
-Descargar el CSV desde la fuente indicada en [data/README.md](data/README.md) y colocarlo en `data/raw/`, `data/`, la raíz, o pasar `--datos RUTA`. `src.config.localizar_datos` también revisa Downloads. El CSV local descomprimido ocupa aproximadamente 1.6 GB; algunas etapas necesitan memoria adicional para matrices y copias. Las carpetas de datos y modelos se mantienen fuera de Git.
+Descargar el dataset siguiendo las instrucciones de [data/README.md](data/README.md). Extraer del ZIP de Kaggle el archivo `accepted_2007_to_2018Q4.csv.gz` (o su versión `.csv`) y colocarlo preferentemente en `data/raw/`. El código también reconoce archivos en `data/`, en la raíz del proyecto y en Downloads, o permite especificar una ruta con `--datos`. El CSV descomprimido ocupa aproximadamente 1.6 GB; algunas etapas requieren memoria adicional. Los datos originales y los artefactos entrenados se excluyen de Git.
 
 
 ## Pipeline final reproducible
@@ -207,20 +206,16 @@ El entrenamiento emplea las configuraciones seleccionadas durante la investigaci
 
 Para entrenar los modelos es necesario descargar el dataset original de Lending Club desde [Kaggle](https://www.kaggle.com/datasets/wordsforthewise/lending-club).
 
-Una vez descargado, extraer del archivo ZIP el siguiente CSV:
+Una vez descargado, extraer del ZIP el archivo `accepted_2007_to_2018Q4.csv.gz` y colocarlo en `data/raw/`. También se admite `accepted_2007_to_2018Q4.csv` sin comprimir.
 
-`accepted_2007_to_2018Q4.csv`
-
-Colocar el CSV en `data/raw/`, que es la ubicación recomendada para los datos originales del proyecto.
-
-El dataset no se incluye en GitHub. El programa no descomprime automáticamente archivos ZIP.
+El dataset no se incluye en GitHub. El programa no procesa directamente archivos `.zip`, pero puede leer el `.csv.gz` sin descomprimirlo. Para más detalles, consultar [data/README.md](data/README.md).
 
 #### Ejecución
 
 Desde la raíz del repositorio:
 
 ```powershell
-python -m src.run_final --modo entrenar --datos data/raw/accepted_2007_to_2018Q4.csv --salida models/final_01
+python -m src.run_final --modo entrenar --datos data/raw/accepted_2007_to_2018Q4.csv.gz --salida models/final_01
 ```
 
 El pipeline carga el archivo desde la ruta indicada, filtra los préstamos elegibles y utiliza las particiones temporales establecidas para entrenar y calibrar los modelos definitivos.
@@ -280,7 +275,7 @@ Este modo permite comprobar la capacidad discriminativa, la calidad de las proba
 
 Se necesitan:
 
-- El dataset original `accepted_2007_to_2018Q4.csv`.
+- El dataset original `data/raw/accepted_2007_to_2018Q4.csv.gz` (o su versión CSV descomprimida).
 - La carpeta que contiene los tres modelos `.joblib` y el archivo `manifest.json`.
 - La indicación del periodo que se desea evaluar.
 
@@ -289,7 +284,7 @@ El programa comprueba la integridad de los artefactos mediante sus huellas SHA-2
 #### Evaluación descriptiva del periodo de calibración
 
 ```powershell
-python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto validacion
+python -m src.run_final --modo evaluar --modelos models/final_01 --datos data/raw/accepted_2007_to_2018Q4.csv.gz --conjunto validacion
 ```
 
 Esta instrucción calcula las métricas sobre los préstamos de **2016**.
@@ -299,7 +294,7 @@ Es importante interpretar correctamente el resultado: el año 2016 ya se utiliz�
 #### Evaluación del conjunto de prueba histórico
 
 ```powershell
-python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test
+python -m src.run_final --modo evaluar --modelos models/final_01 --datos data/raw/accepted_2007_to_2018Q4.csv.gz --conjunto test --confirmar-test
 ```
 
 Esta instrucción utiliza los préstamos elegibles originados entre **2017 y 2018**, separados del ajuste base y de la calibración definitiva.
@@ -483,7 +478,7 @@ python -m src.run_final --help
 El pipeline protege los destinos existentes para evitar sobrescribir artefactos y resultados previos.
 
 
-### Verificación de la búsqueda de hiperparámetros
+## Verificación de la búsqueda de hiperparámetros
 
 La optimización de hiperparámetros puede revisarse y reproducirse mediante los notebooks 06 y 09.
 
@@ -491,7 +486,7 @@ El notebook 06 documenta la búsqueda aleatoria inicial utilizando 26 caracterí
 
 La búsqueda definitiva utiliza cuatro cortes de validación temporal (2013–2016), una semilla fija y las tres familias de modelos: regresión logística, SVM lineal e HistGradientBoosting.
 
-#### Consultar los resultados históricos
+### Consultar los resultados históricos
 
 Abrir `notebooks/09_optimizacion_final.ipynb` y mantener:
 
@@ -503,7 +498,7 @@ Este modo permite examinar los hiperparámetros seleccionados, las métricas por
 
 Los resultados de referencia se encuentran en `outputs/optimizacion_final/`.
 
-#### Reproducir la búsqueda completa
+### Reproducir la búsqueda completa
 
 Para ejecutar nuevamente el procedimiento:
 
@@ -548,7 +543,7 @@ La suite incluye comprobaciones sobre:
 - **Reproducibilidad de notebooks:** controles de consulta y reproducción, separación de salidas y comparación de resultados CSV/JSON.
 - **Experimentos iniciales:** comprobaciones de carga compartida, árbol de decisión, Gradient Boosting y SVM sobre muestras.
 
-La suite integrada contiene **57 pruebas**, aprobadas en la ejecución documentada durante la integración final.
+En la versión actual de `main`, los ocho archivos de `tests/` definen **54 métodos de prueba** (`test_*`), según una revisión estática del código. Para verificar cuántas pruebas descubre y supera efectivamente la suite en un entorno local, debe ejecutarse el comando anterior. Las ejecuciones exitosas documentadas durante el cierre académico no constituyen una nueva ejecución de la versión actual.
 
 Estas pruebas utilizan principalmente datos sintéticos y referencias guardadas. No ejecutan el entrenamiento completo de los modelos sobre Lending Club ni constituyen una nueva evaluación independiente sobre el conjunto de prueba.
 
