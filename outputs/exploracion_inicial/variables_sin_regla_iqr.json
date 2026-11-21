@@ -1,0 +1,21 @@
+[
+  "plazo_meses",
+  "moras_ultimos_2_anios",
+  "meses_desde_ultima_mora",
+  "meses_desde_ultimo_registro_publico",
+  "registros_publicos_adversos",
+  "cobranzas_no_medicas_12m",
+  "meses_desde_ultima_mora_grave",
+  "cuentas_en_mora_actual",
+  "monto_total_cobranzas",
+  "cuentas_castigadas_12m",
+  "monto_en_mora_actual",
+  "meses_desde_ultima_mora_tarjeta",
+  "meses_desde_ultima_mora_revolvente",
+  "cuentas_con_mora_120_dias",
+  "cuentas_mora_120_dias_ultimos_2m",
+  "cuentas_mora_30_dias_actual",
+  "cuentas_mora_90_mas_dias_24m",
+  "quiebras_registradas",
+  "gravamenes_fiscales"
+]

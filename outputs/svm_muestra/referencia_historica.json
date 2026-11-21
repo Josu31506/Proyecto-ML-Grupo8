@@ -1,0 +1,40 @@
+{
+  "tipo": "Primera referencia histórica del experimento SVM sobre muestra",
+  "creada_utc": "2026-11-18T23:45:49.191036+00:00",
+  "ejecucion_origen": "outputs/reproducciones/05_svm_20261118_184229_821269_62a7310a",
+  "notebook_ejecutado": "outputs/reproducciones/05_svm_20261118_184229_821269_62a7310a/05_svm_muestra_ejecutado.ipynb",
+  "filas_muestra": 220003,
+  "predictoras_originales": 65,
+  "columnas_transformadas": 138,
+  "segundos_totales_notebook": 109.60886530000062,
+  "controles": {
+    "notebook_completo_sin_errores": true,
+    "sin_advertencias_convergencia": true,
+    "particiones_originales": true,
+    "matrices_compartidas": true,
+    "configuracion_original_conservada": true,
+    "metricas_finitas_y_conteos_coherentes": true,
+    "ids_por_particion_coinciden_con_muestra_historica_compartida": true,
+    "logistica_coincide_con_referencia_inicial_en_ROC_y_AP": true,
+    "sin_Brier_ni_LogLoss_sobre_margenes": true
+  },
+  "comparacion_con_referencia_SVM_anterior": "No verificable: no existía una referencia SVM propia antes de esta ejecución.",
+  "interpretacion": "Referencia inicial ejecutada, no demostración de reproducción independiente. El test de la muestra ya se había utilizado; no se eligieron parámetros ni umbrales con él.",
+  "avisos": [
+    "Categorías nuevas en validación/prueba se codificaron como ceros según handle_unknown='ignore'.",
+    "Pandas emitió avisos de fragmentación durante el muestreo; la ejecución terminó y se verificaron las identidades."
+  ],
+  "archivos_sha256": {
+    "metricas_svm_muestra.csv": "991507d494c3cffb6b3fce157f41bcaae92d01a86910724aaeac7be347b5e8ba",
+    "particiones_svm_muestra.csv": "03574563eafd14001155c55dce819f884ed3aa033f24372cbfdc027d8fd4e857",
+    "variables_svm_muestra.csv": "07a35f38facb4ea142717da89f7790d47ad2fb72a9c898e1fd993d6573115d15",
+    "columnas_transformadas.csv": "c0f364c52e54486427dba9811b1e06f724d247fc3eddf537e722fac5cfa2e85a",
+    "configuracion_svm_muestra.json": "6f3d68cd058e9414ad1ee4e69a26fdb271b4101f706711491150723f82a6cf9b",
+    "muestra_svm_muestra.json": "ad92bfc50901985bb3c9bea75c1f11f13581a2e71411ad5597844f9403a8c0c3",
+    "decisiones_faltantes.csv": "f1ed26c6898f5afa3082d5f5b68adf14f46bb5e19717dc29a3cd5992f9a30cb3",
+    "curvas_svm_muestra.png": "5a25eda44d6dbf088375b32eca2a7c81a1b32e35da05967a4365fd8431cf2402",
+    "manifiesto.json": "8cd9bf11fa2d8bc84b1b58497c794d01b6b72aeca1557b58da86e370c0dfbd08",
+    "verificacion.csv": "de89dae796ebe44e526bb2a898c1b5a3eba91e30f0b6ab4bdbe65cd7f958555f",
+    "ejecucion_notebook.json": "33082440bd85a2e27551c9062f56f93019577686e71209c6128cfa69f7451424"
+  }
+}

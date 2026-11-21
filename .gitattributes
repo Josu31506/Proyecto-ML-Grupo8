@@ -1,0 +1,3 @@
+# Preserve the original bytes used by the saved HTML integrity checks.
+outputs/exploracion_inicial/*.html text eol=lf
+outputs/exploracion_completa/*.html text eol=lf

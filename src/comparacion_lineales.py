@@ -3,7 +3,7 @@ Las nuevas ejecuciones escriben en una carpeta independiente.
 """
 from pathlib import Path
 
-def ejecutar(raiz, salidas):
+def ejecutar(raiz, salidas, ruta_datos=None, referencias=None):
     from pathlib import Path
     raiz = Path(raiz).resolve()
     SALIDAS = Path(salidas).resolve()
@@ -33,7 +33,7 @@ def ejecutar(raiz, salidas):
 
     ANIOS_VALIDACION=[2013,2014,2015,2016]
     UMBRAL_FALTANTES=10
-    RUTA_DATOS=localizar_datos()
+    RUTA_DATOS=localizar_datos(ruta_datos)
     columnas_fuente=pd.read_csv(RUTA_DATOS,nrows=0).columns.tolist()
     candidatas=ft.seleccionar_predictoras(pd.DataFrame(columns=columnas_fuente),[],incluir_precio_lc=False)
     cols_lectura=candidatas+["loan_status","issue_d"]
@@ -80,7 +80,7 @@ def ejecutar(raiz, salidas):
     if len(variables_26)!=26 or len(variables_59)!=59:
         raise ValueError(f"Se esperaban 26/59 variables; se obtuvieron {len(variables_26)}/{len(variables_59)}")
 
-    lista_previa=(raiz / "outputs")/"comparacion_variables_temporal"/"listas_26_y_59.csv"
+    lista_previa=(Path(referencias) if referencias is not None else raiz / "outputs/comparacion_variables_temporal")/"listas_26_y_59.csv"
     if lista_previa.exists():
         nombres_previos=pd.read_csv(lista_previa)["variable_59"].dropna().tolist()
         if set(nombres_previos)!=set(variables_59):
