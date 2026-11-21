@@ -1,0 +1,92 @@
+{
+  "notebook": "04_exploracion_completa.ipynb",
+  "sha256_notebook_origen": "410a416c10aab9a9589e99e72045a36bbbbdea480253a4a2c911a6737b916ab5",
+  "procedencia": "Índice de resultados publicados y salidas preexistentes extraídas sin volver a ejecutar celdas ni entrenar.",
+  "limitacion": "Los HTML conservan la vista histórica, incluidos truncamientos y precisión de presentación; no son el DataFrame completo.",
+  "celdas": {
+    "2": [],
+    "4": [],
+    "6": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "campos": [
+          "archivo"
+        ]
+      }
+    ],
+    "8": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/exploracion_completa/resumen_lectura_historico.json"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_completa/tipos_97_columnas.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_completa/vista_cinco_prestamos_97_columnas.html"
+      }
+    ],
+    "10": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "vista": "estados"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_completa/particiones_poblacion_completa.html"
+      }
+    ],
+    "12": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "vista": "objetivo"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/distribucion_objetivo_completo.png"
+      }
+    ],
+    "14": [],
+    "16": [],
+    "18": [],
+    "20": [],
+    "22": [],
+    "26": [
+      {
+        "tipo": "benchmark_fases",
+        "descripcion": "Resumen de las mediciones históricas por fase; no se entrena ni se vuelve a medir.",
+        "archivos": [
+          "outputs/benchmark_memoria/directa_1.json",
+          "outputs/benchmark_memoria/directa_2.json",
+          "outputs/benchmark_memoria/bloques_1.json",
+          "outputs/benchmark_memoria/bloques_2.json"
+        ]
+      }
+    ]
+  },
+  "extraidos": {
+    "outputs/exploracion_completa/tipos_97_columnas.html": {
+      "celda": "8",
+      "salida": 1,
+      "sha256": "e3b1f38b5a722ceab254c6197bb43ba89acd5532562dcbc2e4ee7159412ff855",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_completa/vista_cinco_prestamos_97_columnas.html": {
+      "celda": "8",
+      "salida": 2,
+      "sha256": "301fdbef64842b07517a218b6e6612bff9c733b60ad8e7a360a2fa7a379eea02",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_completa/particiones_poblacion_completa.html": {
+      "celda": "10",
+      "salida": 2,
+      "sha256": "fbc556de1683dff1294efeb8e470f4112bd27bbc174671ee196352706b0ea7d5",
+      "formato": "Vista HTML original; puede estar truncada"
+    }
+  }
+}

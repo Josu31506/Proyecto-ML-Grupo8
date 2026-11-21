@@ -1,0 +1,15 @@
+{
+  "filas_muestra": 220003,
+  "semilla": 42,
+  "filas_fuente": 2260701,
+  "total_elegibles": 1345310,
+  "fraccion_muestreo": 0.16353108205543704,
+  "columnas_vacias": [
+    "member_id"
+  ],
+  "huellas_ids_por_particion": {
+    "entrenamiento": "c2f7c64a58e31d9643c01312f5bc90c437f4ba7a2516d7fb104c1782a2745a02",
+    "validacion": "df88a608dbc23fba35b6cdaf2d79a02ffba4aa824a0adc1c45fbaf69444c09fb",
+    "prueba": "d4460f1e96826d17e55ce6ddc368f884b0141e92036889a2b4f201b891d670b6"
+  }
+}

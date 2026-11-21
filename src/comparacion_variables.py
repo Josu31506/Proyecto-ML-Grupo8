@@ -3,7 +3,7 @@ Las nuevas ejecuciones escriben en una carpeta independiente.
 """
 from pathlib import Path
 
-def ejecutar(raiz, salidas):
+def ejecutar(raiz, salidas, ruta_datos=None):
     from pathlib import Path
     raiz = Path(raiz).resolve()
     SALIDAS = Path(salidas).resolve()
@@ -33,7 +33,7 @@ def ejecutar(raiz, salidas):
     ANIOS_VALIDACION = [2013, 2014, 2015, 2016]
     UMBRAL_FALTANTES = 10
 
-    ruta_datos = localizar_datos()
+    ruta_datos = localizar_datos(ruta_datos)
     columnas_fuente = pd.read_csv(ruta_datos, nrows=0).columns.tolist()
     candidatas = ft.seleccionar_predictoras(
         pd.DataFrame(columns=columnas_fuente), [], incluir_precio_lc=False

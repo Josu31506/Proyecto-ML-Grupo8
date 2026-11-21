@@ -1,0 +1,448 @@
+{
+  "notebook": "01_exploracion_inicial_baseline.ipynb",
+  "sha256_notebook_origen": "2f110e07b6c3fc3251172c191971064578f8917f190470c6245ff568fdcd9241",
+  "procedencia": "Índice de resultados publicados y salidas preexistentes extraídas sin volver a ejecutar celdas ni entrenar.",
+  "limitacion": "Los HTML conservan la vista histórica, incluidos truncamientos y precisión de presentación; no son el DataFrame completo.",
+  "celdas": {
+    "1": [],
+    "3": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/metrics.json",
+        "campos": [
+          "semilla",
+          "tamano_muestra_objetivo",
+          "cortes"
+        ]
+      },
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "campos": [
+          "archivo",
+          "total_filas",
+          "total_columnas"
+        ]
+      }
+    ],
+    "5": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "campos": [
+          "total_filas",
+          "total_columnas",
+          "filas_resumen",
+          "total_elegibles"
+        ]
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/tipos_originales.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_cinco_prestamos_originales.html"
+      }
+    ],
+    "7": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_conversion_tipos.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/conversion_tipos.html"
+      }
+    ],
+    "10": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "vista": "estados"
+      },
+      {
+        "tipo": "nota",
+        "descripcion": "Se conservan las etiquetas Fully Paid y Charged Off; los demás estados quedan fuera de la población binaria."
+      }
+    ],
+    "12": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "campos": [
+          "columnas_vacias"
+        ]
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/faltantes_globales.html"
+      }
+    ],
+    "14": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/exclusiones_antes_de_muestrear.html"
+      }
+    ],
+    "16": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/representatividad_por_anio_estado.html"
+      }
+    ],
+    "18": [],
+    "20": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/faltantes_muestra.html"
+      }
+    ],
+    "22": [
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/01_distribucion_objetivo.png"
+      }
+    ],
+    "24": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "vista": "particiones"
+      }
+    ],
+    "26": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/excluidas_por_faltantes_entrenamiento.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/revision_faltantes_entrenamiento.html"
+      }
+    ],
+    "28": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/correlacion_antes_imputacion.html"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_antes_A.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_antes_B.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_antes_C.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_antes_D.png"
+      }
+    ],
+    "30": [],
+    "32": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/faltantes_por_anio.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/diagnostico_variables_con_faltantes.html"
+      }
+    ],
+    "33": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/relacion_faltantes_historial.html"
+      }
+    ],
+    "36": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/medianas_e_indicadores.html"
+      }
+    ],
+    "38": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/tratamiento_faltantes_restantes.html"
+      }
+    ],
+    "40": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/verificacion_imputacion.html"
+      }
+    ],
+    "42": [
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/diagnostico_iqr.html"
+      },
+      {
+        "tipo": "json",
+        "archivo": "outputs/exploracion_inicial/variables_sin_regla_iqr.json",
+        "descripcion": "Variables para las que la regla IQR no se aplicó:"
+      }
+    ],
+    "44": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "campos": [
+          "alertas_calidad",
+          "filas_con_alerta",
+          "total_elegibles"
+        ]
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/ejemplos_registros_con_alertas.html"
+      }
+    ],
+    "46": [
+      {
+        "tipo": "imagen",
+        "archivo": "outputs/exploracion_inicial/boxplots_entrenamiento_imputado.png"
+      }
+    ],
+    "47": [
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_despues_A.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_despues_B.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_despues_C.png"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/exploracion/correlacion_despues_D.png"
+      }
+    ],
+    "49": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/metrics.json",
+        "campos": [
+          "variables"
+        ]
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_matriz_sin_indicadores.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_matriz_con_indicadores.html"
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_matriz_con_precio_lc.html"
+      }
+    ],
+    "51": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/auditoria.json",
+        "vista": "particiones"
+      },
+      {
+        "tipo": "json",
+        "archivo": "outputs/metrics.json",
+        "campos": [
+          "variables"
+        ]
+      },
+      {
+        "tipo": "html",
+        "archivo": "outputs/exploracion_inicial/vista_matriz_con_indicadores.html"
+      }
+    ],
+    "53": [
+      {
+        "tipo": "nota",
+        "descripcion": "Consulta: no se entrenó ningún modelo en esta sesión. Las métricas originales se muestran en la sección de resultados."
+      }
+    ],
+    "55": [
+      {
+        "tipo": "json",
+        "archivo": "outputs/metrics.json",
+        "vista": "umbrales"
+      }
+    ],
+    "57": [],
+    "59": [],
+    "61": [
+      {
+        "tipo": "imagen",
+        "archivo": "outputs/exploracion_inicial/confusion_y_roc_validacion.png"
+      }
+    ],
+    "63": [
+      {
+        "tipo": "csv",
+        "archivo": "outputs/coeficientes_baseline.csv"
+      },
+      {
+        "tipo": "imagen",
+        "archivo": "reports/figures/09_coeficientes_baseline.png"
+      }
+    ]
+  },
+  "extraidos": {
+    "outputs/exploracion_inicial/tipos_originales.html": {
+      "celda": "5",
+      "salida": 5,
+      "sha256": "11ae0a436f98d91dbad071e1309dfca20392f386f005508d9761d0c35dba9713",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/vista_cinco_prestamos_originales.html": {
+      "celda": "5",
+      "salida": 6,
+      "sha256": "45378530b085fc5235488edac422a8cf74dacaafc9bd177a6b0c6ac7af2ba2f6",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/vista_conversion_tipos.html": {
+      "celda": "7",
+      "salida": 1,
+      "sha256": "3d56bbde08688df4f1eedae45b1ef510a5b155f1352fec4b9f5132a1a6e6ebbe",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/conversion_tipos.html": {
+      "celda": "7",
+      "salida": 2,
+      "sha256": "a3903213d6fff58f1bf8fa375677f57f6bf8493d175a3b4aadd7eb519ed41ee0",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/faltantes_globales.html": {
+      "celda": "12",
+      "salida": 1,
+      "sha256": "e1cf763fc79e223803ffb38706e620cccaa1263169667fa1f20bc03deba47deb",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/exclusiones_antes_de_muestrear.html": {
+      "celda": "14",
+      "salida": 1,
+      "sha256": "97d76e8214181d27963786a5c8ad8bbd811a12163866c239bbcd4cf073d923af",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/representatividad_por_anio_estado.html": {
+      "celda": "16",
+      "salida": 1,
+      "sha256": "5cc3888919d42ba3937f68e227abcb7e2282b278c8f16e4542d39b25361c4c43",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/faltantes_muestra.html": {
+      "celda": "20",
+      "salida": 0,
+      "sha256": "cc42ab8f6116154d67259ad1f8e21813a2de1b77fe08afc70090ed2da62192c3",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/excluidas_por_faltantes_entrenamiento.html": {
+      "celda": "26",
+      "salida": 1,
+      "sha256": "b4c8727da6193f183c8a855bba32074d35a40f422dcedf4274366a5c0aa3b12c",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/revision_faltantes_entrenamiento.html": {
+      "celda": "26",
+      "salida": 3,
+      "sha256": "2eac08d67f274b95b0a60994c0733cdce733b344dea5e77126011571afaea2b1",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/correlacion_antes_imputacion.html": {
+      "celda": "28",
+      "salida": 1,
+      "sha256": "0e14421ea0424051dd7692b65a06bf4c5fbf047b29b7aa8917931b32723c4748",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/faltantes_por_anio.html": {
+      "celda": "32",
+      "salida": 1,
+      "sha256": "2baf8a411a80e5569b5c7bfb0292a6f8de051b5fc3302a3679be2b59cf03298c",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/diagnostico_variables_con_faltantes.html": {
+      "celda": "32",
+      "salida": 2,
+      "sha256": "0c2a17a68c7b0a455ed4b20251fbc6536a73bc0e98219a69eebfa4f0a6311f8c",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/relacion_faltantes_historial.html": {
+      "celda": "33",
+      "salida": 0,
+      "sha256": "eb24c1c59f2b57088bcdf6d05bba9099b3f09e18cfb3b444b8abd596f2e83f0d",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/medianas_e_indicadores.html": {
+      "celda": "36",
+      "salida": 0,
+      "sha256": "a360c5f5d97d4110dcecc482045f08ca34a16d6323b300d8787f64da506c2e2f",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/tratamiento_faltantes_restantes.html": {
+      "celda": "38",
+      "salida": 0,
+      "sha256": "6c4b977e775dcece1edee37a39d1d99d909c3fe97a2e55d3b583bcc51a191b70",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/verificacion_imputacion.html": {
+      "celda": "40",
+      "salida": 0,
+      "sha256": "eda23b3380f1697acf40ee6c9763c6e05e4776c49875e9edeca4354c7bef8a12",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/diagnostico_iqr.html": {
+      "celda": "42",
+      "salida": 0,
+      "sha256": "6c24df5c019928d66f04cf408c456af5c55f4f1a0c0f4000ad8048f55e52fb11",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/ejemplos_registros_con_alertas.html": {
+      "celda": "44",
+      "salida": 2,
+      "sha256": "a511c304836c35594257bd7022b67280701c1f16dcbe36618de7ac6ff3f10913",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/boxplots_entrenamiento_imputado.png": {
+      "celda": "46",
+      "salida": 1,
+      "sha256": "7fd841889a67c42ff9c2310cb9f28de4a8ba84978ffda3e99037e0cb741a9833",
+      "formato": "PNG original incrustado"
+    },
+    "outputs/exploracion_inicial/vista_matriz_sin_indicadores.html": {
+      "celda": "49",
+      "salida": 6,
+      "sha256": "6168741fbc00f642c95dc2b9ee0f11446cac0cf601c7b643956e13d6789011ee",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/vista_matriz_con_indicadores.html": {
+      "celda": "49",
+      "salida": 8,
+      "sha256": "5563debe76940bf194ebacbb835b8f8b711f875683b0d9fff64eade3d0d7bb49",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/vista_matriz_con_precio_lc.html": {
+      "celda": "49",
+      "salida": 10,
+      "sha256": "3cd27dfaf0e3472c32382b62df99e64401f88a032a67c0ce4a947c68e4e49195",
+      "formato": "Vista HTML original; puede estar truncada"
+    },
+    "outputs/exploracion_inicial/confusion_y_roc_validacion.png": {
+      "celda": "61",
+      "salida": 0,
+      "sha256": "71a0a53a3c176b5e65d0d567d4a2ba64f5be2004204a8304f744f745158c3901",
+      "formato": "PNG original incrustado"
+    }
+  }
+}

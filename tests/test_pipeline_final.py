@@ -116,6 +116,14 @@ class PipelineFinalTests(unittest.TestCase):
         repetido = next(ef.entrenar_pipelines_finales(self.dev, self.candidatas, modelos=["regresion_logistica"]))
         np.testing.assert_array_equal(repetido.predict_proba(self.raw_test), self.modelos["regresion_logistica"].predict_proba(self.raw_test))
 
+    def test_svm_usa_margen_calibrado(self):
+        modelo = self.modelos["svm_lineal"]
+        X = ef.preparar_X(self.test, self.candidatas)
+        self.assertEqual(modelo.tipo_score, "margen")
+        probabilidades = modelo.predecir_preparado(X)
+        self.assertTrue(np.isfinite(probabilidades).all())
+        self.assertTrue(((probabilidades >= 0) & (probabilidades <= 1)).all())
+
     def test_equivalencia_con_evaluacion_historica(self):
         original, pred = ef.entrenar_final_y_evaluar(self.dev, self.candidatas, self.test,
                                                   {m: "Sigmoide" for m in self.modelos})

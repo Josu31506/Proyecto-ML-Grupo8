@@ -1,0 +1,12 @@
+{
+  "filas": 2260701,
+  "columnas": 97,
+  "segundos_carga_conversion_mostrados": 86.9,
+  "memoria_profunda_GiB_mostrada": 0.68,
+  "cantidad_por_tipo": {
+    "numérica": 86,
+    "categórica": 8,
+    "fecha auxiliar": 3
+  },
+  "procedencia": "Valores mostrados en la salida histórica del notebook 04; no se volvió a medir la carga."
+}

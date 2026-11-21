@@ -1,6 +1,6 @@
 from pathlib import Path
 
-def ejecutar(raiz, salidas):
+def ejecutar(raiz, salidas, ruta_datos=None):
     from pathlib import Path
     raiz = Path(raiz).resolve()
     SALIDAS = Path(salidas).resolve()
@@ -21,7 +21,7 @@ def ejecutar(raiz, salidas):
     from src.config import localizar_datos
 
     archivo_local = RAIZ / "accepted_2007_to_2018Q4.csv"
-    archivo = archivo_local if archivo_local.exists() else localizar_datos()
+    archivo = localizar_datos(ruta_datos)
     TAMANO_BLOQUE = 50_000
     MAX_CATEGORIAS = 1_000
     inicio = time.perf_counter()
@@ -167,6 +167,12 @@ def ejecutar(raiz, salidas):
     display(detalle.tipo_conservador.value_counts().to_frame("columnas"))
     with pd.option_context("display.max_rows", None):
         display(detalle.sort_values("ahorro_conservador_MiB", ascending=False).round(4))
+
+    resumen_rangos.to_csv(SALIDAS / "auditoria_rangos.csv", index_label="variable")
+    comprobacion.to_csv(SALIDAS / "auditoria_preservacion.csv", index_label="variable")
+    errores_float32.to_csv(SALIDAS / "auditoria_float32.csv", index_label="variable")
+    detalle.to_csv(SALIDAS / "auditoria_tipos_memoria.csv", index_label="variable")
+    resumen.to_csv(SALIDAS / "auditoria_resumen_memoria.csv", index_label="estrategia")
 
     print(f"Filas auditadas: {filas:,}; columnas: {len(columnas)}.")
     print(f"Reducción conservadora acumulada: {resumen.loc['Conservadora (exacta)', 'reduccion_pct']:.2f}%.")

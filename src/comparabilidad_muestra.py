@@ -53,4 +53,4 @@ def verificar_muestra(ruta, muestra, auditoria, objetivo, referencias):
             "huella_identidades_fuente": huella_fuente.hexdigest(), "huellas_ids_por_particion": huellas,
             "particiones": {n: len(p) for n, p in partes.items()},
             "verificacion": "reconstrucción independiente por IDs, estados y fechas; filas y prevalencias de referencias",
-            "limite": "Las métricas históricas no guardan IDs ni hash de la fuente. La coincidencia histórica se sustenta en la receta y sus comprobaciones; la nueva comparación recalcula modelos sobre los mismos objetos."}
+            "limite": "Las métricas históricas no guardan IDs ni hash de la fuente. La coincidencia histórica se sustenta en la receta y sus comprobaciones; la reconstrucción por IDs verifica la muestra actual y no implica reentrenar las referencias guardadas."}

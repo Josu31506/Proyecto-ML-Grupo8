@@ -3,7 +3,7 @@ Las nuevas ejecuciones escriben en una carpeta independiente.
 """
 from pathlib import Path
 
-def ejecutar(raiz, salidas):
+def ejecutar(raiz, salidas, ruta_datos=None):
     from pathlib import Path
     raiz = Path(raiz).resolve()
     SALIDAS = Path(salidas).resolve()
@@ -31,7 +31,7 @@ def ejecutar(raiz, salidas):
         resumir_metricas,
     )
 
-    archivo = localizar_datos()
+    archivo = localizar_datos(ruta_datos)
     print("Archivo fuente:", archivo)
     inicio = time.perf_counter()
     datos, predictoras = cargar_datos_modelado(archivo)

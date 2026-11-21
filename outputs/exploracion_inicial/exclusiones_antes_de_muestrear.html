@@ -1,0 +1,256 @@
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variable</th>
+      <th>motivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>id</td>
+      <td>Identificador</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>member_id</td>
+      <td>100% vacía en el archivo</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>emp_title</td>
+      <td>Texto fuera del alcance del primer modelo</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>pymnt_plan</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>url</td>
+      <td>Identificador</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>desc</td>
+      <td>Texto fuera del alcance del primer modelo</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>title</td>
+      <td>Texto fuera del alcance del primer modelo</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>zip_code</td>
+      <td>Muchas categorías; usamos addr_state como ubic...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>out_prncp</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>out_prncp_inv</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>total_pymnt</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>total_pymnt_inv</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>total_rec_prncp</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>total_rec_int</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>total_rec_late_fee</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>recoveries</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>collection_recovery_fee</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>last_pymnt_d</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>last_pymnt_amnt</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>next_pymnt_d</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>last_credit_pull_d</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>last_fico_range_high</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>last_fico_range_low</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>policy_code</td>
+      <td>Código de política fuera del alcance</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>hardship_flag</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>hardship_type</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>hardship_reason</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>hardship_status</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>deferral_term</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>hardship_amount</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>hardship_start_date</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>hardship_end_date</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>payment_plan_start_date</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>hardship_length</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>hardship_dpd</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>hardship_loan_status</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>orig_projected_additional_accrued_interest</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>hardship_payoff_balance_amount</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>hardship_last_payment_amount</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>debt_settlement_flag</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>debt_settlement_flag_date</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>settlement_status</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>settlement_date</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>settlement_amount</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>settlement_percentage</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>settlement_term</td>
+      <td>Información posterior: riesgo de leakage</td>
+    </tr>
+  </tbody>
+</table>
+</div>

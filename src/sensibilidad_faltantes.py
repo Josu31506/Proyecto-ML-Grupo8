@@ -3,7 +3,7 @@ Las nuevas ejecuciones escriben en una carpeta independiente.
 """
 from pathlib import Path
 
-def ejecutar(raiz, salidas, referencias=None):
+def ejecutar(raiz, salidas, referencias=None, ruta_datos=None):
     from pathlib import Path
     raiz = Path(raiz).resolve()
     SALIDAS = Path(salidas).resolve()
@@ -30,7 +30,7 @@ def ejecutar(raiz, salidas, referencias=None):
 
     SALIDA=SALIDAS/"analisis_sensibilidad_faltantes"
     SALIDA.mkdir(parents=True,exist_ok=True)
-    RUTA=localizar_datos()
+    RUTA=localizar_datos(ruta_datos)
     RUTA_09E = Path(referencias) if referencias is not None else (raiz / "outputs/comparacion_umbrales_faltantes")
     metricas_09e=pd.read_csv(RUTA_09E/"metricas_por_modelo_umbral_corte.csv")
     resumen_09e=pd.read_csv(RUTA_09E/"resumen_promedios_y_variabilidad.csv")
