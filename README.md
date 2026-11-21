@@ -168,18 +168,6 @@ El test corresponde a 2017–2018 y su prevalencia de incumplimiento es 0.212822
 
 Esto confirma la reproducción numérica de las métricas mediante los artefactos serializados, no una validación externa ni la identidad fila a fila de todas las predicciones. El test ya había sido consultado durante el desarrollo histórico; siguen vigentes la selección de préstamos con desenlace observado, las limitaciones de maduración de etiquetas y la ausencia de evaluación prospectiva estrictamente independiente.
 
-### Comparación inicial con muestra
-
-La ejecución guardada en [gradient_boosting_220000/metrics_boosting.json](outputs/gradient_boosting_220000/metrics_boosting.json) recalculó los tres modelos sobre 220,003 observaciones:
-
-| Modelo | ROC-AUC validación | AP validación | ROC-AUC prueba |
-|---|---:|---:|---:|
-| Logística sin indicadores | 0.71205 | 0.40161 | 0.69019 |
-| Árbol con parámetros fijados | 0.67448 | 0.35482 | 0.63458 |
-| HistGradientBoosting inicial | 0.71556 | 0.40716 | 0.69135 |
-
-Estos valores pertenecen a la muestra y no sustituyen la evaluación final calibrada. La referencia anterior de Boosting con objetivo 5,000 y 5,002 efectivos permanece en `outputs/metrics_boosting.json`, marcada como una ejecución de tamaño distinto. El [manifiesto de muestra](outputs/gradient_boosting_220000/muestra_verificada.json) registra las comprobaciones de IDs y particiones.
-
 ## Instalación y datos
 
 Ejecutar desde la raíz del repositorio, por ejemplo en PowerShell:
@@ -191,76 +179,378 @@ python -m pip install -r requirements.txt
 ```
 Descargar el CSV desde la fuente indicada en [data/README.md](data/README.md) y colocarlo en `data/raw/`, `data/`, la raíz, o pasar `--datos RUTA`. `src.config.localizar_datos` también revisa Downloads. El CSV local descomprimido ocupa aproximadamente 1.6 GB; algunas etapas necesitan memoria adicional para matrices y copias. Las carpetas de datos y modelos se mantienen fuera de Git.
 
+
 ## Pipeline final reproducible
 
-El pipeline reutiliza la configuración definitiva; **no realiza búsquedas de hiperparámetros**. No requiere ejecutar todos los notebooks.
+El proyecto implementa un pipeline de Machine Learning mediante el módulo `src.run_final`, que permite **entrenar, evaluar y utilizar los modelos definitivos** sin necesidad de ejecutar nuevamente los once notebooks de investigación.
 
-### Entrenar y calibrar
+Los notebooks documentan el desarrollo experimental: exploración, comparación de algoritmos, selección de características, búsqueda de hiperparámetros, calibración y evaluación histórica. En cambio, `src.run_final` reutiliza las configuraciones seleccionadas para ejecutar el procedimiento definitivo.
+
+El pipeline tiene tres modos de operación:
+
+| Modo | Función principal | Resultado |
+| --- | --- | --- |
+| `entrenar` | Ajusta los modelos definitivos y sus calibradores a partir del dataset original. | Modelos serializados `.joblib` y `manifest.json`. |
+| `evaluar` | Calcula métricas sobre datos históricos utilizando modelos previamente entrenados. | Métricas, predicciones, gráficos y análisis de errores. |
+| `predecir` | Estima el riesgo de incumplimiento de nuevos préstamos. | CSV con probabilidades individuales de `Charged Off`. |
+
+Estos modos se ejecutan por separado. El entrenamiento debe realizarse antes de utilizar los otros dos modos cuando todavía no se dispone de los artefactos del modelo.
+
+### 1. Entrenar y calibrar los modelos finales
+
+**Objetivo:** construir los tres modelos definitivos utilizando el dataset original y guardar todos los componentes necesarios para reutilizarlos posteriormente.
+
+El entrenamiento emplea las configuraciones seleccionadas durante la investigación; **no realiza una nueva búsqueda de hiperparámetros ni vuelve a comparar configuraciones alternativas**.
+
+
+#### Datos de entrada
+
+Para entrenar los modelos es necesario descargar el dataset original de Lending Club desde [Kaggle](https://www.kaggle.com/datasets/wordsforthewise/lending-club).
+
+Una vez descargado, extraer del archivo ZIP el siguiente CSV:
+
+`accepted_2007_to_2018Q4.csv`
+
+Colocar el CSV en `data/raw/`, que es la ubicación recomendada para los datos originales del proyecto.
+
+El dataset no se incluye en GitHub. El programa no descomprime automáticamente archivos ZIP.
+
+#### Ejecución
+
+Desde la raíz del repositorio:
 
 ```powershell
-python -m src.run_final --modo entrenar --salida models/final_01
+python -m src.run_final --modo entrenar --datos data/raw/accepted_2007_to_2018Q4.csv --salida models/final_01
 ```
 
-Se puede añadir `--datos accepted_2007_to_2018Q4.csv`. Este modo solo utiliza base 2007–2015 y calibración 2016; no evalúa automáticamente el test. Genera:
+El pipeline carga el archivo desde la ruta indicada, filtra los préstamos elegibles y utiliza las particiones temporales establecidas para entrenar y calibrar los modelos definitivos.
 
-- `regresion_logistica.joblib`, `svm_lineal.joblib` y `gradient_boosting.joblib`.
-- `manifest.json`: hashes, modelo principal, selección/orden de variables, esquema de entrada, parámetros, periodos y versiones.
+Aunque el cargador admite otras ubicaciones y archivos `.csv.gz`, se recomienda mantener los datos originales en `data/raw/` para conservar una estructura organizada y reproducible.
 
-Cada joblib contiene selección, preprocesador, estimador y calibrador. La carpeta `models/final_01/` ya existe **localmente** y el comando rechazará sobrescribirla. Para una reproducción nueva, usar `--salida models/final_02` o no indicar `--salida`, que crea una carpeta fechada. Los artefactos no se publican en GitHub.
+#### ¿Qué hace internamente?
 
-### Evaluar artefactos guardados
+El procedimiento sigue estas etapas:
+
+1. **Verifica la configuración definitiva.** Comprueba que los hiperparámetros, la semilla, el criterio de selección de características y el método de calibración coincidan con las configuraciones históricas guardadas.
+
+2. **Carga y filtra los datos.** Conserva los préstamos elegibles con los estados `Fully Paid` y `Charged Off`, utilizando el conjunto de desarrollo hasta 2016.
+
+3. **Realiza la separación temporal.** Utiliza los préstamos de 2007–2015 para ajustar los modelos y reserva los préstamos de 2016 para calibrar sus probabilidades.
+
+4. **Selecciona y prepara las características.** Aplica el criterio definitivo de hasta 50 % de valores faltantes, ajustando la selección, imputación, codificación de categorías y escalado únicamente con los datos de entrenamiento base.
+
+5. **Entrena tres modelos.** Ajusta regresión logística, SVM lineal e HistGradientBoosting con sus hiperparámetros definitivos.
+
+6. **Calibra las probabilidades.** Utiliza los datos de 2016 para ajustar un calibrador sigmoide por modelo, sin volver a entrenar el estimador base con ese periodo.
+
+7. **Guarda los artefactos.** Serializa los modelos completos y genera un manifiesto con la información necesaria para su carga y verificación.
+
+#### Archivos generados
+
+```text
+models/
+└── final_01/
+    ├── regresion_logistica.joblib
+    ├── svm_lineal.joblib
+    ├── gradient_boosting.joblib
+    └── manifest.json
+```
+
+Cada archivo `.joblib` conserva el modelo correspondiente junto con la información de selección de variables, preprocesamiento y calibración.
+
+El archivo `manifest.json` identifica el modelo principal, las rutas y huellas SHA-256 de los artefactos, sus configuraciones, versiones de dependencias y metadatos de entrenamiento.
+
+**El modo `entrenar` no evalúa automáticamente el conjunto de prueba de 2017–2018.** Su función es generar los modelos definitivos, no medir nuevamente su rendimiento histórico.
+
+#### Consideraciones
+
+Los artefactos `.joblib` no se publican en GitHub. Por tanto, quien descargue el repositorio por primera vez deberá entrenar los modelos si desea utilizar los modos `evaluar` o `predecir`.
+
+La carpeta de salida debe ser nueva. Si `models/final_01/` ya existe, el programa rechazará sobrescribirla. Puede utilizarse otra ruta, como `models/final_02/`, o no indicar `--salida` para generar una carpeta con nombre fechado.
+
+Los artefactos serializados requieren versiones compatibles de las dependencias registradas durante su entrenamiento.
+
+### 2. Evaluar los modelos entrenados
+
+**Objetivo:** medir el rendimiento de los modelos definitivos sobre préstamos históricos con desenlace conocido, sin volver a entrenarlos ni modificar sus calibradores.
+
+Este modo permite comprobar la capacidad discriminativa, la calidad de las probabilidades y el comportamiento de los modelos al utilizar un umbral de clasificación.
+
+#### Datos de entrada
+
+Se necesitan:
+
+- El dataset original `accepted_2007_to_2018Q4.csv`.
+- La carpeta que contiene los tres modelos `.joblib` y el archivo `manifest.json`.
+- La indicación del periodo que se desea evaluar.
+
+El programa comprueba la integridad de los artefactos mediante sus huellas SHA-256 y verifica la compatibilidad de las versiones de sus dependencias.
+
+#### Evaluación descriptiva del periodo de calibración
 
 ```powershell
 python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto validacion
 ```
 
-`validacion` corresponde a **2016, usado para ajustar la sigmoide**. Es una revisión descriptiva del periodo de calibración, no una evaluación independiente.
+Esta instrucción calcula las métricas sobre los préstamos de **2016**.
 
-El test histórico requiere autorización explícita en el comando:
+Es importante interpretar correctamente el resultado: el año 2016 ya se utilizó para ajustar los calibradores sigmoidales. Por ello, esta evaluación es descriptiva y **no constituye una evaluación independiente** de las probabilidades calibradas.
+
+#### Evaluación del conjunto de prueba histórico
 
 ```powershell
 python -m src.run_final --modo evaluar --modelos models/final_01 --datos accepted_2007_to_2018Q4.csv --conjunto test --confirmar-test
 ```
 
-El modo carga artefactos sin reajustarlos y escribe una ejecución nueva bajo `outputs/pipeline_final/`, o en el destino dado por `--salida`. Produce métricas, predicciones, clasificación con umbral 0.5, errores por segmentos, curvas y un registro de alcance. El umbral es descriptivo; no es un umbral de negocio optimizado. El test no debe reutilizarse para elegir modelos, variables, calibración ni parámetros.
+Esta instrucción utiliza los préstamos elegibles originados entre **2017 y 2018**, separados del ajuste base y de la calibración definitiva.
 
-### Predecir préstamos nuevos
+El argumento `--confirmar-test` es obligatorio para evitar consultar accidentalmente el conjunto de prueba.
 
-Antes de realizar predicciones sobre nuevos préstamos, es necesario disponer de los modelos previamente entrenados y calibrados mediante el pipeline final. Dado que los archivos .joblib no se incluyen en el repositorio de GitHub, quien descargue el proyecto por primera vez deberá ejecutar el modo entrenar utilizando el dataset original de Lending Club.
+#### ¿Qué hace internamente?
 
-Este proceso genera los tres modelos finales y el archivo manifest.json en el directorio de salida seleccionado. Una vez creados, los artefactos pueden reutilizarse para realizar múltiples predicciones sin repetir el entrenamiento.
+1. **Carga los modelos guardados.** Recupera sus preprocesadores, estimadores y calibradores sin reajustarlos.
 
-Por tanto, el entrenamiento se realiza primero y la predicción posteriormente, utilizando la ruta donde se guardaron los modelos.
+2. **Selecciona el periodo solicitado.** Filtra los préstamos elegibles de 2016 o de 2017–2018, según el argumento `--conjunto`.
+
+3. **Aplica las transformaciones aprendidas.** Utiliza las características y parámetros de preparación conservados durante el entrenamiento.
+
+4. **Calcula probabilidades calibradas.** Obtiene una probabilidad estimada de `Charged Off` para cada préstamo y para cada uno de los tres modelos.
+
+5. **Calcula métricas predictivas.** Incluye ROC-AUC, Average Precision, Brier Score y Log Loss.
+
+6. **Analiza la clasificación.** Aplica el umbral descriptivo de 0.5 para estudiar el comportamiento de los modelos y sus errores.
+
+7. **Genera resultados y gráficos.** Guarda las métricas, las predicciones, el análisis de errores por segmentos y las curvas de evaluación.
+
+#### Archivos generados
+
+Cada evaluación crea una carpeta nueva dentro de `outputs/pipeline_final/`, con archivos como:
+
+```text
+outputs/
+└── pipeline_final/
+    └── test_YYYYMMDD_HHMMSS/
+        ├── auditoria_estados.csv
+        ├── metricas.csv
+        ├── predicciones.csv.gz
+        ├── clasificacion_0_5.csv
+        ├── errores_segmentos.csv
+        ├── evaluacion.png
+        └── alcance.json
+```
+
+El nombre de la carpeta es ilustrativo; el programa utiliza un identificador temporal. `auditoria_estados.csv` se genera cuando se evalúa el test.
+
+Los archivos cumplen funciones distintas:
+
+| Archivo | Contenido |
+| --- | --- |
+| `metricas.csv` | Métricas de rendimiento de los tres modelos. |
+| `predicciones.csv.gz` | Probabilidades estimadas y etiquetas reales de las observaciones evaluadas. |
+| `clasificacion_0_5.csv` | Resultados de clasificación utilizando el umbral 0.5. |
+| `errores_segmentos.csv` | Métricas y errores desagregados por segmentos disponibles. |
+| `evaluacion.png` | Curvas ROC, Precision–Recall y calibración. |
+| `alcance.json` | Periodo evaluado, interpretación, umbral y versiones de ejecución. |
+| `auditoria_estados.csv` | Conteos de estados inspeccionados durante la evaluación del test. |
+
+**El umbral de 0.5 es exclusivamente descriptivo** y no representa una política de aprobación de créditos optimizada.
+
+La evaluación histórica tampoco debe utilizarse para modificar hiperparámetros, seleccionar variables o elegir nuevamente la calibración a partir de los resultados del test.
+
+### 3. Predecir el riesgo de nuevos préstamos
+
+**Objetivo:** utilizar el modelo principal previamente entrenado para estimar la probabilidad de que nuevos préstamos terminen declarados incobrables.
+
+Este modo corresponde a la utilización del modelo para inferencia. A diferencia de la evaluación, **no necesita conocer el desenlace real de los préstamos ni disponer del dataset histórico original**.
+
+#### Requisitos previos
+
+Antes de generar predicciones deben existir los artefactos del entrenamiento definitivo.
+
+Si los modelos todavía no se han generado, primero debe ejecutarse el modo `entrenar` con el dataset original de Lending Club.
+
+Una vez guardados, los modelos pueden reutilizarse para realizar múltiples predicciones sin repetir el entrenamiento.
+
+#### Datos de entrada
+
+Se necesita un archivo CSV con las características de los nuevos préstamos.
+
+Por ejemplo:
+
+`nuevos_prestamos.csv`
+
+El archivo debe contener todas las columnas indicadas en `columnas_entrada` del manifiesto del modelo principal, conservando sus nombres originales.
+
+Las columnas son obligatorias en el esquema, aunque sus valores individuales pueden estar ausentes. No es necesario incluir la etiqueta `loan_status`, la variable objetivo `default` ni información de pagos posteriores al otorgamiento.
+
+Para las fechas de entrada se utiliza el formato esperado por el proyecto, por ejemplo `Jan-2016`. Las columnas adicionales del CSV se ignoran.
+
+#### Ejecución
 
 ```powershell
 python -m src.run_final --modo predecir --modelos models/final_01 --datos nuevos_prestamos.csv
 ```
 
-El CSV debe incluir las `columnas_entrada` del manifiesto del modelo principal con sus nombres originales. Las columnas deben existir, aunque sus valores pueden faltar. No se exigen `loan_status`, `default`, pagos ni variables posteriores. Cuando se usa antigüedad crediticia, las fechas siguen el formato Lending Club, por ejemplo `Jan-2016`. Las columnas adicionales se ignoran.
+#### ¿Qué hace internamente?
 
-Se carga HistGradientBoosting con sus transformaciones congeladas, se procesa el CSV por bloques y se guarda `fila_entrada` y `probabilidad_charged_off` en un CSV nuevo bajo `outputs/predicciones/`. `--salida outputs/predicciones_nuevas_01.csv` permite elegir el archivo. La inferencia no vuelve a entrenar ni necesita el dataset original.
+1. **Carga el modelo principal.** Según el manifiesto definitivo, utiliza HistGradientBoosting.
 
-### Parámetros de la interfaz
+2. **Verifica las columnas de entrada.** Comprueba que el CSV incluya todas las características requeridas.
+
+3. **Procesa los datos por bloques.** Lee hasta 10,000 filas por bloque para evitar cargar innecesariamente todo el archivo de predicción.
+
+4. **Aplica el preprocesamiento guardado.** Reutiliza las variables seleccionadas, medianas, categorías, escaladores y transformaciones aprendidas durante el entrenamiento.
+
+5. **Calcula probabilidades calibradas.** Obtiene para cada préstamo una estimación entre 0 y 1 de pertenecer a la clase `Charged Off`.
+
+6. **Guarda las predicciones.** Genera un archivo CSV nuevo con la posición de cada registro y su probabilidad estimada.
+
+#### Archivo generado
+
+Por defecto, el programa crea un CSV con nombre fechado dentro de `outputs/predicciones/`.
+
+El archivo contiene dos columnas:
+
+| Columna | Significado |
+| --- | --- |
+| `fila_entrada` | Posición de la observación en el archivo de entrada, comenzando desde cero. |
+| `probabilidad_charged_off` | Probabilidad estimada de que el préstamo termine declarado incobrable. |
+
+Por ejemplo, una probabilidad de `0.30` representa una estimación de riesgo del 30 % bajo las condiciones y limitaciones del modelo.
+
+También puede indicarse una ruta de salida:
+
+```powershell
+python -m src.run_final --modo predecir --modelos models/final_01 --datos nuevos_prestamos.csv --salida outputs/predicciones_nuevas_01.csv
+```
+
+El archivo de salida debe ser nuevo; el programa no sobrescribe predicciones existentes.
+
+**Este modo no entrena, no recalibra y no evalúa métricas predictivas**, porque los préstamos nuevos no necesitan disponer de una etiqueta real.
+
+Las probabilidades generadas no constituyen decisiones automáticas de aprobación o rechazo de crédito. Su uso está limitado por las características de la población de entrenamiento, la calibración y las advertencias metodológicas del informe.
+
+### 4. Resumen del flujo de utilización
+
+Para una persona que descarga el proyecto por primera vez, el procedimiento completo es:
+
+```text
+Dataset original de Lending Club
+              |
+              v
+       Modo ENTRENAR
+              |
+              v
+  Modelos .joblib + manifest.json
+              |
+       +------+------+
+       |             |
+       v             v
+  Modo EVALUAR   Modo PREDECIR
+       |             |
+       v             v
+Métricas y       Probabilidades
+análisis de      individuales de
+errores          nuevos préstamos
+```
+
+La secuencia depende del objetivo:
+
+- **Revisar los resultados de la investigación:** consultar el informe, los notebooks y los archivos históricos de `outputs/`. No es necesario entrenar nuevamente.
+- **Reproducir el modelo definitivo:** descargar el dataset y ejecutar `entrenar`.
+- **Recalcular sus métricas históricas:** disponer de los modelos guardados y ejecutar `evaluar`.
+- **Estimar riesgos de préstamos nuevos:** disponer de los modelos guardados y ejecutar `predecir` con un CSV compatible.
+
+Los modos `evaluar` y `predecir` reutilizan los mismos artefactos, pero tienen objetivos distintos: el primero mide el rendimiento con etiquetas conocidas y el segundo genera probabilidades para observaciones cuya etiqueta no es necesaria.
+
+### 5. Parámetros de la interfaz
 
 | Argumento | Uso |
-|---|---|
-| `--modo` | `entrenar`, `evaluar` o `predecir` |
-| `--datos` | Ruta del CSV; obligatoria en evaluación y predicción |
-| `--modelos` | Carpeta con manifiesto y joblib; obligatoria en evaluación y predicción |
-| `--salida` | Carpeta nueva para entrenamiento/evaluación; archivo CSV nuevo para predicción |
-| `--conjunto` | `validacion` (2016) o `test` (2017–2018) |
-| `--confirmar-test` | Habilita explícitamente la evaluación del test histórico |
+| --- | --- |
+| `--modo` | Selecciona `entrenar`, `evaluar` o `predecir`. |
+| `--datos` | Ruta del CSV. Opcional en entrenamiento si el archivo puede localizarse automáticamente; obligatorio en evaluación y predicción. |
+| `--modelos` | Carpeta con `manifest.json` y archivos `.joblib`. Obligatorio en evaluación y predicción. |
+| `--salida` | Ruta nueva para guardar modelos, resultados de evaluación o un CSV de predicciones. |
+| `--conjunto` | Selecciona `validacion` (2016) o `test` (2017–2018) en el modo de evaluación. |
+| `--confirmar-test` | Autoriza explícitamente la evaluación del conjunto de prueba histórico. |
 
-Consultar `python -m src.run_final --help`. Los destinos existentes no se sobrescriben. Una ejecución interrumpida debe repetirse en un destino nuevo.
+Para consultar todos los argumentos:
+
+```powershell
+python -m src.run_final --help
+```
+
+El pipeline protege los destinos existentes para evitar sobrescribir artefactos y resultados previos.
+
+
+### Verificación de la búsqueda de hiperparámetros
+
+La optimización de hiperparámetros puede revisarse y reproducirse mediante los notebooks 06 y 09.
+
+El notebook 06 documenta la búsqueda aleatoria inicial utilizando 26 características, mientras que el notebook 09 implementa la optimización definitiva con selección temporal de características y un umbral máximo del 50 % de faltantes.
+
+La búsqueda definitiva utiliza cuatro cortes de validación temporal (2013–2016), una semilla fija y las tres familias de modelos: regresión logística, SVM lineal e HistGradientBoosting.
+
+#### Consultar los resultados históricos
+
+Abrir `notebooks/09_optimizacion_final.ipynb` y mantener:
+
+```python
+REPRODUCIR = False
+```
+
+Este modo permite examinar los hiperparámetros seleccionados, las métricas por configuración y año, y las comparaciones de rendimiento sin volver a entrenar modelos.
+
+Los resultados de referencia se encuentran en `outputs/optimizacion_final/`.
+
+#### Reproducir la búsqueda completa
+
+Para ejecutar nuevamente el procedimiento:
+
+```python
+REPRODUCIR = True
+RUTA_DATOS = "data/raw/accepted_2007_to_2018Q4.csv.gz"
+```
+
+Reiniciar el kernel y ejecutar todas las celdas en orden.
+
+El notebook vuelve a evaluar las configuraciones definidas mediante los mismos cortes temporales y guarda los resultados en una carpeta nueva dentro de `outputs/reproducciones/`.
+
+Al finalizar, compara los archivos generados con las referencias históricas y presenta los estados de verificación correspondientes.
+
+La comparación utiliza tolerancias numéricas y comprueba también la estructura de las tablas y los parámetros disponibles. Las diferencias se reportan explícitamente; la coincidencia de métricas agregadas no garantiza, por sí sola, la identidad de todas las observaciones utilizadas.
+
+Esta reproducción no modifica los hiperparámetros del pipeline definitivo ni consulta el conjunto de prueba 2017–2018.
+
 ## Pruebas automatizadas
+
+El proyecto también incorpora pruebas automatizadas para verificar el funcionamiento del software y los controles de reproducibilidad.
+
+Estas pruebas son independientes de la evaluación predictiva histórica. Su objetivo es detectar errores de implementación, no volver a medir el rendimiento de los modelos sobre Lending Club.
+
+### Ejecución
+
+Desde la raíz del repositorio:
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-Las pruebas usan datos sintéticos: particiones temporales, exclusión de leakage, selección e imputación solo en base, columnas/categorías nuevas, inferencia sin objetivo, guardado/carga, rangos de probabilidad, semilla, protección contra sobrescritura y bloqueo del test. También comparan el pipeline con la implementación histórica sobre datos sintéticos. No entrenan ni evalúan Lending Club.
+### ¿Qué verifican las pruebas?
 
-La suite actual contiene **57 pruebas**: las del cierre académico, la carga compartida inicial, los controles de consulta/reproducción de los once notebooks y las pruebas específicas del SVM sobre la muestra. Las pruebas de consulta bloquean lectura del dataset, ajustes y escrituras; las demás verifican comparación CSV/JSON, estados, manifiestos, protección del test y funcionamiento del pipeline con datos sintéticos. Los resultados históricos de pruebas documentados antes corresponden a su ejecución de cierre.
+La suite incluye comprobaciones sobre:
+
+- **Preparación y filtrado de datos:** particiones temporales, selección de estados elegibles y exclusión de información posterior al otorgamiento.
+- **Preprocesamiento:** selección de características e imputación ajustadas exclusivamente con los datos de entrenamiento, además del tratamiento de categorías nuevas.
+- **Modelos y predicciones:** funcionamiento con datos sintéticos, probabilidades dentro del intervalo esperado e inferencia sin disponer de la variable objetivo.
+- **Almacenamiento:** serialización, carga de artefactos, manifiestos y compatibilidad de configuraciones.
+- **Seguridad de ejecución:** protección contra sobrescritura de resultados y exigencia de confirmación antes de evaluar el test.
+- **Reproducibilidad de notebooks:** controles de consulta y reproducción, separación de salidas y comparación de resultados CSV/JSON.
+- **Experimentos iniciales:** comprobaciones de carga compartida, árbol de decisión, Gradient Boosting y SVM sobre muestras.
+
+La suite integrada contiene **57 pruebas**, aprobadas en la ejecución documentada durante la integración final.
+
+Estas pruebas utilizan principalmente datos sintéticos y referencias guardadas. No ejecutan el entrenamiento completo de los modelos sobre Lending Club ni constituyen una nueva evaluación independiente sobre el conjunto de prueba.
 
 ## Resultados, informe y publicación
 
