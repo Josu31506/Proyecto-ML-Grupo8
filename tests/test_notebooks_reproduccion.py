@@ -16,7 +16,7 @@ class NotebookReproduccionTests(unittest.TestCase):
     RAIZ = Path(__file__).resolve().parents[1]
     ARCHIVOS = ("09_optimizacion_final.ipynb", "10_calibracion.ipynb", "11_evaluacion_final.ipynb")
 
-    def ejecutar(self, archivo, cwd=None, reproducir=False, confirmar=None, stack=None):
+    def ejecutar(self, archivo, cwd=None, reproducir=False, stack=None):
         nb = json.loads((self.RAIZ / "notebooks" / archivo).read_text(encoding="utf-8"))
         env = {"__name__": "__notebook_consulta__"}
         with patch("pathlib.Path.cwd", return_value=cwd or self.RAIZ), redirect_stdout(io.StringIO()):
@@ -26,9 +26,6 @@ class NotebookReproduccionTests(unittest.TestCase):
                 code = "".join(cell["source"])
                 if reproducir:
                     code = code.replace("REPRODUCIR = False", "REPRODUCIR = True")
-                if confirmar is not None:
-                    code = code.replace("CONFIRMAR_TEST = False", f"CONFIRMAR_TEST = {confirmar}")
-                    code = code.replace("CONFIRMAR_TEST = True", f"CONFIRMAR_TEST = {confirmar}")
                 exec(compile(code, archivo, "exec"), env)
         return env
 
@@ -78,22 +75,6 @@ class NotebookReproduccionTests(unittest.TestCase):
                     env = self.ejecutar(archivo, cwd)
                     self.assertFalse(env["REPRODUCIR"])
                     self.assertEqual(env["SALIDA"], env["ORIGEN"])
-                    if archivo.startswith("11"):
-                        self.assertTrue(env["CONFIRMAR_TEST"])
-
-    def test_test_requiere_confirmacion_antes_de_cargar_o_escribir(self):
-        with ExitStack() as stack:
-            self.bloquear_operaciones(stack)
-            with self.assertRaisesRegex(PermissionError, "CONFIRMAR_TEST"):
-                self.ejecutar(self.ARCHIVOS[2], reproducir=True, confirmar=False)
-
-    def test_confirmar_sin_reproducir_sigue_siendo_consulta(self):
-        with ExitStack() as stack:
-            self.bloquear_operaciones(stack)
-            env = self.ejecutar(self.ARCHIVOS[2], confirmar=True)
-        self.assertFalse(env["REPRODUCIR"])
-        self.assertTrue(env["CONFIRMAR_TEST"])
-        self.assertIsNone(env["pred_test"])
 
     def test_cambio_de_modo_sin_reinicializar_no_permite_destinos_historicos(self):
         for archivo in self.ARCHIVOS:
@@ -101,7 +82,6 @@ class NotebookReproduccionTests(unittest.TestCase):
                 self.bloquear_operaciones(stack)
                 env = self.ejecutar(archivo)
                 env["REPRODUCIR"] = True
-                env["CONFIRMAR_TEST"] = True
                 with self.assertRaisesRegex(RuntimeError, "Reinicia el kernel"):
                     env["exigir_reproduccion"]()
 
@@ -118,7 +98,7 @@ class NotebookReproduccionTests(unittest.TestCase):
                 stack.enter_context(patch("IPython.display.display"))
                 stack.enter_context(patch("pandas.DataFrame.to_csv", side_effect=AssertionError("CSV")))
                 with self.assertRaises(DatasetBloqueado):
-                    self.ejecutar(archivo, reproducir=True, confirmar=archivo.startswith("11"))
+                    self.ejecutar(archivo, reproducir=True)
                 cargar.assert_called_once()
                 self.assertEqual(mkdir.call_count, 1)
                 destino = mkdir.call_args.args[0]

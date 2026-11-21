@@ -23,7 +23,7 @@ from src.reproduccion_notebooks import (
 class ReproduccionEstandarizadaTests(unittest.TestCase):
     RAIZ = Path(__file__).resolve().parents[1]
 
-    def ejecutar_notebook(self, archivo, directorio=None, reproducir=False, confirmar=None):
+    def ejecutar_notebook(self, archivo, directorio=None, reproducir=False):
         env = {"__name__": "__consulta__"}
         salida = io.StringIO()
         with patch("pathlib.Path.cwd", return_value=directorio or self.RAIZ), redirect_stdout(salida):
@@ -33,9 +33,6 @@ class ReproduccionEstandarizadaTests(unittest.TestCase):
                 codigo = "".join(celda["source"])
                 if reproducir:
                     codigo = codigo.replace("REPRODUCIR = False", "REPRODUCIR = True")
-                if confirmar is not None:
-                    codigo = codigo.replace("CONFIRMAR_TEST = False", f"CONFIRMAR_TEST = {confirmar}")
-                    codigo = codigo.replace("CONFIRMAR_TEST = True", f"CONFIRMAR_TEST = {confirmar}")
                 exec(compile(codigo, archivo.name, "exec"), env)
         return env, salida.getvalue()
 
@@ -106,23 +103,14 @@ class ReproduccionEstandarizadaTests(unittest.TestCase):
                     self.assertEqual(set(env["verificacion"].Estado), esperados)
                     plt.close("all")
 
-    def test_test_bloqueado_antes_de_cualquier_efecto(self):
-        p = self.RAIZ / "notebooks/11_evaluacion_final.ipynb"
-        with ExitStack() as stack:
-            self.bloquear(stack)
-            with self.assertRaisesRegex(PermissionError, "CONFIRMAR_TEST"):
-                self.ejecutar_notebook(p, reproducir=True, confirmar=False)
-
-    def test_confirmacion_del_test_no_depende_del_numero_del_notebook(self):
+    def test_reproduccion_de_evaluacion_no_requiere_confirmacion_adicional(self):
         with tempfile.TemporaryDirectory() as temporal, redirect_stdout(io.StringIO()):
             raiz = Path(temporal)
-            for nombre in ("10_evaluacion", "11_evaluacion", "99_evaluacion"):
-                with self.subTest(nombre=nombre), self.assertRaisesRegex(PermissionError, "CONFIRMAR_TEST"):
-                    SesionNotebook(raiz, nombre, True)
-            self.assertFalse((raiz / "outputs").exists())
-            calibracion = SesionNotebook(raiz, "10_calibracion", True)
-            self.assertFalse(calibracion.requiere_test)
-            calibracion.exigir()
+            sesion = SesionNotebook(raiz, "11_evaluacion", True)
+            self.assertTrue(sesion.requiere_test)
+            self.assertTrue(sesion.salida.is_relative_to(raiz / "outputs/reproducciones"))
+            self.assertIn("alcance_test", sesion.manifiesto)
+            sesion.exigir()
 
     def test_consulta_usa_indices_en_outputs_y_reutiliza_resultados_originales(self):
         self.assertFalse((self.RAIZ / "notebooks/evidencia_historica").exists())

@@ -154,13 +154,12 @@ def comparar_archivos(original, reproducido, claves=None, atol=ATOL, rtol=RTOL):
 
 
 class SesionNotebook:
-    def __init__(self, raiz, nombre, reproducir=False, ruta_datos=None, confirmar_test=False):
+    def __init__(self, raiz, nombre, reproducir=False, ruta_datos=None):
         self.raiz = Path(raiz).resolve()
         self.nombre = nombre
         self.requiere_test = nombre.endswith(("_evaluacion", "_evaluacion_final"))
         self.reproducir = reproducir
         self.ruta_datos = ruta_datos
-        self.confirmar_test = confirmar_test
         self.base = (self.raiz / "outputs/reproducciones").resolve()
         self.salida = None
         self._figuras = {}
@@ -174,8 +173,6 @@ class SesionNotebook:
             "entradas_historicas": {}, "datos": None, "configuracion": {},
         }
         if reproducir:
-            if self.requiere_test and not confirmar_test:
-                raise PermissionError("Para reproducir el test se requiere CONFIRMAR_TEST = True.")
             self.salida = self.base / (nombre + "_" + datetime.now().strftime("%Y%m%d_%H%M%S_%f") + "_" + uuid4().hex[:8])
             self.salida.mkdir(parents=True, exist_ok=False)
             self.manifiesto["inicio_utc"] = datetime.now(timezone.utc).isoformat()
@@ -197,8 +194,6 @@ class SesionNotebook:
     def exigir(self):
         if not self.reproducir or self.salida is None:
             raise RuntimeError("Esta operación requiere REPRODUCIR = True desde el inicio.")
-        if self.requiere_test and not self.confirmar_test:
-            raise PermissionError("Falta CONFIRMAR_TEST = True.")
         if not self.salida.resolve().is_relative_to(self.base):
             raise RuntimeError("La salida debe pertenecer a outputs/reproducciones/.")
 
